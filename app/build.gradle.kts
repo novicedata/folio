@@ -1,1 +1,289 @@
-aW1wb3J0IGphdmEuaW8uQnl0ZUFycmF5T3V0cHV0U3RyZWFtCmltcG9ydCBqYXZhLnRpbWUuT2Zmc2V0RGF0ZVRpbWUKaW1wb3J0IGphdmF4LmluamVjdC5JbmplY3QKaW1wb3J0IG9yZy5ncmFkbGUucHJvY2Vzcy5FeGVjT3BlcmF0aW9ucwoKcGx1Z2lucyB7CiAgICBpZCgiY29tLmFuZHJvaWQuYXBwbGljYXRpb24iKQogICAgaWQoIm9yZy5qZXRicmFpbnMua290bGluLnBsdWdpbi5jb21wb3NlIikKICAgIGlkKCJhbmRyb2lkeC5iYXNlbGluZXByb2ZpbGUiKQp9Cgp2YWwgcmVsZWFzZVNpZ25pbmdWYXJpYWJsZXMgPSBsaXN0T2YoCiAgICAiRk9MSU9fUkVMRUFTRV9TVE9SRV9GSUxFIiwKICAgICJGT0xJT19SRUxFQVNFX1NUT1JFX1BBU1NXT1JEIiwKICAgICJGT0xJT19SRUxFQVNFX0tFWV9BTElBUyIsCiAgICAiRk9MSU9fUkVMRUFTRV9LRVlfUEFTU1dPUkQiLAopCnZhbCByZWxlYXNlU2lnbmluZ1ZhbHVlcyA9IHJlbGVhc2VTaWduaW5nVmFyaWFibGVzLmFzc29jaWF0ZVdpdGggeyBuYW1lIC0+CiAgICBTeXN0ZW0uZ2V0ZW52KG5hbWUpPy50YWtlSWYgeyBpdC5pc05vdEJsYW5rKCkgfQp9CnZhbCBzdXBwbGllZFJlbGVhc2VTaWduaW5nVmFyaWFibGVzID0gcmVsZWFzZVNpZ25pbmdWYWx1ZXMuZmlsdGVyVmFsdWVzIHsgaXQgIT0gbnVsbCB9LmtleXMKY2hlY2soc3VwcGxpZWRSZWxlYXNlU2lnbmluZ1ZhcmlhYmxlcy5pc0VtcHR5KCkgfHwgc3VwcGxpZWRSZWxlYXNlU2lnbmluZ1ZhcmlhYmxlcy5zaXplID09IHJlbGVhc2VTaWduaW5nVmFyaWFibGVzLnNpemUpIHsKICAgIHZhbCBtaXNzaW5nID0gcmVsZWFzZVNpZ25pbmdWYXJpYWJsZXMuZmlsdGVyTm90KHN1cHBsaWVkUmVsZWFzZVNpZ25pbmdWYXJpYWJsZXM6OmNvbnRhaW5zKQogICAgIlJlbGVhc2Ugc2lnbmluZyBpcyBvbmx5IGNvbmZpZ3VyZWQgd2hlbiBhbGwgZm91ciBGT0xJT19SRUxFQVNFXyogdmFyaWFibGVzIGFyZSBzZXQuIE1pc3Npbmc6ICR7bWlzc2luZy5qb2luVG9TdHJpbmcoKX0iCn0KCnZhbCByZWxlYXNlU3RvcmVGaWxlID0gcmVsZWFzZVNpZ25pbmdWYWx1ZXNbIkZPTElPX1JFTEVBU0VfU1RPUkVfRklMRSJdPy5sZXQgeyBjb25maWd1cmVkUGF0aCAtPgogICAgcm9vdFByb2plY3QuZmlsZShjb25maWd1cmVkUGF0aCkuY2Fub25pY2FsRmlsZS5hbHNvIHsgc3RvcmVGaWxlIC0+CiAgICAgICAgdmFsIHJlcG9zaXRvcnlSb290ID0gcm9vdFByb2plY3QucHJvamVjdERpci5jYW5vbmljYWxGaWxlLnRvUGF0aCgpCiAgICAgICAgY2hlY2soIXN0b3JlRmlsZS50b1BhdGgoKS5zdGFydHNXaXRoKHJlcG9zaXRvcnlSb290KSkgewogICAgICAgICAgICAiRk9MSU9fUkVMRUFTRV9TVE9SRV9GSUxFIG11c3QgcG9pbnQgb3V0c2lkZSB0aGUgcmVwb3NpdG9yeS4iCiAgICAgICAgfQogICAgICAgIGNoZWNrKHN0b3JlRmlsZS5pc0ZpbGUgJiYgc3RvcmVGaWxlLmNhblJlYWQoKSkgewogICAgICAgICAgICAiRk9MSU9fUkVMRUFTRV9TVE9SRV9GSUxFIGRvZXMgbm90IHBvaW50IHRvIGEgcmVhZGFibGUgZmlsZS4iCiAgICAgICAgfQogICAgfQp9Cgp2YWwgZm9saW9WZXJzaW9uID0gIjAuNy4wLWJldGEuNiIKCi8vIEJ1bmRsZSB0aGUgY2hhbmdlbG9nIHNvIEZvbGlvIGNhbiBzaG93IFdoYXQncyBOZXcgYWZ0ZXIgYW4gdXBkYXRlLgp2YWwgYnVuZGxlQ2hhbmdlbG9nID0gdGFza3MucmVnaXN0ZXI8Q29weT4oImJ1bmRsZUNoYW5nZWxvZyIpIHsKICAgIGZyb20ocm9vdFByb2plY3QuZmlsZSgiQ0hBTkdFTE9HLm1kIikpCiAgICBpbnRvKGxheW91dC5idWlsZERpcmVjdG9yeS5kaXIoImdlbmVyYXRlZC9jaGFuZ2Vsb2ciKSkKfQp0YXNrcy5uYW1lZCgicHJlQnVpbGQiKSB7IGRlcGVuZHNPbihidW5kbGVDaGFuZ2Vsb2cpIH0KCi8vIEJ1bmRsZSBGb2xpbydzIG93biBzb3VyY2UgKGRvY3Mvc2RrL3NvdXJjZSkgc28gdGhlIGJ1aWx0LWluIHRoZW1lcyBhbmQgdHdlYWtzIGFyZSByZWFsIHBhY2thZ2VzLCByZWFkIGZyb20gdGhlIHNhbWUKLy8gZmlsZXMgdGhlIFNESyBkb2N1bWVudHMgYW5kIHRoZSB0ZXN0cyBjaGVjay4gT25lIGNvcHksIG5vdCB0d28uCi8vIFN5bmMsIG5vdCBDb3B5OiBhIGZpbGUgcmVtb3ZlZCBmcm9tIHRoZSBzb3VyY2UgKG9yIG5ld2x5IGV4Y2x1ZGVkKSBoYXMgdG8gbGVhdmUgdGhlIEFQSyBhcyB3ZWxsLgp2YWwgYnVuZGxlRm9saW9Tb3VyY2UgPSB0YXNrcy5yZWdpc3RlcjxTeW5jPigiYnVuZGxlRm9saW9Tb3VyY2UiKSB7CiAgICBmcm9tKHJvb3RQcm9qZWN0LmZpbGUoImRvY3Mvc2RrL3NvdXJjZSIpKSB7CiAgICAgICAgLy8gVGhlIGRyYXdpbmdzIGFuZCB0aGUgc2NyaXB0IHRoYXQgcmFzdGVyaXNlcyB0aGVtIGFyZSBidWlsZCBzb3VyY2VzLCBub3Qgc29tZXRoaW5nIHRoZSBwaG9uZSByZWFkcy4KICAgICAgICBleGNsdWRlKCJSRUFETUUubWQiLCAiKiovKi5zdmciLCAiKiovZ2VuZXJhdGUucHkiKQogICAgfQogICAgaW50byhsYXlvdXQuYnVpbGREaXJlY3RvcnkuZGlyKCJnZW5lcmF0ZWQvbWFya2V0L21hcmtldC9zb3VyY2UiKSkKfQovLyBXcml0ZSB0aGUgbGlzdCBvZiBmaWxlcyBiZXNpZGUgdGhlbTogYW4gQVBLJ3MgYXNzZXRzIGNhbid0IGJlIGxpc3RlZCByZWxpYWJseSAoYW5kIFJvYm9sZWN0cmljIGNhbid0IGF0IGFsbCksIHNvIHRoZQovLyBzb3VyY2Ugc2F5cyB3aGF0IGl0IGNvbnRhaW5zIGluc3RlYWQgb2YgRm9saW8gZ3Vlc3NpbmcgZnJvbSBmb2xkZXIgbmFtZXMuCnZhbCBpbmRleEZvbGlvU291cmNlID0gdGFza3MucmVnaXN0ZXIoImluZGV4Rm9saW9Tb3VyY2UiKSB7CiAgICBkZXBlbmRzT24oYnVuZGxlRm9saW9Tb3VyY2UpCiAgICB2YWwgc291cmNlRGlyID0gbGF5b3V0LmJ1aWxkRGlyZWN0b3J5LmRpcigiZ2VuZXJhdGVkL21hcmtldC9tYXJrZXQvc291cmNlIikKICAgIC8vIFdpdGhvdXQgdGhpcyB0aGUgdGFzayBpcyAidXAgdG8gZGF0ZSIgYWZ0ZXIgYSBmaWxlIGlzIGFkZGVkIHRvIHRoZSBzb3VyY2UsIGFuZCBmaWxlcy5qc29uIHF1aWV0bHkgc3RvcHMKICAgIC8vIGxpc3RpbmcgZXZlcnl0aGluZyB0aGF0J3MgYWN0dWFsbHkgdGhlcmUuCiAgICBpbnB1dHMuZGlyKHJvb3RQcm9qZWN0LmZpbGUoImRvY3Mvc2RrL3NvdXJjZSIpKS53aXRoUGF0aFNlbnNpdGl2aXR5KFBhdGhTZW5zaXRpdml0eS5SRUxBVElWRSkKICAgIG91dHB1dHMuZGlyKHNvdXJjZURpcikKICAgIGRvTGFzdCB7CiAgICAgICAgdmFsIHJvb3QgPSBzb3VyY2VEaXIuZ2V0KCkuYXNGaWxlCiAgICAgICAgdmFsIHBhdGhzID0gcm9vdC53YWxrVG9wRG93bigpLmZpbHRlciB7IGl0LmlzRmlsZSAmJiBpdC5uYW1lICE9ICJmaWxlcy5qc29uIiB9CiAgICAgICAgICAgIC5tYXAgeyBpdC5yZWxhdGl2ZVRvKHJvb3QpLmludmFyaWFudFNlcGFyYXRvcnNQYXRoIH0uc29ydGVkKCkudG9MaXN0KCkKICAgICAgICBGaWxlKHJvb3QsICJmaWxlcy5qc29uIikud3JpdGVUZXh0KHBhdGhzLmpvaW5Ub1N0cmluZygiLCIsICJbIiwgIl0iKSB7ICJcIiIgKyBpdCArICJcIiIgfSkKICAgIH0KfQp0YXNrcy5uYW1lZCgicHJlQnVpbGQiKSB7IGRlcGVuZHNPbihpbmRleEZvbGlvU291cmNlKSB9CgovKioKICogRm9saW8gRGV2J3MgIndlbGNvbWUgYmFjayIgcGFnZSAoZG9jcy9yZWxlYXNlLTAuNi45LXBsYW4ubWQsIEc0KS4gV3JpdGVzIGRldi1idWlsZC5qc29uIGZvciB0aGUgZGVidWcgYW5kIGZhc3QgYnVpbGRzIG9ubHk6CiAqIHRoZSBicmFuY2gsIGNvbW1pdCwgdGltZSwgdGhlIGxhc3QgY29tbWl0cyBhbmQsIGlmIHRoZSBicmFuY2ggaGFzIG9uZSwgdGhlIHN0ZXBzIGluIGRvY3MvZGV2LW5vdGVzLm1kLiBBIHJlbGVhc2UgYnVpbGQKICogbmV2ZXIgZ2V0cyB0aGUgZmlsZSwgc28gdGhlIHBhZ2UgaGFzIG5vdGhpbmcgdG8gc2hvdyB0aGVyZS4gQWx3YXlzIHJ1bnMsIHNvIHRoZSBjb21taXQgYW5kIHRpbWUgYXJlIG5ldmVyIHN0YWxlLgogKi8KQFVudHJhY2tlZFRhc2soYmVjYXVzZSA9ICJJdCByZWNvcmRzIHRoZSBjb21taXQgYW5kIHRpbWUgb2YgdGhpcyBidWlsZCwgc28gaXQgaGFzIHRvIHJ1biBldmVyeSB0aW1lIikKYWJzdHJhY3QgY2xhc3MgRGV2QnVpbGRJbmZvVGFzayBASW5qZWN0IGNvbnN0cnVjdG9yKHByaXZhdGUgdmFsIGV4ZWM6IEV4ZWNPcGVyYXRpb25zKSA6IERlZmF1bHRUYXNrKCkgewogICAgQGdldDpJbnRlcm5hbCBhYnN0cmFjdCB2YWwgcmVwb0RpcjogRGlyZWN0b3J5UHJvcGVydHkKICAgIEBnZXQ6SW50ZXJuYWwgYWJzdHJhY3QgdmFsIG5vdGVzRmlsZTogUmVndWxhckZpbGVQcm9wZXJ0eQogICAgQGdldDpPdXRwdXREaXJlY3RvcnkgYWJzdHJhY3QgdmFsIG91dHB1dERpcjogRGlyZWN0b3J5UHJvcGVydHkKCiAgICBwcml2YXRlIGZ1biBnaXQodmFyYXJnIGFyZ3M6IFN0cmluZyk6IFN0cmluZyA9IHJ1bkNhdGNoaW5nIHsKICAgICAgICB2YWwgb3V0ID0gQnl0ZUFycmF5T3V0cHV0U3RyZWFtKCkKICAgICAgICBleGVjLmV4ZWMgeyBjb21tYW5kTGluZShsaXN0T2YoImdpdCIpICsgYXJncyk7IHdvcmtpbmdEaXIgPSByZXBvRGlyLmdldCgpLmFzRmlsZTsgc3RhbmRhcmRPdXRwdXQgPSBvdXQ7IGVycm9yT3V0cHV0ID0gQnl0ZUFycmF5T3V0cHV0U3RyZWFtKCk7IGlzSWdub3JlRXhpdFZhbHVlID0gdHJ1ZSB9CiAgICAgICAgb3V0LnRvU3RyaW5nKENoYXJzZXRzLlVURl84KS50cmltKCkKICAgIH0uZ2V0T3JEZWZhdWx0KCIiKQoKICAgIHByaXZhdGUgZnVuIHEoczogU3RyaW5nKSA9ICJcIiIgKyBzLnJlcGxhY2UoIlxcIiwgIlxcXFwiKS5yZXBsYWNlKCJcIiIsICJcXFwiIikucmVwbGFjZSgiXG4iLCAiICIpLnJlcGxhY2UoIlxyIiwgIiAiKS5yZXBsYWNlKCJcdCIsICIgIikgKyAiXCIiCgogICAgQFRhc2tBY3Rpb24gZnVuIHdyaXRlKCkgewogICAgICAgIHZhbCBjb21taXRzID0gZ2l0KCJsb2ciLCAiLTE1IiwgIi0tYWJicmV2PTgiLCAiLS1mb3JtYXQ9JWgleDA5JXMiKS5saW5lcygpLmZpbHRlciB7IGl0LmNvbnRhaW5zKCdcdCcpIH0ubWFwIHsgaXQuc3Vic3RyaW5nQmVmb3JlKCdcdCcpIHRvIGl0LnN1YnN0cmluZ0FmdGVyKCdcdCcpIH0KICAgICAgICB2YWwgbm90ZXMgPSBub3Rlc0ZpbGUuZ2V0KCkuYXNGaWxlLnRha2VJZiB7IGl0LmlzRmlsZSB9Py5yZWFkTGluZXMoKS5vckVtcHR5KCkubWFwIHsgaXQudHJpbSgpIH0uZmlsdGVyIHsgaXQuc3RhcnRzV2l0aCgiLSAiKSB9Lm1hcCB7IGl0LnJlbW92ZVByZWZpeCgiLSAiKS50cmltKCkgfQogICAgICAgIHZhbCBqc29uID0gYnVpbGRTdHJpbmcgewogICAgICAgICAgICBhcHBlbmQoInsiKQogICAgICAgICAgICBhcHBlbmQoIlwiYnJhbmNoXCI6IikuYXBwZW5kKHEoZ2l0KCJyZXYtcGFyc2UiLCAiLS1hYmJyZXYtcmVmIiwgIkhFQUQiKS5pZkVtcHR5IHsgInVua25vd24iIH0pKS5hcHBlbmQoIiwiKQogICAgICAgICAgICBhcHBlbmQoIlwic2hhXCI6IikuYXBwZW5kKHEoZ2l0KCJyZXYtcGFyc2UiLCAiLS1zaG9ydD04IiwgIkhFQUQiKS5pZkVtcHR5IHsgInVua25vd24iIH0pKS5hcHBlbmQoIiwiKQogICAgICAgICAgICBhcHBlbmQoIlwiYnVpbGRcIjoiKS5hcHBlbmQoZ2l0KCJyZXYtbGlzdCIsICItLWNvdW50IiwgIkhFQUQiKS50b0ludE9yTnVsbCgpID86IDApLmFwcGVuZCgiLCIpCiAgICAgICAgICAgIGFwcGVuZCgiXCJkaXJ0eVwiOiIpLmFwcGVuZChnaXQoInN0YXR1cyIsICItLXBvcmNlbGFpbiIsICItLXVudHJhY2tlZC1maWxlcz1ubyIpLmlzTm90RW1wdHkoKSkuYXBwZW5kKCIsIikKICAgICAgICAgICAgYXBwZW5kKCJcImJ1aWx0QXRcIjoiKS5hcHBlbmQocShPZmZzZXREYXRlVGltZS5ub3coKS50b1N0cmluZygpKSkuYXBwZW5kKCIsIikKICAgICAgICAgICAgYXBwZW5kKCJcImNvbW1pdHNcIjpbIikuYXBwZW5kKGNvbW1pdHMuam9pblRvU3RyaW5nKCIsIikgeyAie1wic2hhXCI6JHtxKGl0LmZpcnN0KX0sXCJzdWJqZWN0XCI6JHtxKGl0LnNlY29uZCl9fSIgfSkuYXBwZW5kKCJdLCIpCiAgICAgICAgICAgIGFwcGVuZCgiXCJub3Rlc1wiOlsiKS5hcHBlbmQobm90ZXMuam9pblRvU3RyaW5nKCIsIikgeyBxKGl0KSB9KS5hcHBlbmQoIl0iKQogICAgICAgICAgICBhcHBlbmQoIn0iKQogICAgICAgIH0KICAgICAgICBvdXRwdXREaXIuZ2V0KCkuYXNGaWxlLmFsc28geyBpdC5ta2RpcnMoKSB9LnJlc29sdmUoImRldi1idWlsZC5qc29uIikud3JpdGVUZXh0KGpzb24pCiAgICB9Cn0KdmFsIGdlbmVyYXRlRGV2QnVpbGRJbmZvID0gdGFza3MucmVnaXN0ZXI8RGV2QnVpbGRJbmZvVGFzaz4oImdlbmVyYXRlRGV2QnVpbGRJbmZvIikgewogICAgcmVwb0Rpci5zZXQocm9vdFByb2plY3QubGF5b3V0LnByb2plY3REaXJlY3RvcnkpCiAgICBub3Rlc0ZpbGUuc2V0KHJvb3RQcm9qZWN0LmxheW91dC5wcm9qZWN0RGlyZWN0b3J5LmZpbGUoImRvY3MvZGV2LW5vdGVzLm1kIikpCiAgICBvdXRwdXREaXIuc2V0KGxheW91dC5idWlsZERpcmVjdG9yeS5kaXIoImdlbmVyYXRlZC9kZXZidWlsZCIpKQp9Ci8qKgogKiBUaGUgcHJvZmlsZSBpcyByZWNvcmRlZCBmcm9tIHRoZSAiZmFzdCIgYnVpbGQgKCJGb2xpbyBEZXYiLCBkZWJ1Zy1zaWduZWQpIGJlY2F1c2UgdGhlIHJlbGVhc2UgQVBLIGNhbid0IGJlCiAqIGluc3RhbGxlZCBvdmVyIHRoZSBzaWduZWQgRm9saW8gb24gYSB0ZXN0IHBob25lLCBhbmQgbWVyZ2VkIGludG8gbWFpbiBzbyB0aGUgcmVsZWFzZSBidWlsZCBzaGlwcyBpdC4KICovCmJhc2VsaW5lUHJvZmlsZSB7CiAgICBtZXJnZUludG9NYWluID0gdHJ1ZQp9CgovKioKICogVGhlIHR3byBidWlsZCB0eXBlcyB0aGUgYmFzZWxpbmUgcHJvZmlsZSBwbHVnaW4gYWRkcyBnZXQgdGhlaXIgb3duIGFwcGxpY2F0aW9uIGlkIHNvIHRoZXkgaW5zdGFsbCBiZXNpZGUgdGhlCiAqIHJlYWwgRm9saW8gaW5zdGVhZCBvZiB0cnlpbmcgdG8gcmVwbGFjZSBpdDogdGhlIHBob25lIHVzZWQgZm9yIHJlY29yZGluZyBydW5zIGEgcmVsZWFzZS1zaWduZWQgRm9saW8sIHdoaWNoIGEKICogbG9jYWxseSBzaWduZWQgYnVpbGQgb2YgdGhlIHNhbWUgaWQgY2FuJ3QgdXBkYXRlLiBBIHByb2ZpbGUgaXMgYSBsaXN0IG9mIGNsYXNzZXMgYW5kIG1ldGhvZHMsIHNvIHJlY29yZGluZyBpdAogKiB1bmRlciBhbm90aGVyIGlkIGNoYW5nZXMgbm90aGluZyBhYm91dCB3aGF0IGVuZHMgdXAgaW4gdGhlIHJlbGVhc2UgQVBLLgogKi8KYW5kcm9pZENvbXBvbmVudHMgewogICAgb25WYXJpYW50cyB7IHZhcmlhbnQgLT4KICAgICAgICAvLyBPbmx5IHRoZSB0d28gRm9saW8gRGV2IGJ1aWxkIHR5cGVzIGdldCBkZXYtYnVpbGQuanNvbjsgYSByZWxlYXNlIGJ1aWxkIG5ldmVyIHNlZXMgdGhlIGZvbGRlci4gUmVnaXN0ZXJlZCB0aHJvdWdoIHRoZQogICAgICAgIC8vIHZhcmlhbnQgQVBJIHNvIGV2ZXJ5dGhpbmcgdGhhdCByZWFkcyBhc3NldHMgKG1lcmdlLCBsaW50KSBkZXBlbmRzIG9uIHRoZSB0YXNrIHRoYXQgd3JpdGVzIGl0LgogICAgICAgIGlmICh2YXJpYW50LmJ1aWxkVHlwZSA9PSAiZGVidWciIHx8IHZhcmlhbnQuYnVpbGRUeXBlID09ICJmYXN0IikgewogICAgICAgICAgICB2YXJpYW50LnNvdXJjZXMuYXNzZXRzPy5hZGRHZW5lcmF0ZWRTb3VyY2VEaXJlY3RvcnkoZ2VuZXJhdGVEZXZCdWlsZEluZm8sIERldkJ1aWxkSW5mb1Rhc2s6Om91dHB1dERpcikKICAgICAgICB9CiAgICAgICAgaWYgKHZhcmlhbnQuYnVpbGRUeXBlID09ICJub25NaW5pZmllZFJlbGVhc2UiIHx8IHZhcmlhbnQuYnVpbGRUeXBlID09ICJiZW5jaG1hcmtSZWxlYXNlIikgewogICAgICAgICAgICB2YXJpYW50LmFwcGxpY2F0aW9uSWQuc2V0KCJjb20ubWNjYWwuZm9saW8ucHJvZmlsZSIpCiAgICAgICAgfQogICAgfQp9CgphbmRyb2lkIHsKICAgIG5hbWVzcGFjZSA9ICJjb20ubWNjYWwuZm9saW8iCiAgICBjb21waWxlU2RrID0gMzcKICAgIGRlZmF1bHRDb25maWcgewogICAgICAgIGFwcGxpY2F0aW9uSWQgPSAiY29tLm1jY2FsLmZvbGlvIgogICAgICAgIG1pblNkayA9IDMxCiAgICAgICAgdGFyZ2V0U2RrID0gMzYKICAgICAgICAvLyBTZW1hbnRpYyB2ZXJzaW9uOyBzZWUgQ0hBTkdFTE9HLm1kIGFuZCBkb2NzL2Fkci8wMDA3LXJlbGVhc2UtdHJhaW5zLm1kLgogICAgICAgIC8vICAgdmVyc2lvbkNvZGUgPSAoTUFKT1IgKiAxMDAwMCArIE1JTk9SICogMTAwICsgUEFUQ0gpICogMTAgKyBIT1RGSVgKICAgICAgICAvLyBUaGUgbGFzdCBkaWdpdCBpcyB3aHkgYSBmaXggb24gdG9wIG9mIGEgcmVsZWFzZSBjYW4gZXhpc3QgYXQgYWxsOiAwLjYuNyBpcyA2MDcwIGFuZCAwLjYuNy4xIGlzIDYwNzEsIHNvIGEKICAgICAgICAvLyBmaXggbmV2ZXIgaGFzIHRvIHRha2UgdGhlIG51bWJlciB0aGUgbmV4dCBmZWF0dXJlIHJlbGVhc2Ugd2FudGVkLCB3aGljaCBpcyB3aGF0IHdlbnQgd3Jvbmcgb24gMjMgU2VwIDIwMjYuCiAgICAgICAgLy8gQSBwcmUtcmVsZWFzZSAoMC43LjAtYmV0YS4xKSBzaGFyZXMgaXRzIHJlbGVhc2UncyBjb2RlLCBhbmQgdGhlIHJlbGVhc2UgaW5zdGFsbHMgb3ZlciBpdCBiZWNhdXNlCiAgICAgICAgLy8gU29mdHdhcmVVcGRhdGUuaXNOZXdlciBvcmRlcnMgYnkgdGhlIHZlcnNpb24gbmFtZS4gQ29kZXMgb25seSBldmVyIHJpc2UsIHNvIHRoZSBvbGRlciBmb3JtdWxhJ3MgNjA3IGlzCiAgICAgICAgLy8gc3RpbGwgYmVsb3cgdGhpcyBvbmUncyA2MDcwLgogICAgICAgIHZlcnNpb25OYW1lID0gZm9saW9WZXJzaW9uCiAgICAgICAgdmVyc2lvbkNvZGUgPSBmb2xpb1ZlcnNpb24uc3Vic3RyaW5nQmVmb3JlKCctJykuc3BsaXQoJy4nKS5tYXAoU3RyaW5nOjp0b0ludCkubGV0IHsgcGFydHMgLT4KICAgICAgICAgICAgcmVxdWlyZShwYXJ0cy5zaXplIGluIDMuLjQpIHsgImZvbGlvVmVyc2lvbiBuZWVkcyBNQUpPUi5NSU5PUi5QQVRDSCwgYW5kIG1heSBhZGQgLkhPVEZJWDogd2FzICRmb2xpb1ZlcnNpb24iIH0KICAgICAgICAgICAgdmFsIGhvdGZpeCA9IHBhcnRzLmdldE9yRWxzZSgzKSB7IDAgfQogICAgICAgICAgICAvLyA5IGlzIHJlc2VydmVkIGZvciBhIHJvbGxiYWNrIGJ1aWxkIChSRUwtMzQpLCBzbyBhIGhvdGZpeCBydW5zIDEgdG8gOC4KICAgICAgICAgICAgcmVxdWlyZShob3RmaXggaW4gMS4uOCB8fCBwYXJ0cy5zaXplID09IDMpIHsgInRoZSBob3RmaXggZGlnaXQgcnVucyAxIHRvIDg6IHdhcyAkZm9saW9WZXJzaW9uIiB9CiAgICAgICAgICAgIChwYXJ0c1swXSAqIDEwMDAwICsgcGFydHNbMV0gKiAxMDAgKyBwYXJ0c1syXSkgKiAxMCArIGhvdGZpeAogICAgICAgIH0KICAgICAgICB0ZXN0SW5zdHJ1bWVudGF0aW9uUnVubmVyID0gImFuZHJvaWR4LnRlc3QucnVubmVyLkFuZHJvaWRKVW5pdFJ1bm5lciIKICAgIH0KICAgIHNpZ25pbmdDb25maWdzIHsKICAgICAgICBpZiAocmVsZWFzZVN0b3JlRmlsZSAhPSBudWxsKSB7CiAgICAgICAgICAgIGNyZWF0ZSgicmVsZWFzZSIpIHsKICAgICAgICAgICAgICAgIHN0b3JlRmlsZSA9IHJlbGVhc2VTdG9yZUZpbGUKICAgICAgICAgICAgICAgIHN0b3JlUGFzc3dvcmQgPSByZWxlYXNlU2lnbmluZ1ZhbHVlcy5nZXRWYWx1ZSgiRk9MSU9fUkVMRUFTRV9TVE9SRV9QQVNTV09SRCIpCiAgICAgICAgICAgICAgICBrZXlBbGlhcyA9IHJlbGVhc2VTaWduaW5nVmFsdWVzLmdldFZhbHVlKCJGT0xJT19SRUxFQVNFX0tFWV9BTElBUyIpCiAgICAgICAgICAgICAgICBrZXlQYXNzd29yZCA9IHJlbGVhc2VTaWduaW5nVmFsdWVzLmdldFZhbHVlKCJGT0xJT19SRUxFQVNFX0tFWV9QQVNTV09SRCIpCiAgICAgICAgICAgIH0KICAgICAgICB9CiAgICB9CiAgICBidWlsZFR5cGVzIHsKICAgICAgICBnZXRCeU5hbWUoInJlbGVhc2UiKSB7CiAgICAgICAgICAgIGlzTWluaWZ5RW5hYmxlZCA9IHRydWUKICAgICAgICAgICAgaXNTaHJpbmtSZXNvdXJjZXMgPSB0cnVlCiAgICAgICAgICAgIHByb2d1YXJkRmlsZXMoCiAgICAgICAgICAgICAgICBnZXREZWZhdWx0UHJvZ3VhcmRGaWxlKCJwcm9ndWFyZC1hbmRyb2lkLW9wdGltaXplLnR4dCIpLAogICAgICAgICAgICAgICAgInByb2d1YXJkLXJ1bGVzLnBybyIsCiAgICAgICAgICAgICkKICAgICAgICAgICAgaWYgKHJlbGVhc2VTdG9yZUZpbGUgIT0gbnVsbCkgc2lnbmluZ0NvbmZpZyA9IHNpZ25pbmdDb25maWdzLmdldEJ5TmFtZSgicmVsZWFzZSIpCiAgICAgICAgICAgIG1hbmlmZXN0UGxhY2Vob2xkZXJzWyJhcHBMYWJlbCJdID0gIkZvbGlvIgogICAgICAgIH0KICAgICAgICAvLyBPcHRpbWl6ZWQgbGlrZSByZWxlYXNlIChSOCwgbm8gZGVidWdnYWJsZSBKSVQgc2xvd2Rvd24pIGJ1dCBzaWduZWQgd2l0aCB0aGUgbG9jYWwgZGVidWcga2V5LCBzbyBpdAogICAgICAgIC8vIGluc3RhbGxzIG92ZXIgYSBkZWJ1ZyBidWlsZCBhbmQga2VlcHMgRm9saW8ncyBkYXRhLiBVc2UgdGhpcyB0byBqdWRnZSByZWFsIHNtb290aG5lc3Mgb24gdGhlIHBob25lLgogICAgICAgIGNyZWF0ZSgiZmFzdCIpIHsKICAgICAgICAgICAgaW5pdFdpdGgoZ2V0QnlOYW1lKCJyZWxlYXNlIikpCiAgICAgICAgICAgIHNpZ25pbmdDb25maWcgPSBzaWduaW5nQ29uZmlncy5nZXRCeU5hbWUoImRlYnVnIikKICAgICAgICAgICAgbWF0Y2hpbmdGYWxsYmFja3MgKz0gInJlbGVhc2UiCiAgICAgICAgICAgIC8vIEl0cyBvd24gYXBwICgiRm9saW8gRGV2Iikgc28gdGVzdCBidWlsZHMgaW5zdGFsbCBuZXh0IHRvIHRoZSBzaWduZWQgcmVsZWFzZSBpbnN0ZWFkIG9mIG92ZXIgaXQuCiAgICAgICAgICAgIGFwcGxpY2F0aW9uSWRTdWZmaXggPSAiLmRldiIKICAgICAgICAgICAgbWFuaWZlc3RQbGFjZWhvbGRlcnNbImFwcExhYmVsIl0gPSAiRm9saW8gRGV2IgogICAgICAgIH0KICAgICAgICAvLyBTYW1lIGFwcCBpZCBhcyAiZmFzdCIsIHNvIG9uZSBidWlsZCBpbnN0YWxscyBvdmVyIHRoZSBvdGhlciBhbmQgRm9saW8gRGV2IGtlZXBzIGl0cyBsYXlvdXQgYW5kIHNldHRpbmdzLgogICAgICAgIC8vIE9ubHkgdGhlIG5hbWUgZGlmZmVycywgYmVjYXVzZSB0aGF0IGlzIHRoZSBvbmUgcGxhY2UgeW91IGNhbiB0ZWxsIHRoZW0gYXBhcnQgb24gdGhlIHBob25lLCBhbmQgaXQgbWF0dGVyczoKICAgICAgICAvLyBhIGRlYnVnIGJ1aWxkIGlzIGZhciBzbG93ZXIsIHNvIGZyYW1lIG51bWJlcnMgdGFrZW4gb24gb25lIG1lYW4gbm90aGluZyBuZXh0IHRvIG51bWJlcnMgZnJvbSB0aGUgb3RoZXIuCiAgICAgICAgZ2V0QnlOYW1lKCJkZWJ1ZyIpIHsKICAgICAgICAgICAgYXBwbGljYXRpb25JZFN1ZmZpeCA9ICIuZGV2IgogICAgICAgICAgICBtYW5pZmVzdFBsYWNlaG9sZGVyc1siYXBwTGFiZWwiXSA9ICJGb2xpbyBEZWJ1ZyIKICAgICAgICB9CiAgICB9CiAgICAvLyAiZmFzdCIgdXNlcyByZWxlYXNlJ3Mgbm8tb3AgdHJhY2luZy9kaWFnbm9zdGljIHNvdXJjZXMuCiAgICBzb3VyY2VTZXRzIHsKICAgICAgICBnZXRCeU5hbWUoImZhc3QiKSB7IGtvdGxpbi5kaXJlY3Rvcmllcy5hZGQoInNyYy9yZWxlYXNlL2phdmEiKTsgcmVzLmRpcmVjdG9yaWVzLmFkZCgic3JjL2Rldi9yZXMiKSB9CiAgICAgICAgLy8gRm9saW8gRGV2IChkZWJ1ZyBhbmQgZmFzdCBidWlsZHMpIGdldHMgYW4gYW1iZXIgaWNvbiBzbyBpdCdzIGVhc3kgdG8gdGVsbCBhcGFydCBmcm9tIHRoZSByZWxlYXNlLgogICAgICAgIGdldEJ5TmFtZSgiZGVidWciKSB7IHJlcy5kaXJlY3Rvcmllcy5hZGQoInNyYy9kZXYvcmVzIikgfQogICAgICAgIGdldEJ5TmFtZSgibWFpbiIpIHsKICAgICAgICAgICAgYXNzZXRzLnNyY0RpcihsYXlvdXQuYnVpbGREaXJlY3RvcnkuZGlyKCJnZW5lcmF0ZWQvY2hhbmdlbG9nIikuZ2V0KCkuYXNGaWxlKQogICAgICAgICAgICBhc3NldHMuc3JjRGlyKGxheW91dC5idWlsZERpcmVjdG9yeS5kaXIoImdlbmVyYXRlZC9tYXJrZXQiKS5nZXQoKS5hc0ZpbGUpCiAgICAgICAgfQogICAgfQogICAgYnVpbGRGZWF0dXJlcyB7IGNvbXBvc2UgPSB0cnVlIH0KICAgIC8vIFJvYm9sZWN0cmljIG5lZWRzIHRoZSBhcHAncyByZXNvdXJjZXMgYW5kIG1hbmlmZXN0IGluIHVuaXQgdGVzdHMuCiAgICB0ZXN0T3B0aW9ucy51bml0VGVzdHMuaXNJbmNsdWRlQW5kcm9pZFJlc291cmNlcyA9IHRydWUKICAgIC8vIFRoZSBNb2NrdXAgTGFiIHBhcml0eSB0ZXN0cyBmaW5kIHRoZSBsYWIncyBvd24gY2xvbmUgdGhyb3VnaCB0aGlzIChNb2NrdXBMYWIgaW4gdGhlIHVuaXQgdGVzdHMgc2F5cyBtb3JlKS4KICAgIHByb3ZpZGVycy5ncmFkbGVQcm9wZXJ0eSgiZm9saW8ubGFiRGlyIikub3JOdWxsPy5sZXQgeyBsYWIgLT4KICAgICAgICB0ZXN0T3B0aW9ucy51bml0VGVzdHMuYWxsIHsgaXQuc3lzdGVtUHJvcGVydHkoImZvbGlvLmxhYkRpciIsIGxhYikgfQogICAgfQogICAgLy8gQW5kcm9pZCAxMydzIHBlci1hcHAgbGFuZ3VhZ2UgcGlja2VyOiBBR1AgYnVpbGRzIGxvY2FsZXNfY29uZmlnLnhtbCBmcm9tIHRoZSB2YWx1ZXMtKiBmb2xkZXJzIGEgdHJhbnNsYXRpb24gYWRkcy4KICAgIGFuZHJvaWRSZXNvdXJjZXMgeyBnZW5lcmF0ZUxvY2FsZUNvbmZpZyA9IHRydWUgfQogICAgY29tcGlsZU9wdGlvbnMgewogICAgICAgIHNvdXJjZUNvbXBhdGliaWxpdHkgPSBKYXZhVmVyc2lvbi5WRVJTSU9OXzE3CiAgICAgICAgdGFyZ2V0Q29tcGF0aWJpbGl0eSA9IEphdmFWZXJzaW9uLlZFUlNJT05fMTcKICAgIH0KfQpkZXBlbmRlbmNpZXMgewogICAgaW1wbGVtZW50YXRpb24ocHJvamVjdCgiOm1hcmtldCIpKQogICAgYmFzZWxpbmVQcm9maWxlKHByb2plY3QoIjpiYXNlbGluZXByb2ZpbGUiKSkKICAgIGltcGxlbWVudGF0aW9uKCJhbmRyb2lkeC53aW5kb3c6d2luZG93OjEuNS4xIikKICAgIC8vIEluc3RhbGxzIHRoZSBiYXNlbGluZSBwcm9maWxlcyB0aGF0IENvbXBvc2UgYW5kIEFuZHJvaWRYIHNoaXAsIHNvIGhvdCBwYXRocyBhcmUgY29tcGlsZWQgYWhlYWQgb2YgdGltZS4KICAgIGltcGxlbWVudGF0aW9uKCJhbmRyb2lkeC5wcm9maWxlaW5zdGFsbGVyOnByb2ZpbGVpbnN0YWxsZXI6MS40LjEiKQogICAgLy8gTmFtZWQgdHJhY2Ugc2VjdGlvbnMgKFBSRi0xMykuIE90aGVyIEFuZHJvaWRYIGxpYnJhcmllcyBhbHJlYWR5IGJyaW5nIGl0OyBkZWNsYXJlZCBiZWNhdXNlIEZvbGlvIGNhbGxzIGl0LgogICAgaW1wbGVtZW50YXRpb24oImFuZHJvaWR4LnRyYWNpbmc6dHJhY2luZzoxLjIuMCIpCiAgICBpbXBsZW1lbnRhdGlvbihwbGF0Zm9ybSgiYW5kcm9pZHguY29tcG9zZTpjb21wb3NlLWJvbToyMDI1LjA2LjAxIikpCiAgICBpbXBsZW1lbnRhdGlvbigiYW5kcm9pZHguYWN0aXZpdHk6YWN0aXZpdHktY29tcG9zZToxLjEwLjEiKQogICAgaW1wbGVtZW50YXRpb24oImFuZHJvaWR4LmxpZmVjeWNsZTpsaWZlY3ljbGUtcnVudGltZS1jb21wb3NlOjIuOS4xIikKICAgIGltcGxlbWVudGF0aW9uKCJhbmRyb2lkeC5saWZlY3ljbGU6bGlmZWN5Y2xlLXZpZXdtb2RlbC1jb21wb3NlOjIuOS4xIikKICAgIGltcGxlbWVudGF0aW9uKCJhbmRyb2lkeC5jb21wb3NlLnVpOnVpIikKICAgIGltcGxlbWVudGF0aW9uKCJhbmRyb2lkeC5jb21wb3NlLmZvdW5kYXRpb246Zm91bmRhdGlvbiIpCiAgICBpbXBsZW1lbnRhdGlvbigiYW5kcm9pZHguY29tcG9zZS5tYXRlcmlhbDM6bWF0ZXJpYWwzIikKICAgIGltcGxlbWVudGF0aW9uKCJhbmRyb2lkeC5jb21wb3NlLm1hdGVyaWFsOm1hdGVyaWFsLWljb25zLWV4dGVuZGVkIikKICAgIC8vIEltYWdlcyBmcm9tIHNvdXJjZXMgdGhlIHVzZXIgYWRkZWQgKEFwYWNoZS0yLjApLiBPbmx5IGNvaWwzIGNvcmUgYW5kIHRoZSBDb21wb3NlIGJpbmRpbmc6IHRoZSBieXRlcyBjb21lIGZyb20KICAgIC8vIEZvbGlvJ3Mgb3duIEhUVFBTIGNsaWVudCwgc28gdGhlcmUgaXMgbm8gc2Vjb25kIG5ldHdvcmsgc3RhY2sgaW4gdGhlIEFQSyBhbmQgbm8gc2Vjb25kIHNldCBvZiBydWxlcy4KICAgIGltcGxlbWVudGF0aW9uKCJpby5jb2lsLWt0LmNvaWwzOmNvaWwtY29tcG9zZTozLjIuMCIpCiAgICAvLyBMaXF1aWQgZ2xhc3MgZWZmZWN0cyAoYmx1ciArIGxlbnMgcmVmcmFjdGlvbiBvdmVyIGEgcmVjb3JkZWQgYmFja2Ryb3ApIGZvciB0aGUgZmxvYXRpbmcgcmFpbC9kb2NrIHdvcmsuCiAgICAvLyBQaW5uZWQ6IDIuMC54IGRlY2xhcmVzIG1pbkNvbXBpbGVTZGsgMzcsIHdoaWNoIHRoaXMgcHJvamVjdCBhbHJlYWR5IHRhcmdldHM7IDIuMC4xIGlzIHRoZSBsYXRlc3QgcHVibGlzaGVkLgogICAgaW1wbGVtZW50YXRpb24oImlvLmdpdGh1Yi5reWFudDA6YmFja2Ryb3A6Mi4wLjEiKQogICAgZGVidWdJbXBsZW1lbnRhdGlvbigiYW5kcm9pZHguY29tcG9zZS51aTp1aS10b29saW5nIikKICAgIHRlc3RJbXBsZW1lbnRhdGlvbigianVuaXQ6anVuaXQ6NC4xMy4yIikKICAgIHRlc3RJbXBsZW1lbnRhdGlvbigib3JnLmpzb246anNvbjoyMDI2MDgxNCIpIC8vIHJlYWwgb3JnLmpzb24gZm9yIFN0YXR1c1N0eWxlIHJvdW5kLXRyaXAgdGVzdHMKICAgIC8vIFJlbmRlcnMgQ29tcG9zZSBvbiB0aGUgSlZNLCBzbyBhIHNjcmVlbiBjYW4gYmUgY2hlY2tlZCB3aXRob3V0IGEgcGhvbmUgYXR0YWNoZWQuCiAgICB0ZXN0SW1wbGVtZW50YXRpb24oIm9yZy5yb2JvbGVjdHJpYzpyb2JvbGVjdHJpYzo0LjE3IikKICAgIC8vIHJ1blRlc3QsIHNvIHRoZSBNYXJrZXQncyBuZXR3b3JrIGNhbGxzIGNhbiBiZSB0ZXN0ZWQgd2l0aG91dCBhIHJlYWwgZGlzcGF0Y2hlci4KICAgIHRlc3RJbXBsZW1lbnRhdGlvbigib3JnLmpldGJyYWlucy5rb3RsaW54OmtvdGxpbngtY29yb3V0aW5lcy10ZXN0OjEuMTEuMCIpCiAgICB0ZXN0SW1wbGVtZW50YXRpb24oImFuZHJvaWR4LmNvbXBvc2UudWk6dWktdGVzdC1qdW5pdDQiKQogICAgdGVzdEltcGxlbWVudGF0aW9uKCJhbmRyb2lkeC5jb21wb3NlLnVpOnVpLXRlc3QtbWFuaWZlc3QiKQogICAgdGVzdEltcGxlbWVudGF0aW9uKHBsYXRmb3JtKCJhbmRyb2lkeC5jb21wb3NlOmNvbXBvc2UtYm9tOjIwMjUuMDYuMDEiKSkKICAgIGFuZHJvaWRUZXN0SW1wbGVtZW50YXRpb24ocGxhdGZvcm0oImFuZHJvaWR4LmNvbXBvc2U6Y29tcG9zZS1ib206MjAyNS4wNi4wMSIpKQogICAgYW5kcm9pZFRlc3RJbXBsZW1lbnRhdGlvbigiYW5kcm9pZHguY29tcG9zZS51aTp1aS10ZXN0LWp1bml0NCIpCiAgICBhbmRyb2lkVGVzdEltcGxlbWVudGF0aW9uKCJhbmRyb2lkeC50ZXN0OnJ1bm5lcjoxLjcuMCIpCiAgICBhbmRyb2lkVGVzdEltcGxlbWVudGF0aW9uKCJhbmRyb2lkeC50ZXN0LmV4dDpqdW5pdDoxLjMuMCIpCiAgICBhbmRyb2lkVGVzdEltcGxlbWVudGF0aW9uKCJhbmRyb2lkeC50ZXN0LmVzcHJlc3NvOmVzcHJlc3NvLWNvcmU6My43LjAiKQogICAgYW5kcm9pZFRlc3RJbXBsZW1lbnRhdGlvbigiYW5kcm9pZHgudGVzdC51aWF1dG9tYXRvcjp1aWF1dG9tYXRvcjoyLjQuMCIpCiAgICBkZWJ1Z0ltcGxlbWVudGF0aW9uKCJhbmRyb2lkeC5jb21wb3NlLnVpOnVpLXRlc3QtbWFuaWZlc3QiKQp9Cgprb3RsaW4gewogICAgY29tcGlsZXJPcHRpb25zIHsganZtVGFyZ2V0LnNldChvcmcuamV0YnJhaW5zLmtvdGxpbi5ncmFkbGUuZHNsLkp2bVRhcmdldC5KVk1fMTcpIH0KfQoKY29tcG9zZUNvbXBpbGVyIHsKICAgIC8vIFdoYXQgRm9saW8gcHJvbWlzZXMgbmV2ZXIgY2hhbmdlcyBhZnRlciBpdCdzIG1hZGU7IHNlZSB0aGUgZmlsZSBmb3IgZWFjaCB0eXBlIGFuZCB3aHkuCiAgICBzdGFiaWxpdHlDb25maWd1cmF0aW9uRmlsZXMuYWRkKGxheW91dC5wcm9qZWN0RGlyZWN0b3J5LmZpbGUoImNvbXBvc2Utc3RhYmlsaXR5LmNvbmYiKSkKfQoKLy8gQ29tcG9zZSBjb21waWxlciByZXBvcnRzLCBvZmYgdW5sZXNzIGFza2VkIGZvcjogYC4vZ3JhZGxldyA6YXBwOmNvbXBpbGVEZWJ1Z0tvdGxpbiAtUGNvbXBvc2VSZXBvcnRzIC0tcmVydW4tdGFza3NgCi8vIHdyaXRlcyBhcHAvYnVpbGQvY29tcG9zZS1yZXBvcnRzLywgd2hpY2ggc2F5cyB3aGljaCBjb21wb3NhYmxlcyBjYW4gc2tpcCBhbmQgd2hpY2ggY2xhc3NlcyBDb21wb3NlIHRyZWF0cyBhcwovLyB1bnN0YWJsZSAoc28gYW55dGhpbmcgcmVhZGluZyB0aGVtIHJlZHJhd3Mgd2hlbmV2ZXIgaXRzIHBhcmVudCBkb2VzKS4gTm90aGluZyBjaGFuZ2VzIGluIGEgbm9ybWFsIGJ1aWxkLgppZiAocHJvdmlkZXJzLmdyYWRsZVByb3BlcnR5KCJjb21wb3NlUmVwb3J0cyIpLmlzUHJlc2VudCkgewogICAgY29tcG9zZUNvbXBpbGVyIHsKICAgICAgICByZXBvcnRzRGVzdGluYXRpb24gPSBsYXlvdXQuYnVpbGREaXJlY3RvcnkuZGlyKCJjb21wb3NlLXJlcG9ydHMiKQogICAgICAgIG1ldHJpY3NEZXN0aW5hdGlvbiA9IGxheW91dC5idWlsZERpcmVjdG9yeS5kaXIoImNvbXBvc2UtcmVwb3J0cyIpCiAgICB9Cn0K
+import java.io.ByteArrayOutputStream
+import java.time.OffsetDateTime
+import javax.inject.Inject
+import org.gradle.process.ExecOperations
+
+plugins {
+    id("com.android.application")
+    id("org.jetbrains.kotlin.plugin.compose")
+    id("androidx.baselineprofile")
+}
+
+val releaseSigningVariables = listOf(
+    "FOLIO_RELEASE_STORE_FILE",
+    "FOLIO_RELEASE_STORE_PASSWORD",
+    "FOLIO_RELEASE_KEY_ALIAS",
+    "FOLIO_RELEASE_KEY_PASSWORD",
+)
+val releaseSigningValues = releaseSigningVariables.associateWith { name ->
+    System.getenv(name)?.takeIf { it.isNotBlank() }
+}
+val suppliedReleaseSigningVariables = releaseSigningValues.filterValues { it != null }.keys
+check(suppliedReleaseSigningVariables.isEmpty() || suppliedReleaseSigningVariables.size == releaseSigningVariables.size) {
+    val missing = releaseSigningVariables.filterNot(suppliedReleaseSigningVariables::contains)
+    "Release signing is only configured when all four FOLIO_RELEASE_* variables are set. Missing: ${missing.joinToString()}"
+}
+
+val releaseStoreFile = releaseSigningValues["FOLIO_RELEASE_STORE_FILE"]?.let { configuredPath ->
+    rootProject.file(configuredPath).canonicalFile.also { storeFile ->
+        val repositoryRoot = rootProject.projectDir.canonicalFile.toPath()
+        check(!storeFile.toPath().startsWith(repositoryRoot)) {
+            "FOLIO_RELEASE_STORE_FILE must point outside the repository."
+        }
+        check(storeFile.isFile && storeFile.canRead()) {
+            "FOLIO_RELEASE_STORE_FILE does not point to a readable file."
+        }
+    }
+}
+
+val folioVersion = "0.7.0-beta.6"
+
+// Bundle the changelog so Folio can show What's New after an update.
+val bundleChangelog = tasks.register<Copy>("bundleChangelog") {
+    from(rootProject.file("CHANGELOG.md"))
+    into(layout.buildDirectory.dir("generated/changelog"))
+}
+tasks.named("preBuild") { dependsOn(bundleChangelog) }
+
+// Bundle Folio's own source (docs/sdk/source) so the built-in themes and tweaks are real packages, read from the same
+// files the SDK documents and the tests check. One copy, not two.
+// Sync, not Copy: a file removed from the source (or newly excluded) has to leave the APK as well.
+val bundleFolioSource = tasks.register<Sync>("bundleFolioSource") {
+    from(rootProject.file("docs/sdk/source")) {
+        // The drawings and the script that rasterises them are build sources, not something the phone reads.
+        exclude("README.md", "**/*.svg", "**/generate.py")
+    }
+    into(layout.buildDirectory.dir("generated/market/market/source"))
+}
+// Write the list of files beside them: an APK's assets can't be listed reliably (and Robolectric can't at all), so the
+// source says what it contains instead of Folio guessing from folder names.
+val indexFolioSource = tasks.register("indexFolioSource") {
+    dependsOn(bundleFolioSource)
+    val sourceDir = layout.buildDirectory.dir("generated/market/market/source")
+    // Without this the task is "up to date" after a file is added to the source, and files.json quietly stops
+    // listing everything that's actually there.
+    inputs.dir(rootProject.file("docs/sdk/source")).withPathSensitivity(PathSensitivity.RELATIVE)
+    outputs.dir(sourceDir)
+    doLast {
+        val root = sourceDir.get().asFile
+        val paths = root.walkTopDown().filter { it.isFile && it.name != "files.json" }
+            .map { it.relativeTo(root).invariantSeparatorsPath }.sorted().toList()
+        File(root, "files.json").writeText(paths.joinToString(",", "[", "]") { "\"" + it + "\"" })
+    }
+}
+tasks.named("preBuild") { dependsOn(indexFolioSource) }
+
+/**
+ * Folio Dev's "welcome back" page (docs/release-0.6.9-plan.md, G4). Writes dev-build.json for the debug and fast builds only:
+ * the branch, commit, time, the last commits and, if the branch has one, the steps in docs/dev-notes.md. A release build
+ * never gets the file, so the page has nothing to show there. Always runs, so the commit and time are never stale.
+ */
+@UntrackedTask(because = "It records the commit and time of this build, so it has to run every time")
+abstract class DevBuildInfoTask @Inject constructor(private val exec: ExecOperations) : DefaultTask() {
+    @get:Internal abstract val repoDir: DirectoryProperty
+    @get:Internal abstract val notesFile: RegularFileProperty
+    @get:OutputDirectory abstract val outputDir: DirectoryProperty
+
+    private fun git(vararg args: String): String = runCatching {
+        val out = ByteArrayOutputStream()
+        exec.exec { commandLine(listOf("git") + args); workingDir = repoDir.get().asFile; standardOutput = out; errorOutput = ByteArrayOutputStream(); isIgnoreExitValue = true }
+        out.toString(Charsets.UTF_8).trim()
+    }.getOrDefault("")
+
+    private fun q(s: String) = "\"" + s.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", " ").replace("\r", " ").replace("\t", " ") + "\""
+
+    @TaskAction fun write() {
+        val commits = git("log", "-15", "--abbrev=8", "--format=%h%x09%s").lines().filter { it.contains('\t') }.map { it.substringBefore('\t') to it.substringAfter('\t') }
+        val notes = notesFile.get().asFile.takeIf { it.isFile }?.readLines().orEmpty().map { it.trim() }.filter { it.startsWith("- ") }.map { it.removePrefix("- ").trim() }
+        val json = buildString {
+            append("{")
+            append("\"branch\":").append(q(git("rev-parse", "--abbrev-ref", "HEAD").ifEmpty { "unknown" })).append(",")
+            append("\"sha\":").append(q(git("rev-parse", "--short=8", "HEAD").ifEmpty { "unknown" })).append(",")
+            append("\"build\":").append(git("rev-list", "--count", "HEAD").toIntOrNull() ?: 0).append(",")
+            append("\"dirty\":").append(git("status", "--porcelain", "--untracked-files=no").isNotEmpty()).append(",")
+            append("\"builtAt\":").append(q(OffsetDateTime.now().toString())).append(",")
+            append("\"commits\":[").append(commits.joinToString(",") { "{\"sha\":${q(it.first)},\"subject\":${q(it.second)}}" }).append("],")
+            append("\"notes\":[").append(notes.joinToString(",") { q(it) }).append("]")
+            append("}")
+        }
+        outputDir.get().asFile.also { it.mkdirs() }.resolve("dev-build.json").writeText(json)
+    }
+}
+val generateDevBuildInfo = tasks.register<DevBuildInfoTask>("generateDevBuildInfo") {
+    repoDir.set(rootProject.layout.projectDirectory)
+    notesFile.set(rootProject.layout.projectDirectory.file("docs/dev-notes.md"))
+    outputDir.set(layout.buildDirectory.dir("generated/devbuild"))
+}
+/**
+ * The profile is recorded from the "fast" build ("Folio Dev", debug-signed) because the release APK can't be
+ * installed over the signed Folio on a test phone, and merged into main so the release build ships it.
+ */
+baselineProfile {
+    mergeIntoMain = true
+}
+
+/**
+ * The two build types the baseline profile plugin adds get their own application id so they install beside the
+ * real Folio instead of trying to replace it: the phone used for recording runs a release-signed Folio, which a
+ * locally signed build of the same id can't update. A profile is a list of classes and methods, so recording it
+ * under another id changes nothing about what ends up in the release APK.
+ */
+androidComponents {
+    onVariants { variant ->
+        // Only the two Folio Dev build types get dev-build.json; a release build never sees the folder. Registered through the
+        // variant API so everything that reads assets (merge, lint) depends on the task that writes it.
+        if (variant.buildType == "debug" || variant.buildType == "fast") {
+            variant.sources.assets?.addGeneratedSourceDirectory(generateDevBuildInfo, DevBuildInfoTask::outputDir)
+        }
+        if (variant.buildType == "nonMinifiedRelease" || variant.buildType == "benchmarkRelease") {
+            variant.applicationId.set("com.mccal.folio.profile")
+        }
+    }
+}
+
+android {
+    namespace = "com.mccal.folio"
+    compileSdk = 37
+    defaultConfig {
+        applicationId = "com.mccal.folio"
+        minSdk = 31
+        targetSdk = 36
+        // Semantic version; see CHANGELOG.md and docs/adr/0007-release-trains.md.
+        //   versionCode = (MAJOR * 10000 + MINOR * 100 + PATCH) * 10 + HOTFIX
+        // The last digit is why a fix on top of a release can exist at all: 0.6.7 is 6070 and 0.6.7.1 is 6071, so a
+        // fix never has to take the number the next feature release wanted, which is what went wrong on 23 Sep 2026.
+        // A pre-release (0.7.0-beta.1) shares its release's code, and the release installs over it because
+        // SoftwareUpdate.isNewer orders by the version name. Codes only ever rise, so the older formula's 607 is
+        // still below this one's 6070.
+        versionName = folioVersion
+        versionCode = folioVersion.substringBefore('-').split('.').map(String::toInt).let { parts ->
+            require(parts.size in 3..4) { "folioVersion needs MAJOR.MINOR.PATCH, and may add .HOTFIX: was $folioVersion" }
+            val hotfix = parts.getOrElse(3) { 0 }
+            // 9 is reserved for a rollback build (REL-34), so a hotfix runs 1 to 8.
+            require(hotfix in 1..8 || parts.size == 3) { "the hotfix digit runs 1 to 8: was $folioVersion" }
+            (parts[0] * 10000 + parts[1] * 100 + parts[2]) * 10 + hotfix
+        }
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+    signingConfigs {
+        if (releaseStoreFile != null) {
+            create("release") {
+                storeFile = releaseStoreFile
+                storePassword = releaseSigningValues.getValue("FOLIO_RELEASE_STORE_PASSWORD")
+                keyAlias = releaseSigningValues.getValue("FOLIO_RELEASE_KEY_ALIAS")
+                keyPassword = releaseSigningValues.getValue("FOLIO_RELEASE_KEY_PASSWORD")
+            }
+        }
+    }
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
+            if (releaseStoreFile != null) signingConfig = signingConfigs.getByName("release")
+            manifestPlaceholders["appLabel"] = "Folio"
+        }
+        // Optimized like release (R8, no debuggable JIT slowdown) but signed with the local debug key, so it
+        // installs over a debug build and keeps Folio's data. Use this to judge real smoothness on the phone.
+        create("fast") {
+            initWith(getByName("release"))
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += "release"
+            // Its own app ("Folio Dev") so test builds install next to the signed release instead of over it.
+            applicationIdSuffix = ".dev"
+            manifestPlaceholders["appLabel"] = "Folio Dev"
+        }
+        // Same app id as "fast", so one build installs over the other and Folio Dev keeps its layout and settings.
+        // Only the name differs, because that is the one place you can tell them apart on the phone, and it matters:
+        // a debug build is far slower, so frame numbers taken on one mean nothing next to numbers from the other.
+        getByName("debug") {
+            applicationIdSuffix = ".dev"
+            manifestPlaceholders["appLabel"] = "Folio Debug"
+        }
+    }
+    // "fast" uses release's no-op tracing/diagnostic sources.
+    sourceSets {
+        getByName("fast") { kotlin.directories.add("src/release/java"); res.directories.add("src/dev/res") }
+        // Folio Dev (debug and fast builds) gets an amber icon so it's easy to tell apart from the release.
+        getByName("debug") { res.directories.add("src/dev/res") }
+        getByName("main") {
+            assets.srcDir(layout.buildDirectory.dir("generated/changelog").get().asFile)
+            assets.srcDir(layout.buildDirectory.dir("generated/market").get().asFile)
+        }
+    }
+    buildFeatures { compose = true }
+    // Robolectric needs the app's resources and manifest in unit tests.
+    testOptions.unitTests.isIncludeAndroidResources = true
+    // The Mockup Lab parity tests find the lab's own clone through this (MockupLab in the unit tests says more).
+    providers.gradleProperty("folio.labDir").orNull?.let { lab ->
+        testOptions.unitTests.all { it.systemProperty("folio.labDir", lab) }
+    }
+    // Android 13's per-app language picker: AGP builds locales_config.xml from the values-* folders a translation adds.
+    androidResources { generateLocaleConfig = true }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+dependencies {
+    implementation(project(":market"))
+    baselineProfile(project(":baselineprofile"))
+    implementation("androidx.window:window:1.5.1")
+    // Installs the baseline profiles that Compose and AndroidX ship, so hot paths are compiled ahead of time.
+    implementation("androidx.profileinstaller:profileinstaller:1.4.1")
+    // Named trace sections (PRF-13). Other AndroidX libraries already bring it; declared because Folio calls it.
+    implementation("androidx.tracing:tracing:1.2.0")
+    implementation(platform("androidx.compose:compose-bom:2025.06.01"))
+    implementation("androidx.activity:activity-compose:1.10.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.9.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.1")
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.foundation:foundation")
+    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material:material-icons-extended")
+    // Images from sources the user added (Apache-2.0). Only coil3 core and the Compose binding: the bytes come from
+    // Folio's own HTTPS client, so there is no second network stack in the APK and no second set of rules.
+    implementation("io.coil-kt.coil3:coil-compose:3.2.0")
+    // Liquid glass effects (blur + lens refraction over a recorded backdrop) for the floating rail/dock work.
+    // Pinned: 2.0.x declares minCompileSdk 37, which this project already targets; 2.0.1 is the latest published.
+    implementation("io.github.kyant0:backdrop:2.0.1")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.json:json:20260814") // real org.json for StatusStyle round-trip tests
+    // Renders Compose on the JVM, so a screen can be checked without a phone attached.
+    testImplementation("org.robolectric:robolectric:4.17")
+    // runTest, so the Market's network calls can be tested without a real dispatcher.
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0")
+    testImplementation("androidx.compose.ui:ui-test-junit4")
+    testImplementation("androidx.compose.ui:ui-test-manifest")
+    testImplementation(platform("androidx.compose:compose-bom:2025.06.01"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2025.06.01"))
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    androidTestImplementation("androidx.test:runner:1.7.0")
+    androidTestImplementation("androidx.test.ext:junit:1.3.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.4.0")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+}
+
+kotlin {
+    compilerOptions { jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17) }
+}
+
+composeCompiler {
+    // What Folio promises never changes after it's made; see the file for each type and why.
+    stabilityConfigurationFiles.add(layout.projectDirectory.file("compose-stability.conf"))
+}
+
+// Compose compiler reports, off unless asked for: `./gradlew :app:compileDebugKotlin -PcomposeReports --rerun-tasks`
+// writes app/build/compose-reports/, which says which composables can skip and which classes Compose treats as
+// unstable (so anything reading them redraws whenever its parent does). Nothing changes in a normal build.
+if (providers.gradleProperty("composeReports").isPresent) {
+    composeCompiler {
+        reportsDestination = layout.buildDirectory.dir("compose-reports")
+        metricsDestination = layout.buildDirectory.dir("compose-reports")
+    }
+}
