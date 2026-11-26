@@ -287,3 +287,13 @@ if (providers.gradleProperty("composeReports").isPresent) {
         metricsDestination = layout.buildDirectory.dir("compose-reports")
     }
 }
+
+// TEMP DIAGNOSTIC (liquid-glass branch): when lintDebug finishes or fails, copy its text report into
+// test-results/ so the existing CI failure artifact (unit-test-reports) carries it out of the runner.
+val copyLintReportForCi = tasks.register<Copy>("copyLintReportForCi") {
+    from(layout.buildDirectory.file("reports/lint-results-debug.txt"))
+    into(layout.buildDirectory.dir("test-results"))
+}
+tasks.matching { it.name == "lintDebug" }.configureEach {
+    finalizedBy(copyLintReportForCi)
+}
