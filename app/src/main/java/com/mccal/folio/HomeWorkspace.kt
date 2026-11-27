@@ -114,6 +114,8 @@ internal fun ExpandedWorkspace(
     contentHeight: Dp,
     bottomSpace: Dp,
     geometry: HomeGeometry,
+    /** The Side Bar dock's width, so the App Library can keep its side margin beside the bar (libraryEdges). */
+    dockWidth: Float,
     state: LauncherState,
     previewSlots: List<String?>,
     previewLeadingSlots: List<String?>,
@@ -255,7 +257,10 @@ internal fun ExpandedWorkspace(
                         onActions = onActions,
                         modifier = Modifier.fillMaxSize()
                             .graphicsLayer { val b = libraryBack(); scaleX = 1f - .14f * b; scaleY = scaleX; alpha = 1f - .35f * b; translationX = size.width * .08f * b }
-                            .padding(start = FolioSpace.LARGE.dp, top = FolioSpace.LARGE.dp, bottom = bottomSpace)
+                            // The same side margin the folded library keeps beside the Side Bar (libraryEdges):
+                            // tiles stop at the bar's lane while the panel itself spans the window.
+                            .padding(libraryEdges(state.verticalStatus, dockWidth, state.leftHanded, spansWindow = true))
+                            .padding(top = FolioSpace.LARGE.dp, bottom = bottomSpace)
                             .testTag("library-page"),
                         drag = drag, page = visibleHomePages, onLaunchFrom = onLaunchFrom, onTurnOnWork = onTurnOnWork, place = libraryPlace)
                 }

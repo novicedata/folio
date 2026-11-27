@@ -1120,7 +1120,7 @@ fun LauncherScreen(
                     ExpandedWorkspace(
                         nativePager = nativePager, motion = workspaceMotion!!, firstHome = firstHome,
                         visibleHomePages = visibleHomePages, panelWidth = panelWidth,
-                        contentHeight = contentHeight, bottomSpace = bottomSpace, geometry = geometry,
+                        contentHeight = contentHeight, bottomSpace = bottomSpace, geometry = geometry, dockWidth = preset.dockWidth,
                         state = state, previewSlots = previewLayout.slots, previewLeadingSlots = previewLayout.leadingSlots,
                         previewWidgetPlacements = previewLayout.widgetPlacements, appsById = appsById,
                         widgets = widgets, drag = drag, target = target, insertionTarget = insertionTarget,
@@ -1161,7 +1161,8 @@ fun LauncherScreen(
                                 .pageEffect(pageEffect, nativePager, physicalPage)
                                 .graphicsLayer { val b = libraryBack; scaleX = 1f - .14f * b; scaleY = scaleX; alpha = 1f - .35f * b; translationX = size.width * .08f * b }
                                 .padding(top = FolioSpace.LARGE.dp, bottom = bottomSpace)
-                                .padding(libraryEdges(geometry.horizontalDock && !geometry.dockBesideRail && state.verticalStatus, preset.dockWidth, state.leftHanded,
+                                .padding(libraryEdges((geometry.horizontalDock && !geometry.dockBesideRail && state.verticalStatus) ||
+                                    (railFloats && state.verticalStatus && !geometry.horizontalDock), preset.dockWidth, state.leftHanded,
                                     spansWindow = geometry.horizontalDock && !geometry.dockBesideRail)).testTag("library-page"),
                             drag = drag, page = visibleHomePages, onLaunchFrom = onLaunchFrom, onTurnOnWork = { model.turnOnWork(it) }, place = libraryPlace)
                     } else {
@@ -1173,7 +1174,9 @@ fun LauncherScreen(
                         // The layer wraps the pane, not this Row: the Row fills the window and centres a narrower
                         // grid beside the rail, so a cube pivoting on the Row would hinge on the window edge, out in
                         // the empty margin, instead of on the seam the pane shares with its neighbour.
-                        Row(Modifier.fillMaxSize().testTag("home-surface"), horizontalArrangement = Arrangement.Center) {
+                        // Floating rail: the pane keeps to the leading edge, so the grid stays in its lane beside
+                        // the bar instead of centering into the width the pager gained. Left-handed mirrors the lane.
+                        Row(Modifier.fillMaxSize().testTag("home-surface"), horizontalArrangement = if (railFloats && state.verticalStatus) (if (state.leftHanded) Arrangement.End else Arrangement.Start) else Arrangement.Center) {
                             Box(Modifier.pageEffect(pageEffect, nativePager, physicalPage)) {
                                 HomePagePane(page, state, previewLayout.slots, previewLayout.leadingSlots, previewLayout.widgetPlacements, appsById, geometry, contentHeight,
                                     bottomSpace, widgets, drag, target, insertionTarget, showLargeWidget = false,
