@@ -106,7 +106,7 @@ internal fun ExpandedWorkspace(
     nativePager: androidx.compose.foundation.pager.PagerState,
     motion: WorkspacePageMotion,
     firstHome: Int,
-    leftPageContent: @Composable (Modifier) -> Unit,
+    leftPageContent: @Composable (Modifier, Dp) -> Unit,
     /** iPad-style Today View kept beside Home in place of the unfolded-only page. */
     besideContent: (@Composable (Modifier) -> Unit)? = null,
     visibleHomePages: Int,
@@ -210,7 +210,9 @@ internal fun ExpandedWorkspace(
     Box(Modifier.fillMaxSize().clipToBounds().testTag("expanded-workspace")) {
         if (showDiscover) {
             key("discover-pane") {
-                Box(Modifier.place(-viewportWidth).fillMaxSize()) { leftPageContent(Modifier.fillMaxSize()) }
+                Box(Modifier.place(-viewportWidth).fillMaxSize()) { leftPageContent(Modifier.fillMaxSize(),
+                    // The floating bar's lane, the same dockWidth + 28 the App Library keeps beside it.
+                    if (state.verticalStatus) (dockWidth + 28f).dp else 0.dp) }
             }
         }
 

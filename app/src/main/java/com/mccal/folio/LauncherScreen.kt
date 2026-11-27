@@ -562,18 +562,21 @@ fun LauncherScreen(
     // of 44dp, 88dp with the Preview bar, left the App Library's panel under the Preview bar sideways.
     // Declared here, above the pages, so Today View can stop its last widget above them too.
     var bottomControlsHeight by remember { mutableStateOf(0.dp) }
-    val todayContent: @Composable (Modifier) -> Unit = { pageModifier ->
+    // A Today page spans the whole pager now that the rail floats, so it takes the bar's lane as an argument
+    // (the dockWidth + 28 the App Library keeps) and stops its column at it; beside Home it keeps the full pane.
+    val todayContent: @Composable (Modifier, Dp) -> Unit = { pageModifier, railLane ->
         TodayView(state, widgets, pageModifier,
             onSearch = { launcherActivity.openSpotlight() }, onLaunch = onLaunch,
             onAddWidget = { picker.toToday = true; picker.anyApp(); sheet = "widgets" },
             onRemove = model::removeTodayWidget, onMove = model::moveTodayWidget,
-            bottomPadding = todayBottomPadding(isDefaultHome, bottomControlsHeight.value).dp)
+            bottomPadding = todayBottomPadding(isDefaultHome, bottomControlsHeight.value).dp,
+            railLane = railLane)
     }
-    val leftPageContent: @Composable (Modifier) -> Unit = { pageModifier ->
+    val leftPageContent: @Composable (Modifier, Dp) -> Unit = { pageModifier, railLane ->
         when {
             !todayMode -> DiscoverContent(pageModifier.padding(start = FolioSpace.LARGE.dp, top = FolioSpace.LARGE.dp, bottom = FolioSpace.LARGE.dp))
             expandedWorkspace && state.todayUnfolded != "PAGE" -> Box(pageModifier)
-            else -> todayContent(pageModifier)
+            else -> todayContent(pageModifier, railLane)
         }
     }
 
@@ -1134,7 +1137,7 @@ fun LauncherScreen(
                         onProblem = onProblem,
                         libraryBack = { libraryBack }, libraryPlace = libraryPlace,
                         leftPageContent = leftPageContent,
-                        besideContent = if (todayMode && state.todayUnfolded == "BESIDE") todayContent else null,
+                        besideContent = if (todayMode && state.todayUnfolded == "BESIDE") ({ m: Modifier -> todayContent(m, 0.dp) }) else null,
                     )
                 }
             } else {
@@ -1150,7 +1153,8 @@ fun LauncherScreen(
                     if (page == -1) {
                         // Every page in this pager turns, not only Home: a cube whose neighbour slides in flat is not
                         // a cube, and this is the page on Home's left.
-                        leftPageContent(Modifier.fillMaxSize().pageEffect(pageEffect, nativePager, physicalPage))
+                        leftPageContent(Modifier.fillMaxSize().pageEffect(pageEffect, nativePager, physicalPage),
+                            if (railFloats && state.verticalStatus) (preset.dockWidth + 28f).dp else 0.dp)
                     } else if (page == visibleHomePages) {
                         AppLibrary(state, libraryQuery, { libraryQuery = it }, onLaunch, model::setPinned,
                             // Unfolded portrait: the Side Bar's status capsule sits in the top corner, so the library keeps
