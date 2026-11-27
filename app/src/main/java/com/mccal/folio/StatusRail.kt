@@ -315,7 +315,7 @@ fun StatusRail(
             val tight = style.tight
             if (hasContent) Column(Modifier.fillMaxWidth()
                 .then(if (style.background) (if (backdrop != null) Modifier.drawBackdrop(backdrop, shape = { capsule },
-                        effects = { vibrancy(); blur(12.dp) },
+                        effects = { vibrancy(); blur(12.dp.toPx()) },
                         // The flat frost stays as the surface colour, at the user's own strength, so the glass
                         // reads as the same capsule until step 6 tunes the full recipe.
                         onDrawSurface = { drawRect(glassColor.copy(alpha = style.railGlass)) })
