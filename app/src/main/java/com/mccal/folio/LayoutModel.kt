@@ -463,10 +463,13 @@ fun homeGeometry(width: Float, height: Float, preset: LayoutPreset, labels: Bool
     // Portrait (horizontal dock): the four columns spread across the screen between equal margins, like iPad mini's
     // Home, rather than sitting in a narrow block when Display size / Screen zoom gives the screen more room (issue #10).
     // Upright with a Side Bar dock: the same centered spread, beside the dock.
-    // What the Side Bar's strip takes out of the grid where it is reserved; a floating rail reserves nothing, so
-    // only the plain margins stay — the same 32 dp the full-width layout already uses.
-    val railStrip = if (railReserves) p.dockWidth + 44f else 32f
-    val railStripCentered = if (railReserves) p.dockWidth + 56f else 56f
+    // What the Side Bar's strip takes out of the grid where it is reserved. Only an explicit non-reservation
+    // releases it: the bar being hidden never did (a Side Bar dock keeps its column with or without the bar),
+    // so these follow railReservesColumn itself, not railReserves. Released, only the plain margins stay —
+    // the same 32 dp the full-width layout already uses.
+    val railReleased = railReservesColumn == false
+    val railStrip = if (railReleased) 32f else p.dockWidth + 44f
+    val railStripCentered = if (railReleased) 56f else p.dockWidth + 56f
     var gridWidth = if (tallRegular && horizontalDock) minOf(width - 2f * railStripCentered, 4f * p.iconSize * 2.6f).coerceAtLeast(4f * (p.iconSize + 16f))
         else if (tallRegular) minOf(width - railStrip, 4f * p.iconSize * 2.6f).coerceAtLeast(192f)
         else if (fullWidth) (homeWidth - 32f).coerceAtLeast(192f)
