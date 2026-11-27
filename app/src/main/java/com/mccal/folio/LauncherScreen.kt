@@ -926,8 +926,9 @@ fun LauncherScreen(
                 else -> 0.dp
             }
             val windowHeightDp = maxHeight.value
-            // Liquid-glass branch: the status Side Bar floats over the page instead of reserving its strip, so
-            // Home is laid out for the whole width. (A settings kill switch for this arrives with the fallback step.)
+            // Liquid-glass branch: the status Side Bar floats over the page — the pager runs the whole width
+            // under it, while the app grid keeps its own lane clear of the bar (see homeGeometry's gridWidth).
+            // (A settings kill switch for this arrives with the fallback step.)
             val railFloats = true
             val geometry = homeGeometry(maxWidth.value, maxHeight.value, preset, state.labels, dockSlots = shownDock.size, statusRail = state.verticalStatus,
                 railReservesColumn = if (railFloats) false else null,

@@ -2417,7 +2417,8 @@ internal val LocalDeviceStatus = androidx.compose.runtime.compositionLocalOf { D
         railControls = if (state.searchPill) 0 else 1, // the Home pages' rail, as Home lays it out
         widgetsFillRows = FeatureGate.WIDGETS_FILL_ROWS.isOpen(androidx.compose.ui.platform.LocalContext.current),
         shrinkIconsForRows = state.homeRows > BASE_APP_ROWS,
-        duoSpacing = FeatureGate.DUO_SPACING.isOpen(androidx.compose.ui.platform.LocalContext.current))
+        duoSpacing = FeatureGate.DUO_SPACING.isOpen(androidx.compose.ui.platform.LocalContext.current),
+        railReservesColumn = false) // the preview models Home as it is: the Side Bar floats there
     val placements = state.widgetPlacements.filter { it.page == page }
     val shownRows = shownHomeRows(state.homeAppRows, state.homeSlots.drop(homeCellIndex(page, 0).coerceAtLeast(0)).take(HOME_CELLS), placements)
     val cells = HomeCellLayout.forPage(geometry, placements.map { it.row to it.spanY })
