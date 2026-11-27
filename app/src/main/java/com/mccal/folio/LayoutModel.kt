@@ -463,10 +463,14 @@ fun homeGeometry(width: Float, height: Float, preset: LayoutPreset, labels: Bool
     // Portrait (horizontal dock): the four columns spread across the screen between equal margins, like iPad mini's
     // Home, rather than sitting in a narrow block when Display size / Screen zoom gives the screen more room (issue #10).
     // Upright with a Side Bar dock: the same centered spread, beside the dock.
-    var gridWidth = if (tallRegular && horizontalDock) minOf(width - 2f * (p.dockWidth + 56f), 4f * p.iconSize * 2.6f).coerceAtLeast(4f * (p.iconSize + 16f))
-        else if (tallRegular) minOf(width - p.dockWidth - 44f, 4f * p.iconSize * 2.6f).coerceAtLeast(192f)
+    // What the Side Bar's strip takes out of the grid where it is reserved; a floating rail reserves nothing, so
+    // only the plain margins stay — the same 32 dp the full-width layout already uses.
+    val railStrip = if (railReserves) p.dockWidth + 44f else 32f
+    val railStripCentered = if (railReserves) p.dockWidth + 56f else 56f
+    var gridWidth = if (tallRegular && horizontalDock) minOf(width - 2f * railStripCentered, 4f * p.iconSize * 2.6f).coerceAtLeast(4f * (p.iconSize + 16f))
+        else if (tallRegular) minOf(width - railStrip, 4f * p.iconSize * 2.6f).coerceAtLeast(192f)
         else if (fullWidth) (homeWidth - 32f).coerceAtLeast(192f)
-        else (homeWidth - p.dockWidth - 44f).coerceAtLeast(192f)
+        else (homeWidth - railStrip).coerceAtLeast(192f)
     // Keep the same icon rhythm when labels are hidden; allow larger system text to fit.
     val labelSpace = if (labels) maxOf(20f, labelHeight) else 20f
     fun rowFor(iconSize: Float, gap: Float) = maxOf(48f, iconSize + labelSpace) + gap

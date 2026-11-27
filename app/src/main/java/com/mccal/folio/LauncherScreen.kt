@@ -926,7 +926,11 @@ fun LauncherScreen(
                 else -> 0.dp
             }
             val windowHeightDp = maxHeight.value
+            // Liquid-glass branch: the status Side Bar floats over the page instead of reserving its strip, so
+            // Home is laid out for the whole width. (A settings kill switch for this arrives with the fallback step.)
+            val railFloats = true
             val geometry = homeGeometry(maxWidth.value, maxHeight.value, preset, state.labels, dockSlots = shownDock.size, statusRail = state.verticalStatus,
+                railReservesColumn = if (railFloats) false else null,
                 statusHeight = if (state.verticalStatus) statusHeight + 22f else 0f,
                 labelHeight = with(density) { (LocalLabelSize.current.lineSp * glanceFontFactor(fontScale)).sp.toDp().value } + 6f, inLibrary = inLibrary,
                 homeBottomSpace = if (isDefaultHome) 44f else 88f,
@@ -996,7 +1000,7 @@ fun LauncherScreen(
             val contentWidth = maxWidth
             val panelWidth = maxWidth - geometry.homeWidth.dp
             // A phone-sized screen keeps the status Side Bar beside Home even with the dock at the bottom.
-            val pagerWidth = if (geometry.horizontalDock && !geometry.dockBesideRail) maxWidth else maxWidth - preset.dockWidth.dp - 28.dp
+            val pagerWidth = if (railFloats || (geometry.horizontalDock && !geometry.dockBesideRail)) maxWidth else maxWidth - preset.dockWidth.dp - 28.dp
             // DUO_PANE_GAP: flat, the left page sits closer to the right one so the two halves read as one Home; partly folded
             // (a vertical book hinge that is active), it springs back to the middle of the left half to clear the crease.
             val duoPaneGap = state.unfoldedSeamlessGap
