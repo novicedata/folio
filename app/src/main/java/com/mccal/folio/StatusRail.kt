@@ -15,6 +15,10 @@ import androidx.compose.material.icons.rounded.NotificationsOff
 import androidx.compose.material.icons.rounded.Bolt
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.ui.graphics.graphicsLayer
+import com.kyant.backdrop.Backdrop
+import com.kyant.backdrop.drawBackdrop
+import com.kyant.backdrop.effects.blur
+import com.kyant.backdrop.effects.vibrancy
 import androidx.compose.animation.togetherWith
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.animation.core.Animatable
@@ -188,6 +192,8 @@ fun StatusRail(
     /** A tap on the rail, as on the iPhone Duo's status control: Home passes the one that opens Control Center. Null leaves the rail plain. */
     onOpen: (() -> Unit)? = null,
     openLabel: String? = null,
+    /** The live backdrop of the wallpaper + pager under the rail, for the capsule's glass. Null keeps the flat frost. */
+    backdrop: Backdrop? = null,
 ) {
     // Text sits on the frosted capsule, not straight on the wallpaper, so pick its color from how light the capsule
     // looks: the wallpaper's main color seen through the glass. An explicit Light or Dark "Text on Home" still wins.
@@ -308,7 +314,12 @@ fun StatusRail(
             // Same frosted capsule as the dock so status and dock read as one side rail.
             val tight = style.tight
             if (hasContent) Column(Modifier.fillMaxWidth()
-                .then(if (style.background) Modifier.background(Glass.copy(alpha = style.railGlass), capsule)
+                .then(if (style.background) (if (backdrop != null) Modifier.drawBackdrop(backdrop, shape = { capsule },
+                        effects = { vibrancy(); blur(12.dp) },
+                        // The flat frost stays as the surface colour, at the user's own strength, so the glass
+                        // reads as the same capsule until step 6 tunes the full recipe.
+                        onDrawSurface = { drawRect(glassColor.copy(alpha = style.railGlass)) })
+                    else Modifier.background(Glass.copy(alpha = style.railGlass), capsule))
                     .border(1.dp, LocalGlassLook.current.outlineColor, capsule) else Modifier)
                 .then(if (pressShade > 0f) Modifier.background(ink.copy(alpha = pressShade), capsule) else Modifier)
                 // Standard (4) and Compact (0) keep their old padding; the slider moves between and past them.

@@ -63,6 +63,9 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.graphics.layer.drawLayer
+import com.kyant.backdrop.backdrops.layerBackdrop
+import com.kyant.backdrop.backdrops.rememberCombinedBackdrop
+import com.kyant.backdrop.backdrops.rememberLayerBackdrop
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
@@ -872,8 +875,16 @@ fun LauncherScreen(
         // smear. Only Android's wallpaper drifts now, and the system is what moves it (DYN-11: Reduce Motion leaves
         // it still); a picture of Folio's has no spare width to slide, so it stays where it is.
         val backgroundMoves = state.wallpaperMotion && !LocalReduceMotion.current
+        // Floating-rail patch, step 5: the live backdrop the Side Bar's glass samples. The wallpaper and the
+        // pager are recorded into separate layers and combined; the rail and the dock are never recorded, so
+        // the glass cannot feed back on itself (MainActivity's homeLayer records the whole screen, rail
+        // included, and would). In system-wallpaper mode there is no Folio wallpaper to record, so that layer
+        // simply stays empty and the pager's layer carries the backdrop on its own.
+        val wallpaperBackdrop = rememberLayerBackdrop()
+        val pagerBackdrop = rememberLayerBackdrop()
+        val homeBackdrop = rememberCombinedBackdrop(wallpaperBackdrop, pagerBackdrop)
         // The scrim (iOS's legibility gradient, A11Y-9 and DES-16) rides inside the layer the background is already cached in, so it costs nothing per frame.
-        if (!state.systemWallpaper || !launcherActivity.showsWallpaper) DuneWallpaper(Modifier.foldMotionWallpaper(), scrim = scrim)
+        if (!state.systemWallpaper || !launcherActivity.showsWallpaper) DuneWallpaper(Modifier.foldMotionWallpaper().layerBackdrop(wallpaperBackdrop), scrim = scrim)
         else {
             if (backgroundMoves) SystemWallpaperParallax(nativePager)
             // Android's wallpaper is the system's to draw, so there is no cached layer of Folio's to bake the scrim
@@ -1114,6 +1125,8 @@ fun LauncherScreen(
                 // while drawing, so a stretch never relayouts Home. It comes after the bounds Discover's frame is measured from, so
                 // a stretch does not move that frame.
                 .then(if (FolioMotion.v2) Modifier.graphicsLayer { translationX = -pageGestures.stretch } else Modifier)
+                // Recorded for the rail's glass (step 5): the pager and everything in it, nothing above it.
+                .layerBackdrop(pagerBackdrop)
             OwnMethod { if (geometry.expanded) {
                 Box(pagerModifier) {
                     // PagerState remains the source of truth for native Discover progress,
@@ -1205,7 +1218,7 @@ fun LauncherScreen(
                         // The whole rail, location slot included: the dock goes below all of it.
                         statusHeight = with(density) { it.height.toDp().value }
                     },
-                compact = contentHeight < COMPACT_DOCK_MAX_HEIGHT_DP.dp, iconSize = dockIconSize(geometry.iconSize).dp, style = state.statusStyle,
+                compact = contentHeight < COMPACT_DOCK_MAX_HEIGHT_DP.dp, iconSize = dockIconSize(geometry.iconSize).dp, style = state.statusStyle, backdrop = homeBackdrop,
                 focus = state.focusModes.firstOrNull { it.id == state.activeFocus },
                 // A tap opens Control Center (not while Home is being edited or an icon is dragged).
                 onOpen = if (homeEdit.active || drag.active) null else ({ launcherActivity.openSystemShade(ShadePanel.QUICK_SETTINGS) }),
