@@ -884,7 +884,7 @@ fun LauncherScreen(
         val pagerBackdrop = rememberLayerBackdrop()
         val homeBackdrop = rememberCombinedBackdrop(wallpaperBackdrop, pagerBackdrop)
         // The scrim (iOS's legibility gradient, A11Y-9 and DES-16) rides inside the layer the background is already cached in, so it costs nothing per frame.
-        if (!state.systemWallpaper || !launcherActivity.showsWallpaper) DuneWallpaper(Modifier.foldMotionWallpaper().layerBackdrop(wallpaperBackdrop), scrim = scrim)
+        if (!state.systemWallpaper || !launcherActivity.showsWallpaper) Box(Modifier.layerBackdrop(wallpaperBackdrop)) { DuneWallpaper(Modifier.foldMotionWallpaper(), scrim = scrim) }
         else {
             if (backgroundMoves) SystemWallpaperParallax(nativePager)
             // Android's wallpaper is the system's to draw, so there is no cached layer of Folio's to bake the scrim
