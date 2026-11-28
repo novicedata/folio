@@ -60,6 +60,12 @@ jobs:
           path: ~/.m2/repository/org/robolectric
           key: robolectric-${{ hashFiles('app/build.gradle.kts') }}
           restore-keys: robolectric-
+      - name: Restore the fixed debug keystore
+        env:
+          DEBUG_KEYSTORE_B64: ${{ secrets.FOLIO_DEBUG_KEYSTORE }}
+        run: |
+          mkdir -p ~/.android
+          echo "$DEBUG_KEYSTORE_B64" | base64 -d > ~/.android/debug.keystore
       - name: Unit tests, lint and debug build
         run: ./gradlew :app:testDebugUnitTest :market:testDebugUnitTest :app:lintDebug :market:lintDebug :app:assembleDebug
       # A red unit test run is easier to read from the HTML report than from the log, so keep both modules' reports.
