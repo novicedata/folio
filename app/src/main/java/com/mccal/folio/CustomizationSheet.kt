@@ -2413,7 +2413,7 @@ internal val LocalDeviceStatus = androidx.compose.runtime.compositionLocalOf { D
     // status rail, dock, search pill), then scaled down, so the preview matches Home instead of approximating it.
     val refW = 420f; val refH = 720f
     val geometry = homeGeometry(refW, refH, preset, state.labels, statusHeight = if (state.verticalStatus) 180f else 0f, labelHeight = 20f,
-        appRows = state.homeAppRows, dockSlots = state.dock.size,
+        appRows = state.homeAppRows, dockSlots = state.dock.size, fillSpace = state.homeRows == 0,
         railControls = if (state.searchPill) 0 else 1, // the Home pages' rail, as Home lays it out
         widgetsFillRows = FeatureGate.WIDGETS_FILL_ROWS.isOpen(androidx.compose.ui.platform.LocalContext.current),
         shrinkIconsForRows = state.homeRows > BASE_APP_ROWS,

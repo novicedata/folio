@@ -579,12 +579,18 @@ fun homeGeometry(width: Float, height: Float, preset: LayoutPreset, labels: Bool
             }
         }
     }
+    // Duo rows (step 12b): Automatic is held to the Duo's four app rows (see duoRowCap in LauncherModel), and on a
+    // window that could fit more than the four it shows, the freed height is the Duo's margins above and below the
+    // page, not stretched rows — so neither Automatic's fill nor the Duo spacing gain below spends it. fillSpace is
+    // Automatic's flag: a hand-picked four keeps today's spacing, and the upright inner screen (tallRegular) keeps
+    // its tape-measured portrait pitch.
+    val duoCapped = fillSpace && !splitColumns && !tallRegular && layoutRows == BASE_APP_ROWS && fitRows > BASE_APP_ROWS
     val rowBeforeFill = rowFor(icon, gap)
     val duoPitchMax = if (tallRegular) DUO_PORTRAIT_ROW_PITCH_MAX_DP else DUO_ROW_PITCH_MAX_DP
     // Automatic rows fill the height: leftover space (less than a row) is shared out as even space between rows
     // instead of a wide empty margin, capped so pages never look stretched; the rest stays as the centering margin.
     // (Not in windows so short the spacing was already squeezed to fit.)
-    if (fillSpace && !splitColumns && !p.pageTop && gap >= tightGap) {
+    if (fillSpace && !duoCapped && !splitColumns && !p.pageTop && gap >= tightGap) {
         // Filled widgets grow with the gap too (two rows each), so the share is over the rows the page really has.
         val taken = if (widgetsFillRows) (layoutRows + 2) * rowFor(icon, gap) else widget + 18f + layoutRows * rowFor(icon, gap)
         val leftover = fitHeight - realExtra - taken
@@ -595,7 +601,7 @@ fun homeGeometry(width: Float, height: Float, preset: LayoutPreset, labels: Bool
     // DUO_SPACING: the Duo's rows are about 17% further apart than Folio's on the cover (an iPhone's, about 16 mm). Any window
     // and any row count, whose spacing was not squeezed to fit, and only out of height that is really free, never past
     // [DUO_ROW_GAIN_CAP]: a bigger window gets more rows (Automatic) rather than stretched ones.
-    if (duoSpacing && !splitColumns && !p.pageTop && gap >= p.rowGap) {
+    if (duoSpacing && !duoCapped && !splitColumns && !p.pageTop && gap >= p.rowGap) {
         val taken = if (widgetsFillRows) (layoutRows + 2) * rowFor(icon, gap) else widget + 18f + layoutRows * rowFor(icon, gap)
         val leftover = fitHeight - realExtra - taken
         val gainCap = if (tallRegular) DUO_PORTRAIT_ROW_GAIN_CAP else DUO_ROW_GAIN_CAP
