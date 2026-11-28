@@ -1024,12 +1024,14 @@ fun LauncherScreen(
             val rawLeftOrigin = expandedLeftPaneOrigin(maxWidth.value, geometry.homeWidth, geometry.gridWidth, duoPaneGap, bookFolded)
             // Duo layout rule: on the unfolded screen the two pages center in the window beside the Side Bar's lane
             // (the same dockWidth + 28 the App Library keeps), not in the whole window — the bar's strip counts as
-            // not there. Both pane anchors shift by the same amount, so the gap between the pages and the swipe
-            // stride are untouched. Partly folded the fold rule wins and nothing shifts: the halves stay on their
-            // own sides of the crease.
-            val railLane = if (geometry.expanded && !bookFolded && state.verticalStatus && !state.leftHanded) preset.dockWidth + 28f else 0f
-            val spreadShift = if (railLane > 0f) ((railLane + maxWidth.value) / 2f -
-                (rawLeftOrigin + 16f + rawPanelWidth.value + 16f + geometry.gridWidth) / 2f).coerceIn(0f, railLane) else 0f
+            // not there. The bar sits at the end edge by default (railTop) and at the start edge left-handed, so the
+            // lane comes off whichever side the bar is on. Both pane anchors shift by the same amount, so the gap
+            // between the pages and the swipe stride are untouched. Partly folded the fold rule wins and nothing
+            // shifts: the halves stay on their own sides of the crease.
+            val railLane = if (geometry.expanded && !bookFolded && state.verticalStatus) preset.dockWidth + 28f else 0f
+            val spreadCenter = (rawLeftOrigin + 16f + rawPanelWidth.value + 16f + geometry.gridWidth) / 2f
+            val usableCenter = if (state.leftHanded) (railLane + maxWidth.value) / 2f else (maxWidth.value - railLane) / 2f
+            val spreadShift = if (railLane > 0f) (usableCenter - spreadCenter).coerceIn(-railLane, railLane) else 0f
             val panelWidth = rawPanelWidth + spreadShift.dp
             val targetLeftOrigin = (rawLeftOrigin + spreadShift).dp
             val leftColumnOrigin by animateDpAsState(targetLeftOrigin,
