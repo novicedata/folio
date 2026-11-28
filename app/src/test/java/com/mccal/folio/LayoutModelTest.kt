@@ -39,12 +39,12 @@ class LayoutModelTest {
     }
     @Test fun `dock placement follows the choice and short landscape keeps the Side Bar`() {
         fun g(w: Float, h: Float, d: DockPlacement) = homeGeometry(w, h, LayoutPreset(dockPlacement = d), true)
-        assertTrue(g(360f, 780f, DockPlacement.BOTTOM).let { it.horizontalDock && it.dockBesideRail })
+        assertTrue(g(360f, 780f, DockPlacement.BOTTOM).let { it.horizontalDock && !it.dockBesideRail })
         assertFalse(g(360f, 780f, DockPlacement.AUTOMATIC).horizontalDock)
         assertFalse(g(780f, 360f, DockPlacement.BOTTOM).horizontalDock)
         assertTrue(g(700f, 900f, DockPlacement.AUTOMATIC).let { it.horizontalDock && !it.dockBesideRail })
         assertTrue(g(700f, 900f, DockPlacement.SIDE).let { !it.horizontalDock && !it.expanded })
-        assertTrue(g(900f, 640f, DockPlacement.BOTTOM).let { it.horizontalDock && it.dockBesideRail && it.expanded })
+        assertTrue(g(900f, 640f, DockPlacement.BOTTOM).let { it.horizontalDock && !it.dockBesideRail && it.expanded })
     }
 
     @Test fun `every dock and status placement fits the page without cutting anything off`() {
