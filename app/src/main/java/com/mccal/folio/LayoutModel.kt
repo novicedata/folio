@@ -583,7 +583,9 @@ fun homeGeometry(width: Float, height: Float, preset: LayoutPreset, labels: Bool
     // window that could fit more than the four it shows, the freed height is spent the Duo's way: first the row
     // pitch gain below (never Automatic's fill, which would stretch the rows to the window), then equal margins
     // above and below the page. fillSpace is Automatic's flag: a hand-picked four keeps today's spacing, and the
-    // upright inner screen (tallRegular) keeps its tape-measured portrait pitch.
+    // upright inner screen (tallRegular) keeps its tape-measured portrait pitch. A capped page follows the Duo
+    // balance over a pinned page top: the cover's own default preset pins its page to the top, and leaving the
+    // pin in charge would leave every Duo rule below unapplied on exactly the screen it was measured on.
     val duoCapped = fillSpace && !splitColumns && !tallRegular && layoutRows == BASE_APP_ROWS && fitRows > BASE_APP_ROWS
     val rowBeforeFill = rowFor(icon, gap)
     val duoPitchMax = if (tallRegular) DUO_PORTRAIT_ROW_PITCH_MAX_DP else DUO_ROW_PITCH_MAX_DP
@@ -601,7 +603,7 @@ fun homeGeometry(width: Float, height: Float, preset: LayoutPreset, labels: Bool
     // DUO_SPACING: the Duo's rows are about 17% further apart than Folio's on the cover (an iPhone's, about 16 mm). Any window
     // and any row count, whose spacing was not squeezed to fit, and only out of height that is really free, never past
     // [DUO_ROW_GAIN_CAP]: a bigger window gets more rows (Automatic) rather than stretched ones.
-    if (duoSpacing && !splitColumns && !p.pageTop && gap >= p.rowGap) {
+    if (duoSpacing && !splitColumns && (!p.pageTop || duoCapped) && gap >= p.rowGap) {
         val taken = if (widgetsFillRows) (layoutRows + 2) * rowFor(icon, gap) else widget + 18f + layoutRows * rowFor(icon, gap)
         val leftover = fitHeight - realExtra - taken
         val gainCap = if (tallRegular) DUO_PORTRAIT_ROW_GAIN_CAP else DUO_ROW_GAIN_CAP
@@ -624,7 +626,7 @@ fun homeGeometry(width: Float, height: Float, preset: LayoutPreset, labels: Bool
     // balance and pin the page where it already sat.
     val duoContentTop = if (duoCapped) minOf((height - (pageHeight - gap)) / 2f, height - homeBottomSpace - (pageHeight - gap))
         else (height - (pageHeight - gap) - homeBottomSpace - realExtra) / 2f
-    val contentTop = if (p.pageTop) 16f else if (duoSpacing && !splitColumns) duoContentTop.coerceAtLeast(16f)
+    val contentTop = if (p.pageTop && !(duoCapped && duoSpacing)) 16f else if (duoSpacing && !splitColumns) duoContentTop.coerceAtLeast(16f)
         else ((height - pageHeight - homeBottomSpace) / 2f).coerceIn(16f, maxOf(72f, height * .18f))
     // Search reclaims the redundant bottom controls' space for all four dock apps.
     // Extremely short windows still scroll rather than reduce touch targets below 48dp.
