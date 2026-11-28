@@ -944,6 +944,11 @@ fun LauncherScreen(
                 else -> 0.dp
             }
             val windowHeightDp = maxHeight.value
+            // The window's own bars above and below this box (the box is padded by them, so they sit outside its
+            // height): a Duo-balanced page centers on the screen the person sees, bars included.
+            val safeDrawing = WindowInsets.safeDrawing.exclude(WindowInsets.ime)
+            val topInset = with(density) { safeDrawing.getTop(density).toDp().value }
+            val bottomInset = with(density) { safeDrawing.getBottom(density).toDp().value }
             // Liquid glass: the status Side Bar floats over the page — the pager runs the whole width
             // under it, while the app grid keeps its own lane clear of the bar (see homeGeometry's gridWidth).
             val geometry = homeGeometry(maxWidth.value, maxHeight.value, preset, state.labels, dockSlots = shownDock.size,
@@ -958,7 +963,7 @@ fun LauncherScreen(
                 homeRailControls = if (state.searchPill) 0 else 1, classScale = classScale, appRows = homeAppRows,
                 widgetsFillRows = fillRows,
                 foldAtCenter = hinge?.vertical == true, fillSpace = state.homeRows == 0, shrinkIconsForRows = state.homeRows > BASE_APP_ROWS,
-                duoSpacing = duoSpacing)
+                duoSpacing = duoSpacing, topInset = topInset, bottomInset = bottomInset)
             // Half folded like a laptop: the status (information) stays above the hinge and the dock (controls) goes
             // below it, like Folio's other fold-aware panels; the dock scrolls if the lower half is short.
             val tableHinge = hinge?.takeIf { it.active && !it.vertical }

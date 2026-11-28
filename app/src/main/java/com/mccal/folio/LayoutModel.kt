@@ -452,7 +452,15 @@ fun homeGeometry(width: Float, height: Float, preset: LayoutPreset, labels: Bool
      * is measured for. When the usual four app rows would end under the controls at the base, the window is laid out again for
      * this space, so a short window never clips its last row. Windows that already clear the controls are laid out as before.
      */
-    controlsSpace: Float = 0f): HomeGeometry {
+    controlsSpace: Float = 0f,
+    /**
+     * The window's own bars above and below the box this geometry fills (the box is padded by them, so they are
+     * outside [height]): a Duo-balanced page is centered on the screen the person sees, bars included. Zero when
+     * the caller has no screen to speak of (previews, tests).
+     */
+    topInset: Float = 0f,
+    /** See [topInset]: the bar below the box. */
+    bottomInset: Float = 0f): HomeGeometry {
     val bottomSpaceIn = homeBottomSpace
     val baseBottomSpace = bottomSpaceIn
     val p = duoSizedPreset(preset.sanitized(), true, width, height, classScale)
@@ -600,18 +608,23 @@ fun homeGeometry(width: Float, height: Float, preset: LayoutPreset, labels: Bool
         val room = if (duoSpacing) (maxOf(rowBeforeFill, duoPitchMax) - rowFor(icon, gap)).coerceAtLeast(0f) else Float.MAX_VALUE
         if (leftover > 0f) gap += minOf(leftover / (layoutRows + if (widgetsFillRows) 3 else 1), 12f, room)
     }
+    // A capped page's filled widget keeps the height the un-gained spacing gives it, measured here before the gain
+    // below: the widget is as wide as two columns, and at the fitted spacing it is as tall as it is wide — the
+    // square it is on the Duo. The gain is for the app rows; a widget that grew with it came out a rectangle.
+    val cappedWidget = if (widgetsFillRows) filledWidget(icon, gap) else widget
     // DUO_SPACING: the Duo's rows are about 17% further apart than Folio's on the cover (an iPhone's, about 16 mm). Any window
     // and any row count, whose spacing was not squeezed to fit, and only out of height that is really free, never past
     // [DUO_ROW_GAIN_CAP]: a bigger window gets more rows (Automatic) rather than stretched ones.
     if (duoSpacing && !splitColumns && (!p.pageTop || duoCapped) && gap >= p.rowGap) {
-        val taken = if (widgetsFillRows) (layoutRows + 2) * rowFor(icon, gap) else widget + 18f + layoutRows * rowFor(icon, gap)
+        val taken = if (duoCapped) cappedWidget + 18f + layoutRows * rowFor(icon, gap)
+            else if (widgetsFillRows) (layoutRows + 2) * rowFor(icon, gap) else widget + 18f + layoutRows * rowFor(icon, gap)
         val leftover = fitHeight - realExtra - taken
         val gainCap = if (tallRegular) DUO_PORTRAIT_ROW_GAIN_CAP else DUO_ROW_GAIN_CAP
         val allowed = minOf(rowBeforeFill * (1f + gainCap), maxOf(rowBeforeFill, duoPitchMax)) - rowFor(icon, gap)
-        val units = layoutRows + if (widgetsFillRows) 2 else 0
+        val units = layoutRows + if (widgetsFillRows && !duoCapped) 2 else 0
         if (leftover > 0f && allowed > 0f) gap += minOf(leftover / units, allowed)
     }
-    if (widgetsFillRows) widget = filledWidget(icon, gap)
+    if (widgetsFillRows) widget = if (duoCapped) cappedWidget else filledWidget(icon, gap)
     val row = rowFor(icon, gap)
     // Center the page vertically. Two columns: the left half (widget row plus two app rows) is the taller one; extra
     // rows continue in the right half and scroll, so they don't move the page either.
@@ -620,11 +633,13 @@ fun homeGeometry(width: Float, height: Float, preset: LayoutPreset, labels: Bool
     // DUO_SPACING: what is left after the rows are spaced is shared evenly above and below, so neither band looks large.
     // Duo rows (step 12b): a capped page centers in the whole window, so the band above it and the band below it
     // come out equal — the Duo's own balance, with the page controls floating in the lower band like its search
-    // pill. The line it must not cross is the bottom space it was fitted against, not the controls' full measured
-    // height: the last row's own space under its label may sit over the controls' padding, as everywhere else in
-    // this geometry, and on a tight window (the cover) the controls' whole stack is tall enough to eat the entire
-    // balance and pin the page where it already sat.
-    val duoContentTop = if (duoCapped) minOf((height - (pageHeight - gap)) / 2f, height - homeBottomSpace - (pageHeight - gap))
+    // pill. The centering is struck on the screen the person sees: the window's own bars sit outside this box
+    // (above it on the cover, below it inside), so half their difference shifts the page, or the bands the eye
+    // measures come out unequal by exactly that difference. The line it must not cross is the bottom space it was
+    // fitted against, not the controls' full measured height: the last row's own space under its label may sit
+    // over the controls' padding, as everywhere else in this geometry, and on a tight window (the cover) the
+    // controls' whole stack is tall enough to eat the entire balance and pin the page where it already sat.
+    val duoContentTop = if (duoCapped) minOf((height - (pageHeight - gap) + bottomInset - topInset) / 2f, height - homeBottomSpace - (pageHeight - gap))
         else (height - (pageHeight - gap) - homeBottomSpace - realExtra) / 2f
     val contentTop = if (p.pageTop && !(duoCapped && duoSpacing)) 16f else if (duoSpacing && !splitColumns) duoContentTop.coerceAtLeast(16f)
         else ((height - pageHeight - homeBottomSpace) / 2f).coerceIn(16f, maxOf(72f, height * .18f))
@@ -710,7 +725,8 @@ fun homeGeometry(width: Float, height: Float, preset: LayoutPreset, labels: Bool
     val dockExtra = homeBottomSpace - baseBottomSpace
     if (controlsSpace > baseBottomSpace && shownEnd > height - controlsSpace - dockExtra + 0.5f) {
         return homeGeometry(width, height, preset, labels, statusHeight, labelHeight, inLibrary, controlsSpace, railControls, homeRailControls,
-            classScale, appRows, foldAtCenter, fillSpace, dockSlots, widgetsFillRows, shrinkIconsForRows, duoSpacing, controlsSpace = 0f)
+            classScale, appRows, foldAtCenter, fillSpace, dockSlots, widgetsFillRows, shrinkIconsForRows, duoSpacing, controlsSpace = 0f,
+            topInset = topInset, bottomInset = bottomInset)
     }
     return laidOut
 }
