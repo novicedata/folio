@@ -945,20 +945,10 @@ fun LauncherScreen(
             }
             val windowHeightDp = maxHeight.value
             // The window's own bars above and below this box (the box is padded by them, so they sit outside its
-            // height): a Duo-balanced page centers on the screen the person sees, bars included. The offsets are
-            // the box's own, measured in the window — the raw system insets can promise room the layout never
-            // took, or hide room it did (the unfolded screen's hidden-camera padding is one), and either lie
-            // moves the page off the middle the eye measures.
+            // height): a Duo-balanced page centers on the screen the person sees, bars included.
             val safeDrawing = WindowInsets.safeDrawing.exclude(WindowInsets.ime)
-            val boxTopPx = homeBoxTop - drag.landing.rootInWindow.y
-            val windowHeightPx = LiveDiscover.fullSize.height
-            val measuredInsets = if (windowHeightPx > 0f) {
-                val top = with(density) { boxTopPx.toDp().value }
-                val bottom = with(density) { (windowHeightPx - boxTopPx - maxHeight.toPx()).toDp().value }
-                if (top >= 0f && bottom >= 0f) top to bottom else null
-            } else null
-            val topInset = measuredInsets?.first ?: with(density) { safeDrawing.getTop(density).toDp().value }
-            val bottomInset = measuredInsets?.second ?: with(density) { safeDrawing.getBottom(density).toDp().value }
+            val topInset = with(density) { safeDrawing.getTop(density).toDp().value }
+            val bottomInset = with(density) { safeDrawing.getBottom(density).toDp().value }
             // Liquid glass: the status Side Bar floats over the page — the pager runs the whole width
             // under it, while the app grid keeps its own lane clear of the bar (see homeGeometry's gridWidth).
             val geometry = homeGeometry(maxWidth.value, maxHeight.value, preset, state.labels, dockSlots = shownDock.size,
@@ -974,6 +964,9 @@ fun LauncherScreen(
                 widgetsFillRows = fillRows,
                 foldAtCenter = hinge?.vertical == true, fillSpace = state.homeRows == 0, shrinkIconsForRows = state.homeRows > BASE_APP_ROWS,
                 duoSpacing = duoSpacing, topInset = topInset, bottomInset = bottomInset)
+            DuoBalanceDebug.line = "geo ${maxWidth.value.toInt()}x${maxHeight.value.toInt()} in ${topInset.toInt()}/${bottomInset.toInt()}" +
+                " top ${geometry.contentTop.toInt()} span ${(geometry.widgetHeight + 18f + homeAppRows * geometry.rowHeight - geometry.rowGap).toInt()}" +
+                " clamp ${(maxHeight.value - (if (isDefaultHome) 44f else 88f) - (geometry.widgetHeight + 18f + homeAppRows * geometry.rowHeight - geometry.rowGap)).toInt()} fit ${geometry.fitAppRows}"
             // Half folded like a laptop: the status (information) stays above the hinge and the dock (controls) goes
             // below it, like Folio's other fold-aware panels; the dock scrolls if the lower half is short.
             val tableHinge = hinge?.takeIf { it.active && !it.vertical }

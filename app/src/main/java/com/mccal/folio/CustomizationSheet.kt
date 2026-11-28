@@ -1387,6 +1387,7 @@ private fun HelpTip(icon: ImageVector, color: Long, title: String, detail: Strin
             Column(Modifier.padding(start = FolioSpace.COMPACT.dp)) {
                 Text(stringResource(R.string.folio), color = androidx.compose.ui.graphics.Color.White, fontSize = FolioType.TITLE3.sp, fontWeight = FontWeight.Bold)
                 Text(stringResource(R.string.iphone_duo_for_your_fold_v, version), color = androidx.compose.ui.graphics.Color.White.copy(alpha = .55f), fontSize = FolioType.COMPACT.sp)
+                if (DuoBalanceDebug.line.isNotEmpty()) Text(DuoBalanceDebug.line, color = androidx.compose.ui.graphics.Color.White.copy(alpha = .55f), fontSize = FolioType.COMPACT.sp)
             }
         }
         return
@@ -1397,6 +1398,7 @@ private fun HelpTip(icon: ImageVector, color: Long, title: String, detail: Strin
         if (icon != null) androidx.compose.foundation.Image(icon, null, Modifier.size(72.dp).clip(RoundedCornerShape(18.dp)))
         Text(stringResource(R.string.folio), color = androidx.compose.ui.graphics.Color.White, fontSize = 30.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = FolioSpace.SMALL.dp))
         Text(stringResource(R.string.iphone_duo_for_your_fold_v, version), color = androidx.compose.ui.graphics.Color.White.copy(alpha = .55f), fontSize = FolioType.COMPACT.sp)
+        if (DuoBalanceDebug.line.isNotEmpty()) Text(DuoBalanceDebug.line, color = androidx.compose.ui.graphics.Color.White.copy(alpha = .55f), fontSize = FolioType.COMPACT.sp)
     }
 }
 

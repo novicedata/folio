@@ -24,6 +24,11 @@ const val DUO_ROW_GAIN_CAP = 0.20f
  * A window with more room than this gets another row (Automatic), or margins (a row count picked by hand), not taller rows.
  */
 const val DUO_ROW_PITCH_MAX_DP = 108.5f
+
+/** The last home geometry's balance inputs, kept so the settings banner can show them while the Duo balance is tuned. */
+internal object DuoBalanceDebug {
+    @Volatile var line: String = ""
+}
 /**
  * The same for the unfolded screen held upright (the bottom dock bar): one Duo owner's inner screen measured 19.6 mm rows (plus
  * or minus 0.3 mm) there, with the icon still 9.9 mm, so the room goes to spacing. PROVISIONAL (one owner's setup): 19.9 mm over
