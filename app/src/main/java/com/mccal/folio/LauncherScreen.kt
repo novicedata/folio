@@ -968,9 +968,9 @@ fun LauncherScreen(
                 widgetsFillRows = fillRows,
                 foldAtCenter = hinge?.vertical == true, fillSpace = state.homeRows == 0, shrinkIconsForRows = state.homeRows > BASE_APP_ROWS,
                 duoSpacing = duoSpacing, topInset = topInset, bottomInset = bottomInset)
-            DuoBalanceDebug.line = "geo ${maxWidth.value.toInt()}x${maxHeight.value.toInt()} in ${topInset.toInt()}/${bottomInset.toInt()}" +
-                " top ${geometry.contentTop.toInt()} span ${(geometry.widgetHeight + 18f + homeAppRows * geometry.rowHeight - geometry.rowGap).toInt()}" +
-                " clamp ${(maxHeight.value - (if (isDefaultHome) 44f else 88f) - (geometry.widgetHeight + 18f + homeAppRows * geometry.rowHeight - geometry.rowGap)).toInt()} fit ${geometry.fitAppRows}"
+            DuoBalanceDebug.line = "geo=${maxWidth.value.toInt()}x${maxHeight.value.toInt()} in=${topInset.toInt()}/${bottomInset.toInt()}" +
+                " top=${geometry.contentTop.toInt()} span=${(geometry.widgetHeight + 18f + homeAppRows * geometry.rowHeight - geometry.rowGap).toInt()}" +
+                " clamp=${(maxHeight.value - (if (isDefaultHome) 44f else 88f) - (geometry.widgetHeight + 18f + homeAppRows * geometry.rowHeight - geometry.rowGap)).toInt()} fit=${geometry.fitAppRows}"
             // Half folded like a laptop: the status (information) stays above the hinge and the dock (controls) goes
             // below it, like Folio's other fold-aware panels; the dock scrolls if the lower half is short.
             val tableHinge = hinge?.takeIf { it.active && !it.vertical }
