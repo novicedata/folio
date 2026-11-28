@@ -945,10 +945,14 @@ fun LauncherScreen(
             }
             val windowHeightDp = maxHeight.value
             // The window's own bars above and below this box (the box is padded by them, so they sit outside its
-            // height): a Duo-balanced page centers on the screen the person sees, bars included.
+            // height): a Duo-balanced page centers on the screen the person sees, bars included. The box's
+            // padding is the safe drawing area union the hidden camera's keep-out, so the balance hears about
+            // both — on the unfolded screen the camera's keep-out pads the top by some 37dp the system bars
+            // never report, and a balance struck without it lands that much low.
             val safeDrawing = WindowInsets.safeDrawing.exclude(WindowInsets.ime)
-            val topInset = with(density) { safeDrawing.getTop(density).toDp().value }
-            val bottomInset = with(density) { safeDrawing.getBottom(density).toDp().value }
+            val cameraInsets = rememberHiddenCameraInsets()
+            val topInset = with(density) { maxOf(safeDrawing.getTop(density), cameraInsets.getTop(density)).toDp().value }
+            val bottomInset = with(density) { maxOf(safeDrawing.getBottom(density), cameraInsets.getBottom(density)).toDp().value }
             // Liquid glass: the status Side Bar floats over the page — the pager runs the whole width
             // under it, while the app grid keeps its own lane clear of the bar (see homeGeometry's gridWidth).
             val geometry = homeGeometry(maxWidth.value, maxHeight.value, preset, state.labels, dockSlots = shownDock.size,
