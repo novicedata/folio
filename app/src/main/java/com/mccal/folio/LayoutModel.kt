@@ -616,7 +616,12 @@ fun homeGeometry(width: Float, height: Float, preset: LayoutPreset, labels: Bool
     val pageHeight = if (splitColumns) maxOf(widget + 18f + 2f * row, 3f * row) else widget + 18f + layoutRows * row
     // Centered in the free space; tall phones may sit lower (up to 18% of the height) instead of leaving the bottom empty.
     // DUO_SPACING: what is left after the rows are spaced is shared evenly above and below, so neither band looks large.
-    val contentTop = if (p.pageTop) 16f else if (duoSpacing && !splitColumns) ((height - (pageHeight - gap) - homeBottomSpace - realExtra) / 2f).coerceAtLeast(16f)
+    // Duo rows (step 12b): a capped page centers in the whole window, so the band above it and the band below it
+    // come out equal — the Duo's own balance, with the page controls floating in the lower band like its search
+    // pill. Never so far down that the page would end under the controls, though.
+    val duoContentTop = if (duoCapped) minOf((height - (pageHeight - gap)) / 2f, height - controlsSpace - (pageHeight - gap))
+        else (height - (pageHeight - gap) - homeBottomSpace - realExtra) / 2f
+    val contentTop = if (p.pageTop) 16f else if (duoSpacing && !splitColumns) duoContentTop.coerceAtLeast(16f)
         else ((height - pageHeight - homeBottomSpace) / 2f).coerceIn(16f, maxOf(72f, height * .18f))
     // Search reclaims the redundant bottom controls' space for all four dock apps.
     // Extremely short windows still scroll rather than reduce touch targets below 48dp.
