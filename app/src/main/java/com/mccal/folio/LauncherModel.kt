@@ -359,21 +359,22 @@ data class LauncherState(
     val widgets: List<Int> get() = layout.widgets
     val layout: HomeLayout get() = HomeLayout(homeSlots, dock, widgetPlacements, folders, widgetRestores, leadingSlots, minPages)
     val homePages get() = layout.pageCount
-    /** App rows a fixed Rows setting gives every screen, or the fewest any measured screen fits when Automatic and the screen is not measured yet. */
+    /** App rows a fixed Rows setting gives every screen, or the fewest any measured screen fits when Automatic and the screen is not measured yet, held to the Duo's four when Automatic (see [duoRowCap]). */
     val homeAppRows: Int get() = effectiveHomeRows(homeRows, homeFitCompact, homeFitExpanded, homeFitUpright)
+        .let { if (homeRows == 0) duoRowCap(it) else it }
     /**
-     * App rows for the screen Home is on now. Automatic gives each screen the rows that fit it, so a tall phone fills its
-     * height and a foldable's screens are separate layouts, each using its own room (#13). A screen not measured yet
-     * uses the fewest rows another screen fits. Pages with apps in rows a smaller screen lacks draw taller there (see
-     * shownHomeRows), so nothing is lost. A fixed Rows setting is the same on every screen.
+     * App rows for the screen Home is on now. Automatic gives each screen the rows that fit it (#13), held to the
+     * Duo's four (see [duoRowCap]): a foldable's screens are separate layouts, each using its own room. A screen not
+     * measured yet uses the fewest rows another screen fits. Pages with apps in rows a smaller screen lacks draw
+     * taller there (see shownHomeRows), so nothing is lost. A fixed Rows setting is the same on every screen.
      */
     fun homeAppRowsFor(screen: LayoutScreen): Int = if (homeRows > 0) homeAppRows else automaticHomeRowsFor(screen)
     /** What Automatic gives [screen]: its own measured rows, else [automaticHomeRows]. */
-    fun automaticHomeRowsFor(screen: LayoutScreen): Int =
+    fun automaticHomeRowsFor(screen: LayoutScreen): Int = duoRowCap(
         // The open screen held upright without a layout of its own shows the inner screen's layout, so it takes that fit.
-        homeFitFor(if (screen == LayoutScreen.INNER_UPRIGHT && portrait == null) LayoutScreen.INNER else screen).takeIf { it > 0 }?.coerceIn(BASE_APP_ROWS, MAX_APP_ROWS) ?: automaticHomeRows
+        homeFitFor(if (screen == LayoutScreen.INNER_UPRIGHT && portrait == null) LayoutScreen.INNER else screen).takeIf { it > 0 }?.coerceIn(BASE_APP_ROWS, MAX_APP_ROWS) ?: automaticHomeRows)
     /** What Automatic would give, whatever fixed Rows value is chosen, so the menu can name it honestly. */
-    val automaticHomeRows: Int get() = effectiveHomeRows(0, homeFitCompact, homeFitExpanded, homeFitUpright)
+    val automaticHomeRows: Int get() = duoRowCap(effectiveHomeRows(0, homeFitCompact, homeFitExpanded, homeFitUpright))
     /** Home can be drawn complete: its apps are in, or loading has ended (or failed). */
     val homeReady: Boolean get() = homeAppsLoaded || !loading
 }
@@ -469,6 +470,14 @@ internal fun LauncherState.withHomeApps(home: List<AppEntry>): LauncherState =
 fun effectiveHomeRows(setting: Int, fitCompact: Int, fitExpanded: Int, fitUpright: Int = 0): Int =
     (if (setting > 0) setting else listOf(fitCompact, fitExpanded, fitUpright).filter { it > 0 }.minOrNull() ?: BASE_APP_ROWS)
         .coerceIn(BASE_APP_ROWS, MAX_APP_ROWS)
+
+/**
+ * The Duo's Home shows four app rows — six lines with the two widget rows — whatever the window's height: a
+ * taller screen takes the Duo's spacing and margins, not a fifth row (step 12b of the floating-rail plan).
+ * Automatic rows stop there; a Rows count picked by hand is the person's own choice and is never capped.
+ * The fits themselves are still measured and kept, so the Settings note can say what each screen could hold.
+ */
+internal fun duoRowCap(rows: Int): Int = minOf(rows, BASE_APP_ROWS)
 
 /**
  * The newest saved-state schema this build reads. 11: Hide in Landscape on the unfolded screen; 10: icon actions; 9: 36-cell Home pages (More rows); 6–8 had 24.

@@ -132,11 +132,11 @@ class DuoSpacingTest {
         val cover = geo(475.43f, 751.2f, true); val inner = geo(932f, 704f, true)
         println("COVER icon=${cover.iconSize} dock=${cover.dockIcon} (${cover.dockIcon * .1558f} mm) row=${cover.rowHeight} (${cover.rowHeight * .1558f} mm)")
         println("INNER icon=${inner.iconSize} dock=${inner.dockIcon} (${inner.dockIcon * .1651f} mm) row=${inner.rowHeight} (${inner.rowHeight * .1651f} mm)")
-        // The default icon (66 dp) puts the dock at 80% of it. The Fold8 photos measured Home icons of about 60 dp on both screens
+        // The default icon (Duo-sized, about 63 dp on the cover) puts the dock at 80% of it, about 7.8 mm there. The Fold8 photos measured Home icons of about 60 dp on both screens
         // (the setting, or art drawn a little inside its cell), where the same ratio gives these millimeters.
         val cover60 = geo(475.43f, 751.2f, true, preset = LayoutPreset(iconSize = 60f)); val inner60 = geo(932f, 704f, true, preset = LayoutPreset(iconSize = 60f))
         println("ICON60 cover dock=${cover60.dockIcon} (${cover60.dockIcon * .1558f} mm) row=${cover60.rowHeight} (${cover60.rowHeight * .1558f} mm) off=${geo(475.43f, 751.2f, false, preset = LayoutPreset(iconSize = 60f)).rowHeight}; inner dock=${inner60.dockIcon} (${inner60.dockIcon * .1651f} mm) row=${inner60.rowHeight}")
-        assertTrue(cover.dockIcon * .1558f in 8.0f..8.4f)
+        assertTrue(cover.dockIcon * .1558f in 7.7f..8.0f)
         assertTrue(inner60.dockIcon * .1651f in 7.4f..8.2f)
         // The inner screen is spaced too, but never past the Duo's measured pitch (16.4 mm plus 5 percent at the nominal 0.15875 mm per dp).
         assertTrue(inner.rowHeight in geo(932f, 704f, false).rowHeight..DUO_ROW_PITCH_MAX_DP + 0.01f)

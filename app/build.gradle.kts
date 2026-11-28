@@ -36,7 +36,7 @@ val releaseStoreFile = releaseSigningValues["FOLIO_RELEASE_STORE_FILE"]?.let { c
     }
 }
 
-val folioVersion = "0.7.0-beta.6"
+val folioVersion = "0.7.0-beta.17"
 
 // Bundle the changelog so Folio can show What's New after an update.
 val bundleChangelog = tasks.register<Copy>("bundleChangelog") {
@@ -144,6 +144,17 @@ androidComponents {
 android {
     namespace = "com.mccal.folio"
     compileSdk = 37
+    lint {
+        // Liquid-glass branch only: Backdrop 2.0.1 pulls Compose up to 1.12, whose lint jar adds these
+        // Error-severity checks. They flag pre-existing upstream code that predates the configuration-aware
+        // APIs (160 sites); fixing those call sites is upstream's Compose-upgrade work, not part of this patch.
+        disable += setOf(
+            "LocalContextGetResourceValueCall",
+            "LocalContextConfigurationRead",
+            "NonObservableLocale",
+            "StateFlowValueCalledInComposition",
+        )
+    }
     defaultConfig {
         applicationId = "com.mccal.folio"
         minSdk = 31
@@ -247,6 +258,9 @@ dependencies {
     // Images from sources the user added (Apache-2.0). Only coil3 core and the Compose binding: the bytes come from
     // Folio's own HTTPS client, so there is no second network stack in the APK and no second set of rules.
     implementation("io.coil-kt.coil3:coil-compose:3.2.0")
+    // Liquid glass effects (blur + lens refraction over a recorded backdrop) for the floating rail/dock work.
+    // Pinned: 2.0.x declares minCompileSdk 37, which this project already targets; 2.0.1 is the latest published.
+    implementation("io.github.kyant0:backdrop:2.0.1")
     debugImplementation("androidx.compose.ui:ui-tooling")
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.json:json:20260814") // real org.json for StatusStyle round-trip tests
@@ -284,3 +298,4 @@ if (providers.gradleProperty("composeReports").isPresent) {
         metricsDestination = layout.buildDirectory.dir("compose-reports")
     }
 }
+

@@ -106,7 +106,7 @@ internal fun ExpandedWorkspace(
     nativePager: androidx.compose.foundation.pager.PagerState,
     motion: WorkspacePageMotion,
     firstHome: Int,
-    leftPageContent: @Composable (Modifier) -> Unit,
+    leftPageContent: @Composable (Dp, Modifier) -> Unit,
     /** iPad-style Today View kept beside Home in place of the unfolded-only page. */
     besideContent: (@Composable (Modifier) -> Unit)? = null,
     visibleHomePages: Int,
@@ -114,6 +114,8 @@ internal fun ExpandedWorkspace(
     contentHeight: Dp,
     bottomSpace: Dp,
     geometry: HomeGeometry,
+    /** The Side Bar dock's width, so the App Library can keep its side margin beside the bar (libraryEdges). */
+    dockWidth: Float,
     state: LauncherState,
     previewSlots: List<String?>,
     previewLeadingSlots: List<String?>,
@@ -208,7 +210,9 @@ internal fun ExpandedWorkspace(
     Box(Modifier.fillMaxSize().clipToBounds().testTag("expanded-workspace")) {
         if (showDiscover) {
             key("discover-pane") {
-                Box(Modifier.place(-viewportWidth).fillMaxSize()) { leftPageContent(Modifier.fillMaxSize()) }
+                Box(Modifier.place(-viewportWidth).fillMaxSize()) { leftPageContent(
+                    // The floating bar's lane, the same dockWidth + 28 the App Library keeps beside it.
+                    if (state.verticalStatus) (dockWidth + 28f).dp else 0.dp, Modifier.fillMaxSize()) }
             }
         }
 
@@ -255,7 +259,10 @@ internal fun ExpandedWorkspace(
                         onActions = onActions,
                         modifier = Modifier.fillMaxSize()
                             .graphicsLayer { val b = libraryBack(); scaleX = 1f - .14f * b; scaleY = scaleX; alpha = 1f - .35f * b; translationX = size.width * .08f * b }
-                            .padding(start = FolioSpace.LARGE.dp, top = FolioSpace.LARGE.dp, bottom = bottomSpace)
+                            // The same side margin the folded library keeps beside the Side Bar (libraryEdges):
+                            // tiles stop at the bar's lane while the panel itself spans the window.
+                            .padding(libraryEdges(state.verticalStatus, dockWidth, state.leftHanded, spansWindow = true))
+                            .padding(top = FolioSpace.LARGE.dp, bottom = bottomSpace)
                             .testTag("library-page"),
                         drag = drag, page = visibleHomePages, onLaunchFrom = onLaunchFrom, onTurnOnWork = onTurnOnWork, place = libraryPlace)
                 }
@@ -353,6 +360,13 @@ internal fun HomePagePane(
         // The upright unfolded window keeps its grid clear of the bar's corners, so there the bar needs no room at all.
         val besideGrid = jiggleBarBesideGrid(geometry.horizontalDock, geometry.dockBesideRail, geometry.homeWidth, geometry.gridWidth, LocalDensity.current.fontScale)
         val editRoom by animateDpAsState(if (roomWanted) jiggleBarRoom(((if (geometry.expanded) JIGGLE_BAR_BOTTOM_UNFOLDED + (JIGGLE_BAR_LIFT - edit.barLift) else JIGGLE_BAR_BOTTOM) + edit.barExtra).value, geometry.contentTop, besideGrid).dp else 0.dp, label = "jiggle room")
+        // The page scrolls only when its visible rows really run past the pane. A page that merely ends in its own
+        // trailing gap — a capped Duo page, whose last row's label space may sit over the controls' padding — would
+        // otherwise drift a few dp under a swipe and fade at both edges for nothing.
+        val pageVisibleEnd = geometry.contentTop + editRoom.value +
+            (if (geometry.splitColumns) maxOf(geometry.widgetHeight + 18f + 2f * geometry.rowHeight, 3f * geometry.rowHeight)
+            else geometry.widgetHeight + 18f + geometry.appRows * geometry.rowHeight) - geometry.rowGap
+        val pageScrolls = pageVisibleEnd > (contentHeight - bottomSpace).value + 0.5f
         // The page was pushed down by the edit room, so its last row would sit under the page controls at rest. The page gets that much
         // more height (the controls below are small in edit mode), instead of a bottom row cut off until you scroll.
         Column(Modifier.layout { measurable, constraints ->
@@ -363,7 +377,7 @@ internal fun HomePagePane(
                 layout(placeable.width, placeable.height.coerceIn(constraints.minHeight, constraints.maxHeight)) { placeable.placeRelative(0, 0) }
             }.offset(x = 16.dp).width(geometry.gridWidth.dp).fillMaxHeight()
             // A page taller than its window (a flip's cover) fades at the edge it scrolls toward, instead of ending in a hard cut.
-            .edgeFade(homeScroll).verticalScroll(homeScroll).padding(top = geometry.contentTop.dp + editRoom, bottom = FolioSpace.SMALL.dp)) {
+            .then(if (pageScrolls) Modifier.edgeFade(homeScroll) else Modifier).verticalScroll(homeScroll, enabled = pageScrolls).padding(top = geometry.contentTop.dp + editRoom, bottom = FolioSpace.SMALL.dp)) {
             val (pageIcon, pageLabels) = (state.pageStyles[page] ?: PageStyle()).apply(geometry, state.labels)
             SharedHomeGrid(page, state.homeSlots, state.leadingSlots, previewSlots, previewLeadingSlots, previewWidgetPlacements,
                 appsById, geometry.copy(iconSize = pageIcon), pageLabels, widgets, drag, target,

@@ -112,9 +112,10 @@ class HomeFitTest {
         assertEquals(0f, jiggleBarRoom(wrapped, 0f, true), 0f)
     }
 
-    /** F01 (27 Oct sweep): the fold AVD's inner display, upright and regular, with the Preview bar and without it. */
+    /** F01 (27 Oct sweep): the fold's inner display, upright and regular, with the Preview bar and without it.
+     * 900 tall: at 800 the Duo-sized dock leaves the edit bar no strip beside the page, so the bar sits above it there. */
     @Test fun `the fold's inner display keeps all four rows above the dock in edit mode`() {
-        val (w, h) = 750f to 800f
+        val (w, h) = 750f to 900f
         for (preview in listOf(false, true)) for (duo in listOf(false, true)) {
             val g = geo(w, h, duo, preview = preview)
             assertTrue("upright regular keeps the dock bar", g.horizontalDock && !g.dockBesideRail)

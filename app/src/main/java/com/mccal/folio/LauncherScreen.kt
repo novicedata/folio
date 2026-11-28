@@ -63,6 +63,13 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.graphics.layer.drawLayer
+import com.kyant.backdrop.backdrops.layerBackdrop
+import com.kyant.backdrop.backdrops.rememberCombinedBackdrop
+import com.kyant.backdrop.backdrops.rememberLayerBackdrop
+import com.kyant.backdrop.drawBackdrop
+import com.kyant.backdrop.highlight.Highlight
+import com.kyant.backdrop.isRenderEffectSupported
+import com.kyant.backdrop.shadow.Shadow as BackdropShadow
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
@@ -562,18 +569,21 @@ fun LauncherScreen(
     // of 44dp, 88dp with the Preview bar, left the App Library's panel under the Preview bar sideways.
     // Declared here, above the pages, so Today View can stop its last widget above them too.
     var bottomControlsHeight by remember { mutableStateOf(0.dp) }
-    val todayContent: @Composable (Modifier) -> Unit = { pageModifier ->
+    // A Today page spans the whole pager now that the rail floats, so it takes the bar's lane as an argument
+    // (the dockWidth + 28 the App Library keeps) and stops its column at it; beside Home it keeps the full pane.
+    val todayContent: @Composable (Dp, Modifier) -> Unit = { railLane, pageModifier ->
         TodayView(state, widgets, pageModifier,
             onSearch = { launcherActivity.openSpotlight() }, onLaunch = onLaunch,
             onAddWidget = { picker.toToday = true; picker.anyApp(); sheet = "widgets" },
             onRemove = model::removeTodayWidget, onMove = model::moveTodayWidget,
-            bottomPadding = todayBottomPadding(isDefaultHome, bottomControlsHeight.value).dp)
+            bottomPadding = todayBottomPadding(isDefaultHome, bottomControlsHeight.value).dp,
+            railLane = railLane)
     }
-    val leftPageContent: @Composable (Modifier) -> Unit = { pageModifier ->
+    val leftPageContent: @Composable (Dp, Modifier) -> Unit = { railLane, pageModifier ->
         when {
             !todayMode -> DiscoverContent(pageModifier.padding(start = FolioSpace.LARGE.dp, top = FolioSpace.LARGE.dp, bottom = FolioSpace.LARGE.dp))
             expandedWorkspace && state.todayUnfolded != "PAGE" -> Box(pageModifier)
-            else -> todayContent(pageModifier)
+            else -> todayContent(railLane, pageModifier)
         }
     }
 
@@ -869,8 +879,16 @@ fun LauncherScreen(
         // smear. Only Android's wallpaper drifts now, and the system is what moves it (DYN-11: Reduce Motion leaves
         // it still); a picture of Folio's has no spare width to slide, so it stays where it is.
         val backgroundMoves = state.wallpaperMotion && !LocalReduceMotion.current
+        // Floating-rail patch, step 5: the live backdrop the Side Bar's glass samples. The wallpaper and the
+        // pager are recorded into separate layers and combined; the rail and the dock are never recorded, so
+        // the glass cannot feed back on itself (MainActivity's homeLayer records the whole screen, rail
+        // included, and would). In system-wallpaper mode there is no Folio wallpaper to record, so that layer
+        // simply stays empty and the pager's layer carries the backdrop on its own.
+        val wallpaperBackdrop = rememberLayerBackdrop()
+        val pagerBackdrop = rememberLayerBackdrop()
+        val homeBackdrop = rememberCombinedBackdrop(wallpaperBackdrop, pagerBackdrop)
         // The scrim (iOS's legibility gradient, A11Y-9 and DES-16) rides inside the layer the background is already cached in, so it costs nothing per frame.
-        if (!state.systemWallpaper || !launcherActivity.showsWallpaper) DuneWallpaper(Modifier.foldMotionWallpaper(), scrim = scrim)
+        if (!state.systemWallpaper || !launcherActivity.showsWallpaper) Box(Modifier.layerBackdrop(wallpaperBackdrop)) { DuneWallpaper(Modifier.foldMotionWallpaper(), scrim = scrim) }
         else {
             if (backgroundMoves) SystemWallpaperParallax(nativePager)
             // Android's wallpaper is the system's to draw, so there is no cached layer of Folio's to bake the scrim
@@ -926,7 +944,18 @@ fun LauncherScreen(
                 else -> 0.dp
             }
             val windowHeightDp = maxHeight.value
-            val geometry = homeGeometry(maxWidth.value, maxHeight.value, preset, state.labels, dockSlots = shownDock.size, statusRail = state.verticalStatus,
+            // The window's own bars above and below this box (the box is padded by them, so they sit outside its
+            // height): a Duo-balanced page centers on the screen the person sees, bars included. The box's
+            // padding is the safe drawing area union the hidden camera's keep-out, so the balance hears about
+            // both — on the unfolded screen the camera's keep-out pads the top by some 37dp the system bars
+            // never report, and a balance struck without it lands that much low.
+            val safeDrawing = WindowInsets.safeDrawing.exclude(WindowInsets.ime)
+            val cameraInsets = rememberHiddenCameraInsets()
+            val topInset = with(density) { maxOf(safeDrawing.getTop(density), cameraInsets.getTop(density)).toDp().value }
+            val bottomInset = with(density) { maxOf(safeDrawing.getBottom(density), cameraInsets.getBottom(density)).toDp().value }
+            // Liquid glass: the status Side Bar floats over the page — the pager runs the whole width
+            // under it, while the app grid keeps its own lane clear of the bar (see homeGeometry's gridWidth).
+            val geometry = homeGeometry(maxWidth.value, maxHeight.value, preset, state.labels, dockSlots = shownDock.size,
                 statusHeight = if (state.verticalStatus) statusHeight + 22f else 0f,
                 labelHeight = with(density) { (LocalLabelSize.current.lineSp * glanceFontFactor(fontScale)).sp.toDp().value } + 6f, inLibrary = inLibrary,
                 homeBottomSpace = if (isDefaultHome) 44f else 88f,
@@ -938,7 +967,10 @@ fun LauncherScreen(
                 homeRailControls = if (state.searchPill) 0 else 1, classScale = classScale, appRows = homeAppRows,
                 widgetsFillRows = fillRows,
                 foldAtCenter = hinge?.vertical == true, fillSpace = state.homeRows == 0, shrinkIconsForRows = state.homeRows > BASE_APP_ROWS,
-                duoSpacing = duoSpacing)
+                duoSpacing = duoSpacing, topInset = topInset, bottomInset = bottomInset)
+            DuoBalanceDebug.line = "geo=${maxWidth.value.toInt()}x${maxHeight.value.toInt()} in=${topInset.toInt()}/${bottomInset.toInt()}" +
+                " top=${geometry.contentTop.toInt()} span=${(geometry.widgetHeight + 18f + homeAppRows * geometry.rowHeight - geometry.rowGap).toInt()}" +
+                " clamp=${(maxHeight.value - (if (isDefaultHome) 44f else 88f) - (geometry.widgetHeight + 18f + homeAppRows * geometry.rowHeight - geometry.rowGap)).toInt()} fit=${geometry.fitAppRows}"
             // Half folded like a laptop: the status (information) stays above the hinge and the dock (controls) goes
             // below it, like Folio's other fold-aware panels; the dock scrolls if the lower half is short.
             val tableHinge = hinge?.takeIf { it.active && !it.vertical }
@@ -994,14 +1026,26 @@ fun LauncherScreen(
             }
             val contentHeight = maxHeight
             val contentWidth = maxWidth
-            val panelWidth = maxWidth - geometry.homeWidth.dp
-            // A phone-sized screen keeps the status Side Bar beside Home even with the dock at the bottom.
-            val pagerWidth = if (geometry.horizontalDock && !geometry.dockBesideRail) maxWidth else maxWidth - preset.dockWidth.dp - 28.dp
+            val rawPanelWidth = maxWidth - geometry.homeWidth.dp
+            // The pager always runs the whole width under the floating Side Bar.
+            val pagerWidth = maxWidth
             // DUO_PANE_GAP: flat, the left page sits closer to the right one so the two halves read as one Home; partly folded
             // (a vertical book hinge that is active), it springs back to the middle of the left half to clear the crease.
             val duoPaneGap = state.unfoldedSeamlessGap
             val bookFolded = hinge?.let { it.active && it.vertical } == true
-            val targetLeftOrigin = expandedLeftPaneOrigin(maxWidth.value, geometry.homeWidth, geometry.gridWidth, duoPaneGap, bookFolded).dp
+            val rawLeftOrigin = expandedLeftPaneOrigin(maxWidth.value, geometry.homeWidth, geometry.gridWidth, duoPaneGap, bookFolded)
+            // Duo layout rule: on the unfolded screen the two pages center in the window beside the Side Bar's lane
+            // (the same dockWidth + 28 the App Library keeps), not in the whole window — the bar's strip counts as
+            // not there. The bar sits at the end edge by default (railTop) and at the start edge left-handed, so the
+            // lane comes off whichever side the bar is on. Both pane anchors shift by the same amount, so the gap
+            // between the pages and the swipe stride are untouched. Partly folded the fold rule wins and nothing
+            // shifts: the halves stay on their own sides of the crease.
+            val railLane = if (geometry.expanded && !bookFolded && state.verticalStatus) preset.dockWidth + 28f else 0f
+            val spreadCenter = (rawLeftOrigin + 16f + rawPanelWidth.value + 16f + geometry.gridWidth) / 2f
+            val usableCenter = if (state.leftHanded) (railLane + maxWidth.value) / 2f else (maxWidth.value - railLane) / 2f
+            val spreadShift = if (railLane > 0f) (usableCenter - spreadCenter).coerceIn(-railLane, railLane) else 0f
+            val panelWidth = rawPanelWidth + spreadShift.dp
+            val targetLeftOrigin = (rawLeftOrigin + spreadShift).dp
             val leftColumnOrigin by animateDpAsState(targetLeftOrigin,
                 if (LocalReduceMotion.current) androidx.compose.animation.core.snap() else FolioMotion.spring(FolioMotion.Settle), label = "duo pane origin")
             // Decouple the gesture motion stride from the animated visual origin so the coordinate space
@@ -1106,6 +1150,8 @@ fun LauncherScreen(
                 // while drawing, so a stretch never relayouts Home. It comes after the bounds Discover's frame is measured from, so
                 // a stretch does not move that frame.
                 .then(if (FolioMotion.v2) Modifier.graphicsLayer { translationX = -pageGestures.stretch } else Modifier)
+                // Recorded for the rail's glass (step 5): the pager and everything in it, nothing above it.
+                .layerBackdrop(pagerBackdrop)
             OwnMethod { if (geometry.expanded) {
                 Box(pagerModifier) {
                     // PagerState remains the source of truth for native Discover progress,
@@ -1115,7 +1161,7 @@ fun LauncherScreen(
                     ExpandedWorkspace(
                         nativePager = nativePager, motion = workspaceMotion!!, firstHome = firstHome,
                         visibleHomePages = visibleHomePages, panelWidth = panelWidth,
-                        contentHeight = contentHeight, bottomSpace = bottomSpace, geometry = geometry,
+                        contentHeight = contentHeight, bottomSpace = bottomSpace, geometry = geometry, dockWidth = preset.dockWidth,
                         state = state, previewSlots = previewLayout.slots, previewLeadingSlots = previewLayout.leadingSlots,
                         previewWidgetPlacements = previewLayout.widgetPlacements, appsById = appsById,
                         widgets = widgets, drag = drag, target = target, insertionTarget = insertionTarget,
@@ -1129,7 +1175,7 @@ fun LauncherScreen(
                         onProblem = onProblem,
                         libraryBack = { libraryBack }, libraryPlace = libraryPlace,
                         leftPageContent = leftPageContent,
-                        besideContent = if (todayMode && state.todayUnfolded == "BESIDE") todayContent else null,
+                        besideContent = if (todayMode && state.todayUnfolded == "BESIDE") ({ m: Modifier -> todayContent(0.dp, m) }) else null,
                     )
                 }
             } else {
@@ -1145,7 +1191,8 @@ fun LauncherScreen(
                     if (page == -1) {
                         // Every page in this pager turns, not only Home: a cube whose neighbour slides in flat is not
                         // a cube, and this is the page on Home's left.
-                        leftPageContent(Modifier.fillMaxSize().pageEffect(pageEffect, nativePager, physicalPage))
+                        leftPageContent(if (state.verticalStatus) (preset.dockWidth + 28f).dp else 0.dp,
+                            Modifier.fillMaxSize().pageEffect(pageEffect, nativePager, physicalPage))
                     } else if (page == visibleHomePages) {
                         AppLibrary(state, libraryQuery, { libraryQuery = it }, onLaunch, model::setPinned,
                             // Unfolded portrait: the Side Bar's status capsule sits in the top corner, so the library keeps
@@ -1156,7 +1203,8 @@ fun LauncherScreen(
                                 .pageEffect(pageEffect, nativePager, physicalPage)
                                 .graphicsLayer { val b = libraryBack; scaleX = 1f - .14f * b; scaleY = scaleX; alpha = 1f - .35f * b; translationX = size.width * .08f * b }
                                 .padding(top = FolioSpace.LARGE.dp, bottom = bottomSpace)
-                                .padding(libraryEdges(geometry.horizontalDock && !geometry.dockBesideRail && state.verticalStatus, preset.dockWidth, state.leftHanded,
+                                .padding(libraryEdges((geometry.horizontalDock && !geometry.dockBesideRail && state.verticalStatus) ||
+                                    (state.verticalStatus && !geometry.horizontalDock), preset.dockWidth, state.leftHanded,
                                     spansWindow = geometry.horizontalDock && !geometry.dockBesideRail)).testTag("library-page"),
                             drag = drag, page = visibleHomePages, onLaunchFrom = onLaunchFrom, onTurnOnWork = { model.turnOnWork(it) }, place = libraryPlace)
                     } else {
@@ -1168,7 +1216,9 @@ fun LauncherScreen(
                         // The layer wraps the pane, not this Row: the Row fills the window and centres a narrower
                         // grid beside the rail, so a cube pivoting on the Row would hinge on the window edge, out in
                         // the empty margin, instead of on the seam the pane shares with its neighbour.
-                        Row(Modifier.fillMaxSize().testTag("home-surface"), horizontalArrangement = Arrangement.Center) {
+                        // Floating rail: the pane keeps to the leading edge, so the grid stays in its lane beside
+                        // the bar instead of centering into the width the pager gained. Left-handed mirrors the lane.
+                        Row(Modifier.fillMaxSize().testTag("home-surface"), horizontalArrangement = if (state.verticalStatus) (if (state.leftHanded) Arrangement.End else Arrangement.Start) else Arrangement.Center) {
                             Box(Modifier.pageEffect(pageEffect, nativePager, physicalPage)) {
                                 HomePagePane(page, state, previewLayout.slots, previewLayout.leadingSlots, previewLayout.widgetPlacements, appsById, geometry, contentHeight,
                                     bottomSpace, widgets, drag, target, insertionTarget, showLargeWidget = false,
@@ -1193,7 +1243,7 @@ fun LauncherScreen(
                         // The whole rail, location slot included: the dock goes below all of it.
                         statusHeight = with(density) { it.height.toDp().value }
                     },
-                compact = contentHeight < COMPACT_DOCK_MAX_HEIGHT_DP.dp, iconSize = dockIconSize(geometry.iconSize).dp, style = state.statusStyle,
+                compact = contentHeight < COMPACT_DOCK_MAX_HEIGHT_DP.dp, iconSize = dockIconSize(geometry.iconSize).dp, style = state.statusStyle, backdrop = if (isRenderEffectSupported()) homeBackdrop else null,
                 focus = state.focusModes.firstOrNull { it.id == state.activeFocus },
                 // A tap opens Control Center (not while Home is being edited or an icon is dragged).
                 onOpen = if (homeEdit.active || drag.active) null else ({ launcherActivity.openSystemShade(ShadePanel.QUICK_SETTINGS) }),
@@ -1271,6 +1321,8 @@ fun LauncherScreen(
                     }
                 }
             }
+            // The dock's glass tint, read here so the backdrop's surface lambda can use it (step 6).
+            val dockGlassTint = Glass
             if (!dockAwayForToday) OwnMethod { Box((if (geometry.horizontalDock) (if (hinge?.active == true && hinge.vertical)
                     // Half folded like a book: the bar sits centered on the trailing half, off the hinge.
                     Modifier.align(Alignment.BottomEnd).padding(end = ((contentWidth / 2 - dockBarWidthShown) / 2).coerceAtLeast(0.dp))
@@ -1294,7 +1346,14 @@ fun LauncherScreen(
                     // Composite the stationary dock independently of the shared pager layer (not while magnifying: it would clip).
                     compositingStrategy = if (state.dockMagnify) androidx.compose.ui.graphics.CompositingStrategy.Auto
                         else androidx.compose.ui.graphics.CompositingStrategy.Offscreen
-                }.background(Glass.copy(alpha = state.statusStyle.railGlass), RoundedCornerShape(FolioRadius.RAIL.dp))
+                }.then(if (isRenderEffectSupported()) Modifier.drawBackdrop(homeBackdrop, shape = { RoundedCornerShape(FolioRadius.RAIL.dp) },
+                    effects = { folioGlassEffects() },
+                    highlight = { Highlight.Default },
+                    shadow = { BackdropShadow.Default },
+                    // The flat frost stays as the surface colour, at the user's own strength.
+                    onDrawSurface = { drawRect(dockGlassTint.copy(alpha = state.statusStyle.railGlass)) })
+                // No render effects on this runtime: the dock keeps its flat frost instead of the glass.
+                else Modifier.background(dockGlassTint.copy(alpha = state.statusStyle.railGlass), RoundedCornerShape(FolioRadius.RAIL.dp)))
                 .border(1.dp, LocalGlassLook.current.outlineColor, RoundedCornerShape(FolioRadius.RAIL.dp)).testTag("dock")) {
                 Column(if (geometry.horizontalDock) (if (dockBarScrolls) Modifier.fillMaxHeight().horizontalEdgeFade(dockBarScroll).horizontalScroll(dockBarScroll) else Modifier.fillMaxSize()).padding(horizontal = FolioSpace.SMALL.dp) else Modifier.padding(vertical = FolioSpace.SMALL.dp).edgeFade(dockScroll).verticalScroll(dockScroll)) {
                     DockAppColumn(if (geometry.horizontalDock) shownDock else shownDock.take(geometry.dockShownSlots), if (geometry.horizontalDock) previewLayout.dock else previewLayout.dock.take(geometry.dockShownSlots), appsById, dockPitchShown,

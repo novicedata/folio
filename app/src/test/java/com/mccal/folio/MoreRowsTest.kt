@@ -80,29 +80,30 @@ class MoreRowsTest {
         assertEquals(5, effectiveHomeRows(0, 5, 7))
         assertEquals(4, effectiveHomeRows(4, 7, 7))
         assertEquals(7, effectiveHomeRows(0, 9, 9))
-        assertEquals(5, LauncherState(homeFitCompact = 5, homeFitExpanded = 6).homeAppRows)
+        // The state holds Automatic to the Duo's four (duoRowCap); the fits above still measure what could fit.
+        assertEquals(4, LauncherState(homeFitCompact = 5, homeFitExpanded = 6).homeAppRows)
         assertEquals(4, LauncherState(homeRows = 4, homeFitCompact = 5, homeFitExpanded = 6).homeAppRows)
     }
 
-    @Test fun `the upright inner screen records its own fit and Automatic takes the fewest of all three`() {
+    @Test fun `the upright inner screen records its own fit and Automatic takes the fewest of all three, held to four`() {
         val s = LauncherState(homeFitCompact = 6, homeFitExpanded = 6)
-        assertEquals(6, s.homeAppRows)
+        assertEquals(4, s.homeAppRows)
         val measured = s.withHomeFit(LayoutScreen.INNER_UPRIGHT, 5)
         assertEquals(6, measured.homeFitExpanded) // upright no longer overwrites the sideways inner fit
         assertEquals(5, measured.homeFitFor(LayoutScreen.INNER_UPRIGHT))
-        assertEquals(5, measured.homeAppRows)
+        assertEquals(4, measured.homeAppRows)
         assertEquals(4, effectiveHomeRows(0, 6, 6, 4))
         assertEquals(6, effectiveHomeRows(0, 6, 6, 0)) // not measured yet doesn't count
     }
 
-    @Test fun `every screen is its own layout and uses the rows that fit it`() {
+    @Test fun `every screen is its own layout, Automatic held to the Duo's four`() {
         val s = LauncherState(homeFitCompact = 4, homeFitExpanded = 5, homeFitUpright = 7, portrait = LayoutPreset())
         assertEquals(4, s.homeAppRows)
-        assertEquals(7, s.homeAppRowsFor(LayoutScreen.INNER_UPRIGHT))
-        assertEquals(5, s.homeAppRowsFor(LayoutScreen.INNER))
+        assertEquals(4, s.homeAppRowsFor(LayoutScreen.INNER_UPRIGHT))
+        assertEquals(4, s.homeAppRowsFor(LayoutScreen.INNER))
         assertEquals(4, s.homeAppRowsFor(LayoutScreen.COVER))
         // Upright without a layout of its own shows the inner layout, so it takes the inner fit; rows chosen by hand are one count everywhere.
-        assertEquals(5, s.copy(portrait = null).homeAppRowsFor(LayoutScreen.INNER_UPRIGHT))
+        assertEquals(4, s.copy(portrait = null).homeAppRowsFor(LayoutScreen.INNER_UPRIGHT))
         assertEquals(4, s.copy(homeRows = 4).homeAppRowsFor(LayoutScreen.INNER_UPRIGHT))
     }
 

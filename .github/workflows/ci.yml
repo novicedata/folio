@@ -68,7 +68,14 @@ jobs:
           echo "$DEBUG_KEYSTORE_B64" | base64 -d > ~/.android/debug.keystore
       - name: Unit tests, lint and debug build
         run: ./gradlew :app:testDebugUnitTest :market:testDebugUnitTest :app:lintDebug :market:lintDebug :app:assembleDebug
-      # A red unit test run is easier to read from the HTML report than from the log, so keep both modules' reports.
+      - name: Keep the debug APK
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: folio-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 14
+          # A red unit test run is easier to read from the HTML report than from the log, so keep both modules' reports.
       - name: Keep the unit test reports
         if: failure()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

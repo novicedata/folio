@@ -1387,6 +1387,7 @@ private fun HelpTip(icon: ImageVector, color: Long, title: String, detail: Strin
             Column(Modifier.padding(start = FolioSpace.COMPACT.dp)) {
                 Text(stringResource(R.string.folio), color = androidx.compose.ui.graphics.Color.White, fontSize = FolioType.TITLE3.sp, fontWeight = FontWeight.Bold)
                 Text(stringResource(R.string.iphone_duo_for_your_fold_v, version), color = androidx.compose.ui.graphics.Color.White.copy(alpha = .55f), fontSize = FolioType.COMPACT.sp)
+                if (DuoBalanceDebug.line.isNotEmpty()) Text(DuoBalanceDebug.line, color = androidx.compose.ui.graphics.Color.White.copy(alpha = .55f), fontSize = FolioType.COMPACT.sp)
             }
         }
         return
@@ -1397,6 +1398,7 @@ private fun HelpTip(icon: ImageVector, color: Long, title: String, detail: Strin
         if (icon != null) androidx.compose.foundation.Image(icon, null, Modifier.size(72.dp).clip(RoundedCornerShape(18.dp)))
         Text(stringResource(R.string.folio), color = androidx.compose.ui.graphics.Color.White, fontSize = 30.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = FolioSpace.SMALL.dp))
         Text(stringResource(R.string.iphone_duo_for_your_fold_v, version), color = androidx.compose.ui.graphics.Color.White.copy(alpha = .55f), fontSize = FolioType.COMPACT.sp)
+        if (DuoBalanceDebug.line.isNotEmpty()) Text(DuoBalanceDebug.line, color = androidx.compose.ui.graphics.Color.White.copy(alpha = .55f), fontSize = FolioType.COMPACT.sp)
     }
 }
 
@@ -2413,7 +2415,7 @@ internal val LocalDeviceStatus = androidx.compose.runtime.compositionLocalOf { D
     // status rail, dock, search pill), then scaled down, so the preview matches Home instead of approximating it.
     val refW = 420f; val refH = 720f
     val geometry = homeGeometry(refW, refH, preset, state.labels, statusHeight = if (state.verticalStatus) 180f else 0f, labelHeight = 20f,
-        appRows = state.homeAppRows, dockSlots = state.dock.size, statusRail = state.verticalStatus,
+        appRows = state.homeAppRows, dockSlots = state.dock.size, fillSpace = state.homeRows == 0,
         railControls = if (state.searchPill) 0 else 1, // the Home pages' rail, as Home lays it out
         widgetsFillRows = FeatureGate.WIDGETS_FILL_ROWS.isOpen(androidx.compose.ui.platform.LocalContext.current),
         shrinkIconsForRows = state.homeRows > BASE_APP_ROWS,

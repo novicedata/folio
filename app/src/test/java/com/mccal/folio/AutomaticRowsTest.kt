@@ -21,12 +21,13 @@ class AutomaticRowsTest {
             inLibrary = false, homeBottomSpace = 44f, railControls = 0, classScale = 1f,
             appRows = BASE_APP_ROWS, foldAtCenter = false, fillSpace = true).fitAppRows
 
-    @Test fun `the Fold8 fits four rows at the default icon size`() {
-        assertEquals(4, fit(cover, 20f))
+    @Test fun `the Fold8 fits five rows on the cover and four on the inner screen at the default icon size`() {
+        assertEquals(5, fit(cover, 20f))
+        assertEquals(4, fit(inner, 20f))
         assertEquals(4, effectiveHomeRows(setting = 0, fitCompact = fit(cover, 20f), fitExpanded = fit(inner, 20f)))
     }
 
-    /** What Settings promises when it says smaller icons make room: at 60 dp the cover gains its fifth row. */
+    /** The default icon size is Duo-derived now and already fits five on the cover; smaller icons keep them. */
     @Test fun `smaller icons make room for another row`() {
         assertEquals(5, fit(cover, 20f, icon = 60f))
         assertEquals(5, fit(cover, 20f, icon = 52f))
@@ -46,13 +47,14 @@ class AutomaticRowsTest {
         assertEquals(4, fixed.copy(homeRows = 0).homeAppRows)
     }
 
-    /** Each screen is its own layout: a tall phone fills its height even when another screen (a landscape window, a fold's inner screen) fits fewer. */
-    @Test fun `Automatic gives each screen the rows that fit it`() {
+    /** Each screen is its own layout, measured on its own fit — but Automatic stops at the Duo's four app rows
+     * (duoRowCap): a screen that could fit more takes the spacing and margins instead of another row. */
+    @Test fun `Automatic gives each screen the rows that fit it, held to the Duo's four`() {
         val s = LauncherState(homeRows = 0, homeFitCompact = 7, homeFitExpanded = 4, homeFitUpright = 5)
-        assertEquals(7, s.homeAppRowsFor(LayoutScreen.COVER))
+        assertEquals(4, s.homeAppRowsFor(LayoutScreen.COVER))
         assertEquals(4, s.homeAppRowsFor(LayoutScreen.INNER))
         assertEquals(4, s.homeAppRowsFor(LayoutScreen.INNER_UPRIGHT))  // no layout of its own: it shows the inner one
-        assertEquals(7, s.automaticHomeRowsFor(LayoutScreen.COVER))
+        assertEquals(4, s.automaticHomeRowsFor(LayoutScreen.COVER))
         // Not measured yet: the fewest another screen fits, as before. A fixed setting is the same everywhere.
         assertEquals(4, LauncherState(homeFitCompact = 7, homeFitExpanded = 4).homeAppRowsFor(LayoutScreen.INNER_UPRIGHT))
         assertEquals(6, s.copy(homeRows = 6).homeAppRowsFor(LayoutScreen.COVER))
