@@ -1601,6 +1601,7 @@ internal val SettingsRows: List<Pair<Int, CustomizationPage>> = listOf(
     R.string.color_battery_when_charging_or_low to CustomizationPage.STATUS,
     R.string.charging_bolt to CustomizationPage.STATUS,
     R.string.left_handed_layout_rail_on_the_left to CustomizationPage.STATUS,
+    R.string.side_bar_floats_over_pages to CustomizationPage.STATUS,
     R.string.show_app_names to CustomizationPage.STATUS,
     R.string.show_status_in_the_rail to CustomizationPage.STATUS,
     R.string.silent_mode_icon to CustomizationPage.STATUS,
