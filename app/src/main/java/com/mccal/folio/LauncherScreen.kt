@@ -1014,14 +1014,24 @@ fun LauncherScreen(
             }
             val contentHeight = maxHeight
             val contentWidth = maxWidth
-            val panelWidth = maxWidth - geometry.homeWidth.dp
+            val rawPanelWidth = maxWidth - geometry.homeWidth.dp
             // The pager always runs the whole width under the floating Side Bar.
             val pagerWidth = maxWidth
             // DUO_PANE_GAP: flat, the left page sits closer to the right one so the two halves read as one Home; partly folded
             // (a vertical book hinge that is active), it springs back to the middle of the left half to clear the crease.
             val duoPaneGap = state.unfoldedSeamlessGap
             val bookFolded = hinge?.let { it.active && it.vertical } == true
-            val targetLeftOrigin = expandedLeftPaneOrigin(maxWidth.value, geometry.homeWidth, geometry.gridWidth, duoPaneGap, bookFolded).dp
+            val rawLeftOrigin = expandedLeftPaneOrigin(maxWidth.value, geometry.homeWidth, geometry.gridWidth, duoPaneGap, bookFolded)
+            // Duo layout rule: on the unfolded screen the two pages center in the window beside the Side Bar's lane
+            // (the same dockWidth + 28 the App Library keeps), not in the whole window — the bar's strip counts as
+            // not there. Both pane anchors shift by the same amount, so the gap between the pages and the swipe
+            // stride are untouched. Partly folded the fold rule wins and nothing shifts: the halves stay on their
+            // own sides of the crease.
+            val railLane = if (geometry.expanded && !bookFolded && state.verticalStatus && !state.leftHanded) preset.dockWidth + 28f else 0f
+            val spreadShift = if (railLane > 0f) ((railLane + maxWidth.value) / 2f -
+                (rawLeftOrigin + 16f + rawPanelWidth.value + 16f + geometry.gridWidth) / 2f).coerceIn(0f, railLane) else 0f
+            val panelWidth = rawPanelWidth + spreadShift.dp
+            val targetLeftOrigin = (rawLeftOrigin + spreadShift).dp
             val leftColumnOrigin by animateDpAsState(targetLeftOrigin,
                 if (LocalReduceMotion.current) androidx.compose.animation.core.snap() else FolioMotion.spring(FolioMotion.Settle), label = "duo pane origin")
             // Decouple the gesture motion stride from the animated visual origin so the coordinate space
