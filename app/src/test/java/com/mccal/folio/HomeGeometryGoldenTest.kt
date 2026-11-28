@@ -72,7 +72,6 @@ class HomeGeometryGoldenTest {
         assertTrue("home-geometry-golden.txt is missing: run with FOLIO_GEOMETRY_GOLDEN_WRITE=1", goldenFile.exists())
         val recorded = goldenFile.readLines().filter { it.isNotBlank() }
         val moved = now.indices.filter { it >= recorded.size || now[it] != recorded[it] }.map { now[it].substringBeforeLast(" | ") }
-        now.indices.filter { it >= recorded.size || now[it] != recorded[it] }.forEach { println("GOLDEN-NOW " + now[it]) }
         assertEquals("Home moved for ${moved.size} of ${now.size} layouts, first: ${moved.take(8)}", emptyList<String>(), moved)
         assertEquals("the sweep changed size", recorded.size, now.size)
     }
