@@ -133,6 +133,7 @@
     <string name="style">样式</string>
     <string name="side_rail">侧边栏</string>
     <string name="left_handed_layout_rail_on_the_left">左手布局（侧边栏在左侧）</string>
+    <string name="side_bar_floats_over_pages">侧边栏悬浮于页面之上</string>
     <string name="show_app_names">显示 App 名称</string>
     <string name="status">状态</string>
     <string name="show_status_in_the_rail">显示状态栏</string>
