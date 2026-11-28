@@ -25,6 +25,13 @@ const val DUO_ROW_GAIN_CAP = 0.20f
  */
 const val DUO_ROW_PITCH_MAX_DP = 108.5f
 /**
+ * A capped page's row pitch against its own column pitch: measured on the Duo's grid, the row pitch is the column
+ * pitch plus the label's share — about 1.13x — so the icon grid keeps one rhythm both ways. A page whose columns
+ * are narrower than the Duo's (the cover's, beside the rail) takes this ceiling instead of the full
+ * [DUO_ROW_PITCH_MAX_DP], or its grid comes out a tall rectangle.
+ */
+const val DUO_GRID_PITCH_RATIO = 1.13f
+/**
  * The same for the unfolded screen held upright (the bottom dock bar): one Duo owner's inner screen measured 19.6 mm rows (plus
  * or minus 0.3 mm) there, with the icon still 9.9 mm, so the room goes to spacing. PROVISIONAL (one owner's setup): 19.9 mm over
  * 0.15875 mm per dp, and a gain of up to 30 percent over Folio's own pitch. A design choice between the two measurements.
@@ -620,7 +627,8 @@ fun homeGeometry(width: Float, height: Float, preset: LayoutPreset, labels: Bool
             else if (widgetsFillRows) (layoutRows + 2) * rowFor(icon, gap) else widget + 18f + layoutRows * rowFor(icon, gap)
         val leftover = fitHeight - realExtra - taken
         val gainCap = if (tallRegular) DUO_PORTRAIT_ROW_GAIN_CAP else DUO_ROW_GAIN_CAP
-        val allowed = minOf(rowBeforeFill * (1f + gainCap), maxOf(rowBeforeFill, duoPitchMax)) - rowFor(icon, gap)
+        val pitchMax = if (duoCapped) minOf(duoPitchMax, cell * DUO_GRID_PITCH_RATIO) else duoPitchMax
+        val allowed = minOf(rowBeforeFill * (1f + gainCap), maxOf(rowBeforeFill, pitchMax)) - rowFor(icon, gap)
         val units = layoutRows + if (widgetsFillRows && !duoCapped) 2 else 0
         if (leftover > 0f && allowed > 0f) gap += minOf(leftover / units, allowed)
     }
