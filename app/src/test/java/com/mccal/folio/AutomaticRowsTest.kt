@@ -21,12 +21,13 @@ class AutomaticRowsTest {
             inLibrary = false, homeBottomSpace = 44f, railControls = 0, classScale = 1f,
             appRows = BASE_APP_ROWS, foldAtCenter = false, fillSpace = true).fitAppRows
 
-    @Test fun `the Fold8 fits four rows at the default icon size`() {
-        assertEquals(4, fit(cover, 20f))
+    @Test fun `the Fold8 fits five rows on the cover and four on the inner screen at the default icon size`() {
+        assertEquals(5, fit(cover, 20f))
+        assertEquals(4, fit(inner, 20f))
         assertEquals(4, effectiveHomeRows(setting = 0, fitCompact = fit(cover, 20f), fitExpanded = fit(inner, 20f)))
     }
 
-    /** What Settings promises when it says smaller icons make room: at 60 dp the cover gains its fifth row. */
+    /** The default icon size is Duo-derived now and already fits five on the cover; smaller icons keep them. */
     @Test fun `smaller icons make room for another row`() {
         assertEquals(5, fit(cover, 20f, icon = 60f))
         assertEquals(5, fit(cover, 20f, icon = 52f))

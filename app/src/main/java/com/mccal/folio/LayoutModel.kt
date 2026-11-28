@@ -340,15 +340,35 @@ fun layoutScreenFor(widthDp: Float, heightDp: Float, classScale: Float = 1f): La
         (if (heightDp > widthDp) LayoutScreen.INNER_UPRIGHT else LayoutScreen.INNER) else LayoutScreen.COVER
 
 /**
- * The seam for the Duo ratio work (steps 10-11 of the floating-rail plan): when the rail floats, the preset's
- * absolute size fields (icon size, dock width, gaps) will be derived here from the window width as fractions,
- * so the proportions follow the screen instead of fixed dp values. Functional settings (rows, labels, slots,
- * placement) keep coming from the preset either way, and with floating off the preset is returned untouched.
- * Pass-through until the measured fractions land.
+ * The Duo fractions, measured from the iPhone Duo references (step 11 of the floating-rail plan): on an inner
+ * screen the app icon is 0.063 of the screen's long side and the Side Bar dock 0.077 of it; on a phone-sized
+ * screen they are 0.132 and 0.161 of the short side. The long or short side is the ruler, so turning an inner
+ * screen upright keeps its sizes instead of re-deriving them from the narrower width.
  */
-internal fun duoSizedPreset(p: LayoutPreset, floating: Boolean): LayoutPreset {
+const val DUO_INNER_ICON_FRACTION = 0.063f
+const val DUO_INNER_DOCK_FRACTION = 0.077f
+const val DUO_PHONE_ICON_FRACTION = 0.132f
+const val DUO_PHONE_DOCK_FRACTION = 0.161f
+
+/**
+ * The seam for the Duo ratio work (steps 10-12 of the floating-rail plan): when the rail floats, a size field
+ * still at Folio's default is derived here from the window as a fraction (see the DUO_ fractions above), so the
+ * proportions follow the screen instead of fixed dp values. A size the user has set keeps their value, and
+ * functional settings (rows, labels, slots, placement) keep coming from the preset either way. With floating
+ * off the preset is returned untouched.
+ */
+internal fun duoSizedPreset(p: LayoutPreset, floating: Boolean, width: Float, height: Float, classScale: Float = 1f): LayoutPreset {
     if (!floating) return p
-    return p
+    val defaults = LayoutPreset()
+    if (p.iconSize != defaults.iconSize && p.dockWidth != defaults.dockWidth) return p
+    val inner = fitsRegularHomeLayout(width, height, classScale)
+    val ruler = if (inner) maxOf(width, height) else minOf(width, height)
+    var out = p
+    if (p.iconSize == defaults.iconSize) out = out.copy(iconSize =
+        ((if (inner) DUO_INNER_ICON_FRACTION else DUO_PHONE_ICON_FRACTION) * ruler).coerceIn(40f, 68f))
+    if (p.dockWidth == defaults.dockWidth) out = out.copy(dockWidth =
+        ((if (inner) DUO_INNER_DOCK_FRACTION else DUO_PHONE_DOCK_FRACTION) * ruler).coerceIn(56f, MAX_DOCK_WIDTH))
+    return out
 }
 
 fun fitsRegularHomeLayout(widthDp: Float, heightDp: Float, classScale: Float = 1f) =
@@ -435,7 +455,7 @@ fun homeGeometry(width: Float, height: Float, preset: LayoutPreset, labels: Bool
     controlsSpace: Float = 0f): HomeGeometry {
     val bottomSpaceIn = homeBottomSpace
     val baseBottomSpace = bottomSpaceIn
-    val p = duoSizedPreset(preset.sanitized(), true)
+    val p = duoSizedPreset(preset.sanitized(), true, width, height, classScale)
     val slots = dockSlots.coerceIn(MIN_DOCK_SLOTS, MAX_DOCK_SLOTS).toFloat()
     // Unfolded Duo layout only with regular size both ways; the cover in landscape is still compact.
     // Two Duo panels side by side need a window wider than tall. Taller than wide (portrait), iPhone Duo keeps one

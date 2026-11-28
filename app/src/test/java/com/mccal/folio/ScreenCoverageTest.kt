@@ -203,9 +203,10 @@ class ScreenCoverageTest {
         val inner = homeGeometry(932f, 704f, LayoutPreset(), true, statusHeight = 160f)
         org.junit.Assert.assertEquals(5, cover.fitAppRows)
         org.junit.Assert.assertEquals(5, inner.fitAppRows)
-        // The cover fits five at the usual spacing; the inner screen needs the space under labels tightened to 4 dp.
+        // Both fit five at the usual spacing: at the Duo sizes the inner screen no longer needs the space
+        // under labels tightened to 4 dp (it did at Folio's old 66 dp icons).
         org.junit.Assert.assertEquals(8f, homeGeometry(475f, 751f, LayoutPreset(), true, statusHeight = 160f, appRows = 5).rowGap)
-        org.junit.Assert.assertEquals(4f, homeGeometry(932f, 704f, LayoutPreset(), true, statusHeight = 160f, appRows = 5).rowGap)
+        org.junit.Assert.assertEquals(8f, homeGeometry(932f, 704f, LayoutPreset(), true, statusHeight = 160f, appRows = 5).rowGap)
         // Four rows keep today's spacing.
         org.junit.Assert.assertEquals(8f, inner.rowGap)
         // Split screen halves and short landscape windows stay at four.
@@ -215,14 +216,22 @@ class ScreenCoverageTest {
     /** Rows picked by hand shrink icons to fit (never under 48 dp); Automatic and Rows › 4 never do, so they scroll as before. */
     @Test fun `rows picked by hand shrink icons to fit and never below 48 dp`() {
         fun bottom(g: HomeGeometry, rows: Int) = g.widgetHeight + 18f + rows * g.rowHeight
-        // Fold8 Ultra inner (estimated, upright): six fit at the usual size, seven only with smaller icons.
+        // Fold8 Ultra inner (estimated, upright): at the Duo size seven rows now fit at the usual size, so
+        // hand-picked rows change nothing here (at Folio's old 66 dp icons seven needed smaller icons).
         val auto = homeGeometry(859f, 954f, LayoutPreset(), true, statusHeight = 160f, appRows = 7)
         val hand = homeGeometry(859f, 954f, LayoutPreset(), true, statusHeight = 160f, appRows = 7, shrinkIconsForRows = true)
-        org.junit.Assert.assertEquals(66f, auto.iconSize)
-        org.junit.Assert.assertTrue("icons ${hand.iconSize}", hand.iconSize < 66f && hand.iconSize >= MIN_ROWS_ICON)
+        org.junit.Assert.assertEquals(60.102f, auto.iconSize)
+        org.junit.Assert.assertEquals(auto.iconSize, hand.iconSize)
         val fitHeight = 954f - 16f - 44f - hand.dockBarHeight - 16f
         org.junit.Assert.assertTrue("seven rows take ${bottom(hand, 7)} of $fitHeight", bottom(hand, 7) <= fitHeight + 0.5f)
-        org.junit.Assert.assertTrue(bottom(auto, 7) > fitHeight)
+        // A shorter upright window of the same width: six fit at the usual size, seven only with smaller icons.
+        val autoShort = homeGeometry(859f, 880f, LayoutPreset(), true, statusHeight = 160f, appRows = 7)
+        val handShort = homeGeometry(859f, 880f, LayoutPreset(), true, statusHeight = 160f, appRows = 7, shrinkIconsForRows = true)
+        org.junit.Assert.assertEquals(55.440002f, autoShort.iconSize)
+        org.junit.Assert.assertTrue("icons ${handShort.iconSize}", handShort.iconSize < autoShort.iconSize && handShort.iconSize >= MIN_ROWS_ICON)
+        val fitHeightShort = 880f - 16f - 44f - handShort.dockBarHeight - 16f
+        org.junit.Assert.assertTrue("seven rows take ${bottom(handShort, 7)} of $fitHeightShort", bottom(handShort, 7) <= fitHeightShort + 0.5f)
+        org.junit.Assert.assertTrue(bottom(autoShort, 7) > fitHeightShort)
         // Rows that already fit change nothing, with or without the switch.
         val four = homeGeometry(859f, 954f, LayoutPreset(), true, statusHeight = 160f)
         org.junit.Assert.assertEquals(four, homeGeometry(859f, 954f, LayoutPreset(), true, statusHeight = 160f, shrinkIconsForRows = true))
@@ -235,17 +244,18 @@ class ScreenCoverageTest {
     /** Default Space between columns, Widget size and dock spacing lay the Fold8 out as before those settings. */
     @Test fun `new spacing settings at their defaults keep the fold8 layout`() {
         val cover = homeGeometry(475f, 751f, LayoutPreset(), true, statusHeight = 160f)
-        org.junit.Assert.assertEquals(listOf(363f, 90.75f, 66f, 176f, 0f), listOf(cover.gridWidth, cover.cellWidth, cover.iconSize, cover.widgetHeight, cover.columnsInset))
+        org.junit.Assert.assertEquals(listOf(354.525f, 88.63125f, 62.7f, 172.2625f, 0f), listOf(cover.gridWidth, cover.cellWidth, cover.iconSize, cover.widgetHeight, cover.columnsInset))
         val inner = homeGeometry(932f, 704f, LayoutPreset(), true, statusHeight = 160f)
-        org.junit.Assert.assertEquals(listOf(348f, 87f, 66f, 169f, 0f), listOf(inner.gridWidth, inner.cellWidth, inner.iconSize, inner.widgetHeight, inner.columnsInset))
-        org.junit.Assert.assertEquals(dockIconSize(66f) + 22f, homeGeometry(704f, 932f, LayoutPreset(), true, statusHeight = 160f).dockPitch)
+        org.junit.Assert.assertEquals(listOf(344.236f, 86.059f, 58.716f, 167.118f, 0f), listOf(inner.gridWidth, inner.cellWidth, inner.iconSize, inner.widgetHeight, inner.columnsInset))
+        val upright = homeGeometry(704f, 932f, LayoutPreset(), true, statusHeight = 160f)
+        org.junit.Assert.assertEquals(dockIconSize(upright.iconSize) + 22f, upright.dockPitch)
         // Closer columns narrow the cells (the grid area stays put); wider ones shrink the icons.
         val closer = homeGeometry(475f, 751f, LayoutPreset(columnGap = 8f), true, statusHeight = 160f)
-        org.junit.Assert.assertEquals(listOf(363f, 82.75f, 66f), listOf(closer.gridWidth, closer.cellWidth, closer.iconSize))
+        org.junit.Assert.assertEquals(listOf(354.525f, 80.63125f, 62.7f), listOf(closer.gridWidth, closer.cellWidth, closer.iconSize))
         val apart = homeGeometry(475f, 751f, LayoutPreset(columnGap = 40f), true, statusHeight = 160f)
-        org.junit.Assert.assertEquals(listOf(90.75f, 42f), listOf(apart.cellWidth, apart.iconSize))
+        org.junit.Assert.assertEquals(listOf(88.63125f, 40f), listOf(apart.cellWidth, apart.iconSize))
         // Widget size scales the widget rows; dock spacing makes a free-standing dock taller.
-        org.junit.Assert.assertEquals(140.8f, homeGeometry(475f, 751f, LayoutPreset(widgetScale = .8f), true, statusHeight = 160f).widgetHeight, .01f)
+        org.junit.Assert.assertEquals(137.81f, homeGeometry(475f, 751f, LayoutPreset(widgetScale = .8f), true, statusHeight = 160f).widgetHeight, .01f)
         val loose = LayoutPreset(dockAlignToGrid = false)
         org.junit.Assert.assertTrue(homeGeometry(475f, 751f, loose.copy(dockSpacing = 12f), true, statusHeight = 160f).dockHeight >
             homeGeometry(475f, 751f, loose, true, statusHeight = 160f).dockHeight)
