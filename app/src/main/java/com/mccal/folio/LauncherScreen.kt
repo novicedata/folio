@@ -66,6 +66,9 @@ import androidx.compose.ui.graphics.layer.drawLayer
 import com.kyant.backdrop.backdrops.layerBackdrop
 import com.kyant.backdrop.backdrops.rememberCombinedBackdrop
 import com.kyant.backdrop.backdrops.rememberLayerBackdrop
+import com.kyant.backdrop.drawBackdrop
+import com.kyant.backdrop.highlight.Highlight
+import com.kyant.backdrop.shadow.Shadow
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
@@ -1296,6 +1299,8 @@ fun LauncherScreen(
                     }
                 }
             }
+            // The dock's glass tint, read here so the backdrop's surface lambda can use it (step 6).
+            val dockGlassTint = Glass
             if (!dockAwayForToday) OwnMethod { Box((if (geometry.horizontalDock) (if (hinge?.active == true && hinge.vertical)
                     // Half folded like a book: the bar sits centered on the trailing half, off the hinge.
                     Modifier.align(Alignment.BottomEnd).padding(end = ((contentWidth / 2 - dockBarWidthShown) / 2).coerceAtLeast(0.dp))
@@ -1319,7 +1324,12 @@ fun LauncherScreen(
                     // Composite the stationary dock independently of the shared pager layer (not while magnifying: it would clip).
                     compositingStrategy = if (state.dockMagnify) androidx.compose.ui.graphics.CompositingStrategy.Auto
                         else androidx.compose.ui.graphics.CompositingStrategy.Offscreen
-                }.background(Glass.copy(alpha = state.statusStyle.railGlass), RoundedCornerShape(FolioRadius.RAIL.dp))
+                }.drawBackdrop(homeBackdrop, shape = { RoundedCornerShape(FolioRadius.RAIL.dp) },
+                    effects = { folioGlassEffects() },
+                    highlight = { Highlight.Default },
+                    shadow = { Shadow.Default },
+                    // The flat frost stays as the surface colour, at the user's own strength.
+                    onDrawSurface = { drawRect(dockGlassTint.copy(alpha = state.statusStyle.railGlass)) })
                 .border(1.dp, LocalGlassLook.current.outlineColor, RoundedCornerShape(FolioRadius.RAIL.dp)).testTag("dock")) {
                 Column(if (geometry.horizontalDock) (if (dockBarScrolls) Modifier.fillMaxHeight().horizontalEdgeFade(dockBarScroll).horizontalScroll(dockBarScroll) else Modifier.fillMaxSize()).padding(horizontal = FolioSpace.SMALL.dp) else Modifier.padding(vertical = FolioSpace.SMALL.dp).edgeFade(dockScroll).verticalScroll(dockScroll)) {
                     DockAppColumn(if (geometry.horizontalDock) shownDock else shownDock.take(geometry.dockShownSlots), if (geometry.horizontalDock) previewLayout.dock else previewLayout.dock.take(geometry.dockShownSlots), appsById, dockPitchShown,

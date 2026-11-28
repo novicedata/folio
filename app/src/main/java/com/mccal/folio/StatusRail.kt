@@ -16,9 +16,13 @@ import androidx.compose.material.icons.rounded.Bolt
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.ui.graphics.graphicsLayer
 import com.kyant.backdrop.Backdrop
+import com.kyant.backdrop.BackdropEffectScope
 import com.kyant.backdrop.drawBackdrop
 import com.kyant.backdrop.effects.blur
+import com.kyant.backdrop.effects.lens
 import com.kyant.backdrop.effects.vibrancy
+import com.kyant.backdrop.highlight.Highlight
+import com.kyant.backdrop.shadow.Shadow
 import androidx.compose.animation.togetherWith
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.animation.core.Animatable
@@ -176,6 +180,17 @@ internal val STATUS_GLYPH_MIN = 40.dp
 internal val STATUS_GLYPH_MIN_COMPACT = 36.dp
 internal val STATUS_GLYPH_MAX_COMPACT = 36.dp
 
+/**
+ * The liquid-glass recipe shared by the rail's capsule and the dock (floating-rail patch, step 6): a
+ * saturation lift, a light frost, and the edge refraction that makes it glass rather than a translucent
+ * panel. This library takes effect radii in pixels, so dp values convert against the scope's own density.
+ */
+internal fun BackdropEffectScope.folioGlassEffects() {
+    vibrancy()
+    blur(6.dp.toPx())
+    lens(18.dp.toPx(), 24.dp.toPx())
+}
+
 /** Shared capsule look for the side rail (status, dock, island). */
 
 @Composable
@@ -315,9 +330,10 @@ fun StatusRail(
             val tight = style.tight
             if (hasContent) Column(Modifier.fillMaxWidth()
                 .then(if (style.background) (if (backdrop != null) Modifier.drawBackdrop(backdrop, shape = { capsule },
-                        effects = { vibrancy(); blur(12.dp.toPx()) },
-                        // The flat frost stays as the surface colour, at the user's own strength, so the glass
-                        // reads as the same capsule until step 6 tunes the full recipe.
+                        effects = { folioGlassEffects() },
+                        highlight = { Highlight.Default },
+                        shadow = { Shadow.Default },
+                        // The flat frost stays as the surface colour, at the user's own strength.
                         onDrawSurface = { drawRect(glassColor.copy(alpha = style.railGlass)) })
                     else Modifier.background(Glass.copy(alpha = style.railGlass), capsule))
                     .border(1.dp, LocalGlassLook.current.outlineColor, capsule) else Modifier)
