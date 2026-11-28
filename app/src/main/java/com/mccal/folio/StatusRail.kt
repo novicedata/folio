@@ -17,6 +17,7 @@ import androidx.compose.material.icons.rounded.Check
 import androidx.compose.ui.graphics.graphicsLayer
 import com.kyant.backdrop.Backdrop
 import com.kyant.backdrop.BackdropEffectScope
+import com.kyant.backdrop.isRuntimeShaderSupported
 import com.kyant.backdrop.drawBackdrop
 import com.kyant.backdrop.effects.blur
 import com.kyant.backdrop.effects.lens
@@ -188,7 +189,8 @@ internal val STATUS_GLYPH_MAX_COMPACT = 36.dp
 internal fun BackdropEffectScope.folioGlassEffects() {
     vibrancy()
     blur(6.dp.toPx())
-    lens(18.dp.toPx(), 24.dp.toPx())
+    // The refraction runs in a runtime shader (API 33+); without one the frosted glass above is the fallback.
+    if (isRuntimeShaderSupported()) lens(18.dp.toPx(), 24.dp.toPx())
 }
 
 /** Shared capsule look for the side rail (status, dock, island). */

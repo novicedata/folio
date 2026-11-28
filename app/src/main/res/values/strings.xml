@@ -125,6 +125,7 @@
     <string name="badge_color">Badge color</string>
     <string name="style">Style</string>
     <string name="side_rail">Side Bar</string>
+    <string name="side_bar_floats_over_pages">Side Bar floats over pages</string>
     <string name="left_handed_layout_rail_on_the_left">Left-handed layout (side bar on the left)</string>
     <string name="show_app_names">Show app names</string>
     <string name="status">Status</string>

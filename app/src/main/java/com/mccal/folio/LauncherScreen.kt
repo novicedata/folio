@@ -68,6 +68,7 @@ import com.kyant.backdrop.backdrops.rememberCombinedBackdrop
 import com.kyant.backdrop.backdrops.rememberLayerBackdrop
 import com.kyant.backdrop.drawBackdrop
 import com.kyant.backdrop.highlight.Highlight
+import com.kyant.backdrop.isRenderEffectSupported
 import com.kyant.backdrop.shadow.Shadow as BackdropShadow
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.alpha
@@ -946,7 +947,7 @@ fun LauncherScreen(
             // Liquid-glass branch: the status Side Bar floats over the page — the pager runs the whole width
             // under it, while the app grid keeps its own lane clear of the bar (see homeGeometry's gridWidth).
             // (A settings kill switch for this arrives with the fallback step.)
-            val railFloats = true
+            val railFloats = state.railFloats
             val geometry = homeGeometry(maxWidth.value, maxHeight.value, preset, state.labels, dockSlots = shownDock.size, statusRail = state.verticalStatus,
                 railReservesColumn = if (railFloats) false else null,
                 statusHeight = if (state.verticalStatus) statusHeight + 22f else 0f,
@@ -1221,7 +1222,7 @@ fun LauncherScreen(
                         // The whole rail, location slot included: the dock goes below all of it.
                         statusHeight = with(density) { it.height.toDp().value }
                     },
-                compact = contentHeight < COMPACT_DOCK_MAX_HEIGHT_DP.dp, iconSize = dockIconSize(geometry.iconSize).dp, style = state.statusStyle, backdrop = homeBackdrop,
+                compact = contentHeight < COMPACT_DOCK_MAX_HEIGHT_DP.dp, iconSize = dockIconSize(geometry.iconSize).dp, style = state.statusStyle, backdrop = if (isRenderEffectSupported()) homeBackdrop else null,
                 focus = state.focusModes.firstOrNull { it.id == state.activeFocus },
                 // A tap opens Control Center (not while Home is being edited or an icon is dragged).
                 onOpen = if (homeEdit.active || drag.active) null else ({ launcherActivity.openSystemShade(ShadePanel.QUICK_SETTINGS) }),
@@ -1324,12 +1325,14 @@ fun LauncherScreen(
                     // Composite the stationary dock independently of the shared pager layer (not while magnifying: it would clip).
                     compositingStrategy = if (state.dockMagnify) androidx.compose.ui.graphics.CompositingStrategy.Auto
                         else androidx.compose.ui.graphics.CompositingStrategy.Offscreen
-                }.drawBackdrop(homeBackdrop, shape = { RoundedCornerShape(FolioRadius.RAIL.dp) },
+                }.then(if (isRenderEffectSupported()) Modifier.drawBackdrop(homeBackdrop, shape = { RoundedCornerShape(FolioRadius.RAIL.dp) },
                     effects = { folioGlassEffects() },
                     highlight = { Highlight.Default },
                     shadow = { BackdropShadow.Default },
                     // The flat frost stays as the surface colour, at the user's own strength.
                     onDrawSurface = { drawRect(dockGlassTint.copy(alpha = state.statusStyle.railGlass)) })
+                // No render effects on this runtime: the dock keeps its flat frost instead of the glass.
+                else Modifier.background(dockGlassTint.copy(alpha = state.statusStyle.railGlass), RoundedCornerShape(FolioRadius.RAIL.dp)))
                 .border(1.dp, LocalGlassLook.current.outlineColor, RoundedCornerShape(FolioRadius.RAIL.dp)).testTag("dock")) {
                 Column(if (geometry.horizontalDock) (if (dockBarScrolls) Modifier.fillMaxHeight().horizontalEdgeFade(dockBarScroll).horizontalScroll(dockBarScroll) else Modifier.fillMaxSize()).padding(horizontal = FolioSpace.SMALL.dp) else Modifier.padding(vertical = FolioSpace.SMALL.dp).edgeFade(dockScroll).verticalScroll(dockScroll)) {
                     DockAppColumn(if (geometry.horizontalDock) shownDock else shownDock.take(geometry.dockShownSlots), if (geometry.horizontalDock) previewLayout.dock else previewLayout.dock.take(geometry.dockShownSlots), appsById, dockPitchShown,
