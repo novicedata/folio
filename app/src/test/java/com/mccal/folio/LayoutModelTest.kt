@@ -122,7 +122,7 @@ class LayoutModelTest {
             assertFalse("$width x $height", g.expanded)
             val pageHeight = if (g.splitColumns) maxOf(g.widgetHeight + 18f, 4f * g.rowHeight) else g.widgetHeight + 18f + 4f * g.rowHeight
             if (height >= 430f) assertTrue("page overflows at $width x $height", pageHeight <= height - 16f - 44f + .01f)
-            if (g.splitColumns) assertTrue("halves overflow the width", 8f * g.cellWidth + g.zoneGap <= width - 68f - 44f + .01f)
+            if (g.splitColumns) assertTrue("halves overflow the width", 8f * g.cellWidth + g.zoneGap <= width - duoSizedPreset(LayoutPreset(), true, width, height).dockWidth - 44f + .01f)
             assertTrue(g.rowHeight >= 48f)
         }
         assertTrue(fitsRegularHomeLayout(704f, 930f))
@@ -233,7 +233,7 @@ class LayoutModelTest {
         for (width in listOf(704f, 821f)) {
             val g = homeGeometry(width, width * 2448f / 1848f, p, true)
             assertTrue(g.horizontalDock)
-            assertEquals(width - 2f * (p.dockWidth + 56f), g.gridWidth, .5f)
+            assertEquals(width - 2f * (duoSizedPreset(p, true, width, width * 2448f / 1848f).dockWidth + 56f), g.gridWidth, .5f)
         }
     }
 
