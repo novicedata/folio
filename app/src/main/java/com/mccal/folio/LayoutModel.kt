@@ -580,10 +580,10 @@ fun homeGeometry(width: Float, height: Float, preset: LayoutPreset, labels: Bool
         }
     }
     // Duo rows (step 12b): Automatic is held to the Duo's four app rows (see duoRowCap in LauncherModel), and on a
-    // window that could fit more than the four it shows, the freed height is the Duo's margins above and below the
-    // page, not stretched rows — so neither Automatic's fill nor the Duo spacing gain below spends it. fillSpace is
-    // Automatic's flag: a hand-picked four keeps today's spacing, and the upright inner screen (tallRegular) keeps
-    // its tape-measured portrait pitch.
+    // window that could fit more than the four it shows, the freed height is spent the Duo's way: first the row
+    // pitch gain below (never Automatic's fill, which would stretch the rows to the window), then equal margins
+    // above and below the page. fillSpace is Automatic's flag: a hand-picked four keeps today's spacing, and the
+    // upright inner screen (tallRegular) keeps its tape-measured portrait pitch.
     val duoCapped = fillSpace && !splitColumns && !tallRegular && layoutRows == BASE_APP_ROWS && fitRows > BASE_APP_ROWS
     val rowBeforeFill = rowFor(icon, gap)
     val duoPitchMax = if (tallRegular) DUO_PORTRAIT_ROW_PITCH_MAX_DP else DUO_ROW_PITCH_MAX_DP
@@ -601,7 +601,7 @@ fun homeGeometry(width: Float, height: Float, preset: LayoutPreset, labels: Bool
     // DUO_SPACING: the Duo's rows are about 17% further apart than Folio's on the cover (an iPhone's, about 16 mm). Any window
     // and any row count, whose spacing was not squeezed to fit, and only out of height that is really free, never past
     // [DUO_ROW_GAIN_CAP]: a bigger window gets more rows (Automatic) rather than stretched ones.
-    if (duoSpacing && !duoCapped && !splitColumns && !p.pageTop && gap >= p.rowGap) {
+    if (duoSpacing && !splitColumns && !p.pageTop && gap >= p.rowGap) {
         val taken = if (widgetsFillRows) (layoutRows + 2) * rowFor(icon, gap) else widget + 18f + layoutRows * rowFor(icon, gap)
         val leftover = fitHeight - realExtra - taken
         val gainCap = if (tallRegular) DUO_PORTRAIT_ROW_GAIN_CAP else DUO_ROW_GAIN_CAP
@@ -618,8 +618,11 @@ fun homeGeometry(width: Float, height: Float, preset: LayoutPreset, labels: Bool
     // DUO_SPACING: what is left after the rows are spaced is shared evenly above and below, so neither band looks large.
     // Duo rows (step 12b): a capped page centers in the whole window, so the band above it and the band below it
     // come out equal — the Duo's own balance, with the page controls floating in the lower band like its search
-    // pill. Never so far down that the page would end under the controls, though.
-    val duoContentTop = if (duoCapped) minOf((height - (pageHeight - gap)) / 2f, height - controlsSpace - (pageHeight - gap))
+    // pill. The line it must not cross is the bottom space it was fitted against, not the controls' full measured
+    // height: the last row's own space under its label may sit over the controls' padding, as everywhere else in
+    // this geometry, and on a tight window (the cover) the controls' whole stack is tall enough to eat the entire
+    // balance and pin the page where it already sat.
+    val duoContentTop = if (duoCapped) minOf((height - (pageHeight - gap)) / 2f, height - homeBottomSpace - (pageHeight - gap))
         else (height - (pageHeight - gap) - homeBottomSpace - realExtra) / 2f
     val contentTop = if (p.pageTop) 16f else if (duoSpacing && !splitColumns) duoContentTop.coerceAtLeast(16f)
         else ((height - pageHeight - homeBottomSpace) / 2f).coerceIn(16f, maxOf(72f, height * .18f))
