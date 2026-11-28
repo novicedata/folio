@@ -411,11 +411,6 @@ fun homeGeometry(width: Float, height: Float, preset: LayoutPreset, labels: Bool
     /** Dock apps (see [MIN_DOCK_SLOTS]); the dock gets as many touch targets as it has slots. */
     dockSlots: Int = MIN_DOCK_SLOTS,
     /**
-     * Whether the status Side Bar is shown. Without it, a bottom dock bar has nothing to sit beside, so the page and the
-     * bar use the whole width (Full-width Home); with it, they leave its strip as they always did.
-     */
-    statusRail: Boolean = true,
-    /**
      * A widget fills exactly two app rows (`2 * row - 18`), so the top rows have the same pitch as every other row on a
      * page with a widget or without one, and the dock, which starts where row 2 does, lines up on every page. Widget
      * Size has no job then (the widget is as tall as two rows). Off: the widget keeps the height Widget Size gives it.
@@ -437,17 +432,10 @@ fun homeGeometry(width: Float, height: Float, preset: LayoutPreset, labels: Bool
      * is measured for. When the usual four app rows would end under the controls at the base, the window is laid out again for
      * this space, so a short window never clips its last row. Windows that already clear the controls are laid out as before.
      */
-    controlsSpace: Float = 0f,
-    /**
-     * Whether the status Side Bar's strip stays reserved in the layout, separately from whether the bar is shown
-     * ([statusRail]). Null (the default) reserves exactly when the bar is shown, as it always has. The floating-rail
-     * layout passes false: the bar is drawn over the page instead of beside it and the pager keeps the whole
-     * width, while the app grid keeps its own lane clear of the bar (see the gridWidth computation below).
-     */
-    railReservesColumn: Boolean? = null): HomeGeometry {
+    controlsSpace: Float = 0f): HomeGeometry {
     val bottomSpaceIn = homeBottomSpace
     val baseBottomSpace = bottomSpaceIn
-    val p = duoSizedPreset(preset.sanitized(), railReservesColumn == false)
+    val p = duoSizedPreset(preset.sanitized(), true)
     val slots = dockSlots.coerceIn(MIN_DOCK_SLOTS, MAX_DOCK_SLOTS).toFloat()
     // Unfolded Duo layout only with regular size both ways; the cover in landscape is still compact.
     // Two Duo panels side by side need a window wider than tall. Taller than wide (portrait), iPhone Duo keeps one
@@ -461,12 +449,11 @@ fun homeGeometry(width: Float, height: Float, preset: LayoutPreset, labels: Bool
         // Short windows (split screen, pop-up windows) keep the Side Bar too, so the page still fits above the bar.
         DockPlacement.BOTTOM -> regular || (height > width && height >= HOME_REGULAR_MIN_HEIGHT_DP)
     }
-    // Reservation follows its own flag: by default it tracks the bar being shown, but a floating bar reserves nothing.
-    val railReserves = railReservesColumn ?: statusRail
-    // Everywhere but the upright unfolded screen, the status Side Bar stays and the bottom dock sits beside it.
-    val dockBesideRail = horizontalDock && !tallRegular && railReserves
-    // A bottom bar with no reserved Side Bar strip: nothing to leave room for, so the grid takes the width (less its margins).
-    val fullWidth = horizontalDock && !tallRegular && !railReserves
+    // The status Side Bar floats over the page and never reserves its strip: a bottom dock has nothing to sit
+    // beside, so the page and the bar use the whole width (less its margins) — the geometry Full-width Home
+    // always had, now the only geometry. The app grid still keeps its own lane clear of the bar (below).
+    val dockBesideRail = false
+    val fullWidth = horizontalDock && !tallRegular
     val expanded = width * classScale >= 650f && height * classScale >= HOME_REGULAR_MIN_HEIGHT_DP && !tallRegular
     val homeWidth = if (expanded) minOf(460f, width * 0.56f, if (foldAtCenter) width / 2f else Float.MAX_VALUE) else width
     val dockBarHeight = if (horizontalDock) dockIconSize(p.iconSize) * p.dockSize + 28f else 0f
@@ -687,8 +674,7 @@ fun homeGeometry(width: Float, height: Float, preset: LayoutPreset, labels: Bool
     val dockExtra = homeBottomSpace - baseBottomSpace
     if (controlsSpace > baseBottomSpace && shownEnd > height - controlsSpace - dockExtra + 0.5f) {
         return homeGeometry(width, height, preset, labels, statusHeight, labelHeight, inLibrary, controlsSpace, railControls, homeRailControls,
-            classScale, appRows, foldAtCenter, fillSpace, dockSlots, statusRail, widgetsFillRows, shrinkIconsForRows, duoSpacing, controlsSpace = 0f,
-            railReservesColumn = railReservesColumn)
+            classScale, appRows, foldAtCenter, fillSpace, dockSlots, widgetsFillRows, shrinkIconsForRows, duoSpacing, controlsSpace = 0f)
     }
     return laidOut
 }

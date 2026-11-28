@@ -13,7 +13,7 @@ import org.junit.Test
 class FullWidthHomeCenterTest {
     // The cover screen with the dock at the bottom and no Side Bar: Full-width Home.
     private fun fullWidth(columnGap: Float) = homeGeometry(475f, 751f,
-        LayoutPreset(dockPlacement = DockPlacement.BOTTOM, columnGap = columnGap), true, statusRail = false)
+        LayoutPreset(dockPlacement = DockPlacement.BOTTOM, columnGap = columnGap), true)
 
     @Test fun `the setup really is Full-width Home`() {
         val g = fullWidth(DEFAULT_COLUMN_GAP)

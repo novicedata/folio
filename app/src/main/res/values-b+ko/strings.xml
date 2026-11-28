@@ -131,7 +131,6 @@
     <string name="style">스타일</string>
     <string name="side_rail">사이드바</string>
     <string name="left_handed_layout_rail_on_the_left">왼손잡이 레이아웃(왼쪽 사이드바)</string>
-    <string name="side_bar_floats_over_pages">사이드바를 페이지 위에 띄우기</string>
     <string name="show_app_names">앱 이름 표시</string>
     <string name="status">상태</string>
     <string name="show_status_in_the_rail">상태 막대 표시</string>

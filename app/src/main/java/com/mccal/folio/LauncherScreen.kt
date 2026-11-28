@@ -944,12 +944,9 @@ fun LauncherScreen(
                 else -> 0.dp
             }
             val windowHeightDp = maxHeight.value
-            // Liquid-glass branch: the status Side Bar floats over the page — the pager runs the whole width
+            // Liquid glass: the status Side Bar floats over the page — the pager runs the whole width
             // under it, while the app grid keeps its own lane clear of the bar (see homeGeometry's gridWidth).
-            // (A settings kill switch for this arrives with the fallback step.)
-            val railFloats = state.railFloats
-            val geometry = homeGeometry(maxWidth.value, maxHeight.value, preset, state.labels, dockSlots = shownDock.size, statusRail = state.verticalStatus,
-                railReservesColumn = if (railFloats) false else null,
+            val geometry = homeGeometry(maxWidth.value, maxHeight.value, preset, state.labels, dockSlots = shownDock.size,
                 statusHeight = if (state.verticalStatus) statusHeight + 22f else 0f,
                 labelHeight = with(density) { (LocalLabelSize.current.lineSp * glanceFontFactor(fontScale)).sp.toDp().value } + 6f, inLibrary = inLibrary,
                 homeBottomSpace = if (isDefaultHome) 44f else 88f,
@@ -1018,8 +1015,8 @@ fun LauncherScreen(
             val contentHeight = maxHeight
             val contentWidth = maxWidth
             val panelWidth = maxWidth - geometry.homeWidth.dp
-            // A phone-sized screen keeps the status Side Bar beside Home even with the dock at the bottom.
-            val pagerWidth = if (railFloats || (geometry.horizontalDock && !geometry.dockBesideRail)) maxWidth else maxWidth - preset.dockWidth.dp - 28.dp
+            // The pager always runs the whole width under the floating Side Bar.
+            val pagerWidth = maxWidth
             // DUO_PANE_GAP: flat, the left page sits closer to the right one so the two halves read as one Home; partly folded
             // (a vertical book hinge that is active), it springs back to the middle of the left half to clear the crease.
             val duoPaneGap = state.unfoldedSeamlessGap
@@ -1170,7 +1167,7 @@ fun LauncherScreen(
                     if (page == -1) {
                         // Every page in this pager turns, not only Home: a cube whose neighbour slides in flat is not
                         // a cube, and this is the page on Home's left.
-                        leftPageContent(if (railFloats && state.verticalStatus) (preset.dockWidth + 28f).dp else 0.dp,
+                        leftPageContent(if (state.verticalStatus) (preset.dockWidth + 28f).dp else 0.dp,
                             Modifier.fillMaxSize().pageEffect(pageEffect, nativePager, physicalPage))
                     } else if (page == visibleHomePages) {
                         AppLibrary(state, libraryQuery, { libraryQuery = it }, onLaunch, model::setPinned,
@@ -1183,7 +1180,7 @@ fun LauncherScreen(
                                 .graphicsLayer { val b = libraryBack; scaleX = 1f - .14f * b; scaleY = scaleX; alpha = 1f - .35f * b; translationX = size.width * .08f * b }
                                 .padding(top = FolioSpace.LARGE.dp, bottom = bottomSpace)
                                 .padding(libraryEdges((geometry.horizontalDock && !geometry.dockBesideRail && state.verticalStatus) ||
-                                    (railFloats && state.verticalStatus && !geometry.horizontalDock), preset.dockWidth, state.leftHanded,
+                                    (state.verticalStatus && !geometry.horizontalDock), preset.dockWidth, state.leftHanded,
                                     spansWindow = geometry.horizontalDock && !geometry.dockBesideRail)).testTag("library-page"),
                             drag = drag, page = visibleHomePages, onLaunchFrom = onLaunchFrom, onTurnOnWork = { model.turnOnWork(it) }, place = libraryPlace)
                     } else {
@@ -1197,7 +1194,7 @@ fun LauncherScreen(
                         // the empty margin, instead of on the seam the pane shares with its neighbour.
                         // Floating rail: the pane keeps to the leading edge, so the grid stays in its lane beside
                         // the bar instead of centering into the width the pager gained. Left-handed mirrors the lane.
-                        Row(Modifier.fillMaxSize().testTag("home-surface"), horizontalArrangement = if (railFloats && state.verticalStatus) (if (state.leftHanded) Arrangement.End else Arrangement.Start) else Arrangement.Center) {
+                        Row(Modifier.fillMaxSize().testTag("home-surface"), horizontalArrangement = if (state.verticalStatus) (if (state.leftHanded) Arrangement.End else Arrangement.Start) else Arrangement.Center) {
                             Box(Modifier.pageEffect(pageEffect, nativePager, physicalPage)) {
                                 HomePagePane(page, state, previewLayout.slots, previewLayout.leadingSlots, previewLayout.widgetPlacements, appsById, geometry, contentHeight,
                                     bottomSpace, widgets, drag, target, insertionTarget, showLargeWidget = false,

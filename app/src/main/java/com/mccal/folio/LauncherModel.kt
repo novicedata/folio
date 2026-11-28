@@ -298,8 +298,6 @@ data class LauncherState(
     val tintMedia: Boolean = true,
     /** Harbor-style: dock icons magnify under your finger. */
     val dockMagnify: Boolean = false,
-    /** The Side Bar floats over full-width pages instead of reserving its own column (the floating-rail patch). */
-    val railFloats: Boolean = true,
     /** Velox-style: swipe up on a Home app icon for its quick panel. */
     val appPanels: Boolean = true,
     /** Activator-style trigger → action (names of [FolioTrigger] → [FolioAction]). */
@@ -1373,7 +1371,6 @@ class LauncherModel(application: Application, private val readOnly: Boolean) : A
     fun setTintNotifications(value: Boolean) = updateSettings(soon = false) { it.copy(tintNotifications = value) }
     fun setTintMedia(value: Boolean) = updateSettings(soon = false) { it.copy(tintMedia = value) }
     fun setDockMagnify(value: Boolean) = updateSettings(soon = false) { it.copy(dockMagnify = value) }
-    fun setRailFloats(value: Boolean) = updateSettings(soon = false) { it.copy(railFloats = value) }
     fun setAppPanels(value: Boolean) = updateSettings(soon = false) { it.copy(appPanels = value) }
     fun setHaptics(value: Boolean) = updateSettings(soon = false) { it.copy(haptics = value) }
     fun setLockCover(value: Boolean) = updateSettings(soon = false) { it.copy(lockCover = value) }
@@ -1856,7 +1853,7 @@ class LauncherModel(application: Application, private val readOnly: Boolean) : A
             .put("activeFocus", s.activeFocus ?: "").put("leftPage", s.leftPage).put("todayUnfolded", s.todayUnfolded).put("unfoldedSeamlessGap", s.unfoldedSeamlessGap).put("todaySuggestions", s.todaySuggestions).put("systemWallpaper", s.systemWallpaper).put("homeInk", s.homeInk).put("tintedGlass", s.tintedGlass).put("glassTint", s.glassTint.toDouble()).put("reduceTransparency", s.reduceTransparency)
             .put("roundedCorners", s.roundedCorners).put("cornerRadius", s.cornerRadius.toDouble())
             .put("dimWallpaperDark", s.dimWallpaperDark).put("homeScrim", s.homeScrim).put("iconTintFromWallpaper", s.iconTintFromWallpaper)
-            .put("tintNotifications", s.tintNotifications).put("tintMedia", s.tintMedia).put("dockMagnify", s.dockMagnify).put("railFloats", s.railFloats).put("appPanels", s.appPanels).put("haptics", s.haptics).put("lockCover", s.lockCover)
+            .put("tintNotifications", s.tintNotifications).put("tintMedia", s.tintMedia).put("dockMagnify", s.dockMagnify).put("appPanels", s.appPanels).put("haptics", s.haptics).put("lockCover", s.lockCover)
             .put("featureScopes", JSONObject().apply { s.featureScopes.forEach { (id, m) -> put(id, JSONObject(m as Map<*, *>)) } })
             .put("tweakOptions", JSONObject().apply { s.tweakOptions.forEach { (id, m) -> put(id, JSONObject(m as Map<*, *>)) } }).put("notificationAppRow", s.notificationAppRow)
             .put("pageScrub", s.pageScrub).put("reduceMotion", s.reduceMotion).put("wallpaperMotion", s.wallpaperMotion).put("liveIcons", s.liveIcons).put("liveIconLook", s.liveIconLook)
@@ -2172,7 +2169,7 @@ internal fun decodeLauncherState(raw: String, legacyRaw: String?, dockMirror: St
         homeScrim = j.optBoolean("homeScrim", true),
         iconTintFromWallpaper = j.optBoolean("iconTintFromWallpaper", false),
         tintNotifications = j.optBoolean("tintNotifications", true), tintMedia = j.optBoolean("tintMedia", true),
-        dockMagnify = j.optBoolean("dockMagnify", false), railFloats = j.optBoolean("railFloats", true), appPanels = j.optBoolean("appPanels", true), haptics = j.optBoolean("haptics", true), lockCover = j.optBoolean("lockCover", true),
+        dockMagnify = j.optBoolean("dockMagnify", false), appPanels = j.optBoolean("appPanels", true), haptics = j.optBoolean("haptics", true), lockCover = j.optBoolean("lockCover", true),
         featureScopes = j.optJSONObject("featureScopes")?.let { o -> o.keys().asSequence().associateWith { id ->
             o.optJSONObject(id)?.let { inner -> inner.keys().asSequence().associateWith { inner.getString(it) } }.orEmpty()
         } } ?: emptyMap(),
