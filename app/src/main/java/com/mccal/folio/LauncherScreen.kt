@@ -68,7 +68,7 @@ import com.kyant.backdrop.backdrops.rememberCombinedBackdrop
 import com.kyant.backdrop.backdrops.rememberLayerBackdrop
 import com.kyant.backdrop.drawBackdrop
 import com.kyant.backdrop.highlight.Highlight
-import com.kyant.backdrop.shadow.Shadow
+import com.kyant.backdrop.shadow.Shadow as BackdropShadow
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
@@ -1327,7 +1327,7 @@ fun LauncherScreen(
                 }.drawBackdrop(homeBackdrop, shape = { RoundedCornerShape(FolioRadius.RAIL.dp) },
                     effects = { folioGlassEffects() },
                     highlight = { Highlight.Default },
-                    shadow = { Shadow.Default },
+                    shadow = { BackdropShadow.Default },
                     // The flat frost stays as the surface colour, at the user's own strength.
                     onDrawSurface = { drawRect(dockGlassTint.copy(alpha = state.statusStyle.railGlass)) })
                 .border(1.dp, LocalGlassLook.current.outlineColor, RoundedCornerShape(FolioRadius.RAIL.dp)).testTag("dock")) {
